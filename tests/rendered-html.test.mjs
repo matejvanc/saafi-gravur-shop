@@ -129,6 +129,8 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /className={`product-card/);
   assert.match(page, /productHref/);
   assert.match(page, /parseRoute/);
+  assert.match(page, /return `\$\{value\.toFixed\(2\)\} €`;/);
+  assert.doesNotMatch(page, /style: "currency"/);
   assert.match(page, /type PageView = "home" \| "products" \| "product" \| "cart" \| "terms";/);
   assert.match(page, /navigateProducts/);
   assert.match(page, /href="\/produkty"/);

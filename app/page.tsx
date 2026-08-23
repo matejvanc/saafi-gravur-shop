@@ -1355,11 +1355,8 @@ type CartItem = {
   price: number;
 };
 
-function formatPrice(value: number, language: LanguageCode) {
-  return new Intl.NumberFormat(localeByLanguage[language], {
-    style: "currency",
-    currency: "EUR",
-  }).format(value);
+function formatPrice(value: number, _language: LanguageCode) {
+  return `${value.toFixed(2)} €`;
 }
 
 function getProduct(productId: string) {
