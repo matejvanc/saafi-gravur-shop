@@ -106,6 +106,12 @@ test("starter preview files and dependencies are removed", async () => {
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
   ]);
 
+  const openerProductStart = page.indexOf('id: "flaschenoeffner"');
+  const penProductStart = page.indexOf('id: "kugelschreiber"');
+  assert.notEqual(openerProductStart, -1);
+  assert.notEqual(penProductStart, -1);
+  const openerProductBlock = page.slice(openerProductStart, penProductStart);
+
   assert.match(page, /const TEXT_LIMIT = 12;/);
   assert.match(page, /type LanguageCode = "de" \| "en" \| "cs" \| "fr" \| "it";/);
   assert.match(page, /useState<LanguageCode>\("de"\)/);
@@ -128,6 +134,9 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /section-heading-left/);
   assert.match(page, /navigateTerms/);
   assert.match(page, /href="\/agb"/);
+  assert.match(page, /productId: "flaschenoeffner",\s+src: "\/products\/wood-opener\.jpeg"/);
+  assert.match(openerProductBlock, /src: "\/products\/wood-opener\.jpeg"/);
+  assert.doesNotMatch(openerProductBlock, /wood-opener-pen-set\.jpeg/);
   assert.match(page, /productId: "kugelschreiber"/);
   assert.match(page, /CART_STORAGE_KEY = "saafi-gravur-cart"/);
   assert.match(page, /LEGACY_CART_STORAGE_KEY = "feine-gravur-cart"/);

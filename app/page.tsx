@@ -655,7 +655,7 @@ const introPhotos = [
   },
   {
     productId: "flaschenoeffner",
-    src: "/products/wood-opener-pen-set.jpeg",
+    src: "/products/wood-opener.jpeg",
   },
   {
     productId: "kugelschreiber",
@@ -1193,17 +1193,6 @@ const products = [
           cs: "Dřevěný otvírák s gravírovaným jménem",
           fr: "Décapsuleur en bois avec prénom gravé",
           it: "Apribottiglie in legno con nome inciso",
-        },
-      },
-      {
-        id: "set",
-        src: "/products/wood-opener-pen-set.jpeg",
-        alt: {
-          de: "Holz-Flaschenöffner und Holz-Kugelschreiber mit Gravur",
-          en: "Wooden bottle opener and wooden pen with engraving",
-          cs: "Dřevěný otvírák a dřevěná propiska s gravírováním",
-          fr: "Décapsuleur et stylo en bois avec gravure",
-          it: "Apribottiglie e penna in legno con incisione",
         },
       },
     ],
