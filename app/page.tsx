@@ -1300,17 +1300,6 @@ const products = [
           it: "Penna a sfera in legno con nome inciso",
         },
       },
-      {
-        id: "set",
-        src: "/products/wood-opener-pen-set.jpeg",
-        alt: {
-          de: "Set aus Holz-Kugelschreiber und Flaschenöffner",
-          en: "Set with wooden pen and bottle opener",
-          cs: "Sada dřevěné propisky a otvíráku",
-          fr: "Ensemble stylo en bois et décapsuleur",
-          it: "Set con penna in legno e apribottiglie",
-        },
-      },
     ],
   },
 ];

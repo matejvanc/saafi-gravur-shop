@@ -108,9 +108,12 @@ test("starter preview files and dependencies are removed", async () => {
 
   const openerProductStart = page.indexOf('id: "flaschenoeffner"');
   const penProductStart = page.indexOf('id: "kugelschreiber"');
+  const pageTypesStart = page.indexOf('type PageView');
   assert.notEqual(openerProductStart, -1);
   assert.notEqual(penProductStart, -1);
+  assert.notEqual(pageTypesStart, -1);
   const openerProductBlock = page.slice(openerProductStart, penProductStart);
+  const penProductBlock = page.slice(penProductStart, pageTypesStart);
 
   assert.match(page, /const TEXT_LIMIT = 12;/);
   assert.match(page, /type LanguageCode = "de" \| "en" \| "cs" \| "fr" \| "it";/);
@@ -138,6 +141,10 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(openerProductBlock, /src: "\/products\/wood-opener\.jpeg"/);
   assert.doesNotMatch(openerProductBlock, /wood-opener-pen-set\.jpeg/);
   assert.match(page, /productId: "kugelschreiber"/);
+  assert.match(page, /productId: "kugelschreiber",\s+src: "\/products\/wood-pen\.jpeg"/);
+  assert.match(penProductBlock, /src: "\/products\/wood-pen\.jpeg"/);
+  assert.doesNotMatch(penProductBlock, /wood-opener-pen-set\.jpeg/);
+  assert.doesNotMatch(page, /wood-opener-pen-set\.jpeg/);
   assert.match(page, /CART_STORAGE_KEY = "saafi-gravur-cart"/);
   assert.match(page, /LEGACY_CART_STORAGE_KEY = "feine-gravur-cart"/);
   assert.match(page, /className={`shop-shell view-\$\{currentView\}`}/);
@@ -168,6 +175,10 @@ test("starter preview files and dependencies are removed", async () => {
   assert.doesNotMatch(styles, /shop-footer div/);
   assert.match(styles, /\.view-cart \.cart-page-grid/);
   assert.match(styles, /\.view-cart \.checkout-panel/);
+  assert.match(styles, /\.product-photo-frame img[\s\S]*object-fit: contain/);
+  assert.match(styles, /\.catalog-main-photo img[\s\S]*object-fit: contain/);
+  assert.match(styles, /\.catalog-detail-photos img[\s\S]*object-fit: contain/);
+  assert.match(styles, /\.product-card img[\s\S]*object-fit: contain/);
   assert.match(styles, /grid-template-columns: minmax\(220px, 1fr\) minmax\(450px, 540px\) minmax\(330px, 1fr\);/);
   assert.match(styles, /grid-template-columns: repeat\(4, minmax\(0, 1fr\)\);/);
   assert.match(page, /maxLength={TEXT_LIMIT}/);
