@@ -6,7 +6,7 @@ wooden pens.
 
 ## Features
 
-- Product detail pages with configurable text, colour/finish and logo motif
+- Product detail pages with configurable text, colour/finish and logo design
 - Separate product catalog page at `/produkty`
 - Cart page with persistent cart summary
 - Language switcher for German, English, Czech, French and Italian

@@ -171,7 +171,7 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /terms: "Podmínky"/);
   assert.match(page, /terms: "CGV"/);
   assert.match(page, /terms: "Condizioni"/);
-  assert.match(page, /logoLabel: "Logo motif"/);
+  assert.match(page, /logoLabel: "Logo design"/);
   assert.doesNotMatch(page, /viewProduct|card-action|footerSubtitle|Produkt ansehen/);
   assert.doesNotMatch(page, /Demo-Shop|Demo shop for personalised engraved gifts|Boutique démo|Demo obchod/);
   assert.doesNotMatch(styles, /shop-footer div/);

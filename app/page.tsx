@@ -136,7 +136,7 @@ const ui = {
     taxNote: "incl. VAT, plus shipping",
     customTextLabel: "Name or short text",
     customTextPlaceholder: "e.g. Emilia",
-    logoLabel: "Logo motif",
+    logoLabel: "Logo design",
     previewLabel: "Engraving preview",
     previewFallback: "Name",
     quantity: "Quantity",
@@ -152,7 +152,7 @@ const ui = {
     selectProduct: "Select",
     service: [
       ["Short personalisation", "Up to 12 characters for clean engraving areas."],
-      ["Selected motifs", "Combine each gift with a logo motif from the range."],
+      ["Selected designs", "Combine each gift with a logo design from the range."],
       ["Several product lines", "Christmas, reading, keychains and wooden stationery."],
     ],
     assortmentKicker: "Products",
@@ -162,7 +162,7 @@ const ui = {
     detailCards: [
       [
         "Personalisation",
-        "Every product uses the same order flow: enter text, choose a motif, select a finish and add it to the cart.",
+        "Every product uses the same order flow: enter text, choose a design, select a finish and add it to the cart.",
       ],
       [
         "Product data",
@@ -484,7 +484,7 @@ const homeCopy = {
       "Personalised glass and wooden keepsakes that are easy to order and still feel truly personal.",
     primaryCta: "Start configuring",
     secondaryCta: "View products",
-    highlights: ["Custom text", "Choose a motif", "Packed with care"],
+    highlights: ["Custom text", "Choose a design", "Packed with care"],
     galleryLabel: "Product glimpses",
   },
   cs: {
@@ -724,8 +724,8 @@ const products = [
         material: "Glass or wood",
         size: "approx. 8 cm",
         lead:
-          "Personalised Christmas baubles with a name, short text and chosen motif. Perfect as a small gift or for your own tree.",
-        personalization: "Name, year, heart, stars or custom motif",
+          "Personalised Christmas baubles with a name, short text and chosen design. Perfect as a small gift or for your own tree.",
+        personalization: "Name, year, heart, stars or custom design",
         finishLabel: "Colour / shape",
       },
       cs: {
@@ -881,8 +881,8 @@ const products = [
         material: "Birch plywood",
         size: "approx. 15 x 4 cm",
         lead:
-          "Light wooden bookmark with engraving and coloured tassel. Name and motif are placed to suit the shape.",
-        personalization: "Name, short quote or reading motif",
+          "Light wooden bookmark with engraving and coloured tassel. Name and design are placed to suit the shape.",
+        personalization: "Name, short quote or reading design",
         finishLabel: "Tassel",
       },
       cs: {
@@ -996,16 +996,16 @@ const products = [
       },
       en: {
         category: "Keys",
-        badge: "Motif series",
+        badge: "Design series",
         name: "Wooden Keychain",
         shortName: "Keychain",
         delivery: "3-6 working days",
         material: "Round wooden disc",
         size: "approx. 5 cm",
         lead:
-          "Round wooden keychain with fine motif engraving. Add a short name on the back or keep it as a clean motif piece.",
+          "Round wooden keychain with fine design engraving. Add a short name on the back or keep it as a clean design piece.",
         personalization: "Name, initial or symbol",
-        finishLabel: "Motif style",
+        finishLabel: "Design style",
       },
       cs: {
         category: "Klíče",
@@ -1073,7 +1073,7 @@ const products = [
         src: "/products/wood-pendants-zodiac.jpeg",
         alt: {
           de: "Mehrere runde Holz-Anhänger mit gravierten Motiven",
-          en: "Several round wooden keychains with engraved motifs",
+          en: "Several round wooden keychains with engraved designs",
           cs: "Více kulatých dřevěných přívěšků s gravírovanými motivy",
           fr: "Plusieurs porte-clés ronds en bois avec motifs gravés",
           it: "Diversi portachiavi rotondi in legno con motivi incisi",
