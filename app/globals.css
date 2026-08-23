@@ -397,6 +397,10 @@ main {
   color: white;
 }
 
+.cart-toolbar {
+  margin-bottom: 0.75rem;
+}
+
 .gallery-column,
 .purchase-panel,
 .cart-summary,
@@ -1364,6 +1368,23 @@ a:focus-visible {
   .remove-button {
     grid-column: 2;
     justify-self: start;
+  }
+
+  .view-cart .cart-toolbar,
+  .view-cart .cart-page,
+  .view-cart .products-section {
+    max-width: none;
+    width: 100%;
+  }
+
+  .view-cart .cart-page-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .view-cart .checkout-panel {
+    grid-column: auto;
+    position: static;
+    width: 100%;
   }
 }
 

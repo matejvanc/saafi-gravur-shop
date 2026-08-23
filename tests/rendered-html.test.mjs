@@ -32,7 +32,8 @@ test("server-renders the multilingual personalized shop", async () => {
 
   const html = await response.text();
   assert.match(html, /<html[^>]*lang=["']de["']/i);
-  assert.match(html, /Feine Gravur/);
+  assert.match(html, /Saafi Gravur/);
+  assert.doesNotMatch(html, /Feine Gravur/);
   assert.match(html, /Geschenke mit Gravur/);
   assert.match(html, /christmas-baubles-main\.jpeg/);
   assert.match(html, /Gravierte Weihnachtskugeln/);
@@ -61,7 +62,8 @@ test("fallback routes serve product and cart paths for client routing", async ()
   const productResponse = await render("/produkt/weihnachtskugeln");
   assert.equal(productResponse.status, 200);
   const productHtml = await productResponse.text();
-  assert.match(productHtml, /Feine Gravur/);
+  assert.match(productHtml, /Saafi Gravur/);
+  assert.doesNotMatch(productHtml, /Feine Gravur/);
   assert.match(productHtml, /Gravierte Weihnachtskugeln/);
   assert.match(productHtml, /Logo-Motiv/);
   assert.match(productHtml, /Text bis[\s\S]*12[\s\S]*Zeichen/);
@@ -82,6 +84,8 @@ test("fallback routes serve product and cart paths for client routing", async ()
   const cartHtml = await cartResponse.text();
   assert.match(cartHtml, /Warenkorb/);
   assert.match(cartHtml, /Deine Auswahl/);
+  assert.match(cartHtml, /view-cart/);
+  assert.match(cartHtml, /cart-toolbar/);
   assert.match(cartHtml, /Checkout/);
   assert.doesNotMatch(cartHtml, /Allgemeine Geschäftsbedingungen/);
 
@@ -125,7 +129,10 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /navigateTerms/);
   assert.match(page, /href="\/agb"/);
   assert.match(page, /productId: "kugelschreiber"/);
-  assert.match(page, /feine-gravur-cart/);
+  assert.match(page, /CART_STORAGE_KEY = "saafi-gravur-cart"/);
+  assert.match(page, /LEGACY_CART_STORAGE_KEY = "feine-gravur-cart"/);
+  assert.match(page, /className={`shop-shell view-\$\{currentView\}`}/);
+  assert.match(page, /cart-toolbar/);
   assert.match(page, /showCartChoice/);
   assert.match(page, /cart-choice/);
   assert.match(page, /removeCartItem/);
@@ -150,13 +157,16 @@ test("starter preview files and dependencies are removed", async () => {
   assert.doesNotMatch(page, /viewProduct|card-action|footerSubtitle|Produkt ansehen/);
   assert.doesNotMatch(page, /Demo-Shop|Demo shop for personalised engraved gifts|Boutique démo|Demo obchod/);
   assert.doesNotMatch(styles, /shop-footer div/);
+  assert.match(styles, /\.view-cart \.cart-page-grid/);
+  assert.match(styles, /\.view-cart \.checkout-panel/);
   assert.match(styles, /grid-template-columns: minmax\(220px, 1fr\) minmax\(450px, 540px\) minmax\(330px, 1fr\);/);
   assert.match(styles, /grid-template-columns: repeat\(4, minmax\(0, 1fr\)\);/);
   assert.match(page, /maxLength={TEXT_LIMIT}/);
   assert.doesNotMatch(page, /kosik#agb|sortiment-title|id="sortiment"|Selected motivs|Choose a motiv|chosen motiv|custom motiv|reading motiv|Motiv series|Motiv style|motiv engraving|engraved motivs/);
   assert.match(routeFallback, /CatchAllPage/);
   assert.match(routeFallback, /initialPath/);
-  assert.match(layout, /Feine Gravur/);
+  assert.match(layout, /Saafi Gravur/);
+  assert.match(packageJson, /"name": "saafi-gravur-shop"/);
   assert.doesNotMatch(page, /_sites-preview|SkeletonPreview|codex-preview/);
   assert.doesNotMatch(layout, /Starter Project|codex-preview/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);

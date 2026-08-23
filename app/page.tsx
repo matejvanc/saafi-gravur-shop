@@ -9,6 +9,9 @@ import {
 } from "react";
 
 const TEXT_LIMIT = 12;
+const BRAND_NAME = "Saafi Gravur";
+const CART_STORAGE_KEY = "saafi-gravur-cart";
+const LEGACY_CART_STORAGE_KEY = "feine-gravur-cart";
 
 type LanguageCode = "de" | "en" | "cs" | "fr" | "it";
 
@@ -30,7 +33,7 @@ const localeByLanguage: Record<LanguageCode, string> = {
 
 const ui = {
   de: {
-    pageTitle: "Feine Gravur | Personalisierte Geschenke",
+    pageTitle: `${BRAND_NAME} | Personalisierte Geschenke`,
     notice:
       "Personalisierte Gravurgeschenke - deutsche Shopoberfläche, Produkttexte und Zahlarten werden im nächsten Schritt finalisiert.",
     brandSubtitle: "Personalisierte Geschenke",
@@ -89,7 +92,7 @@ const ui = {
     terms: [
       [
         "1. Geltungsbereich",
-        "Diese Bedingungen gelten für Bestellungen im Online-Shop Feine Gravur. Abweichende Regelungen gelten nur, wenn sie schriftlich bestätigt wurden.",
+        `Diese Bedingungen gelten für Bestellungen im Online-Shop ${BRAND_NAME}. Abweichende Regelungen gelten nur, wenn sie schriftlich bestätigt wurden.`,
       ],
       [
         "2. Bestellung",
@@ -116,7 +119,7 @@ const ui = {
       "Mustertext für den Prototyp. Firmenangaben, Widerrufsbelehrung, Datenschutz, Versand und Zahlungsarten sollten vor Veröffentlichung rechtlich geprüft und ergänzt werden.",
   },
   en: {
-    pageTitle: "Feine Gravur | Personalised Gifts",
+    pageTitle: `${BRAND_NAME} | Personalised Gifts`,
     notice:
       "Personalised engraved gifts - product copy, payment methods and final shop details will be completed in the next step.",
     brandSubtitle: "Personalised gifts",
@@ -175,7 +178,7 @@ const ui = {
     terms: [
       [
         "1. Scope",
-        "These terms apply to orders placed in the Feine Gravur online shop. Different arrangements apply only when confirmed in writing.",
+        `These terms apply to orders placed in the ${BRAND_NAME} online shop. Different arrangements apply only when confirmed in writing.`,
       ],
       [
         "2. Orders",
@@ -202,7 +205,7 @@ const ui = {
       "Sample text for the prototype. Business details, withdrawal policy, privacy, shipping and payment methods should be legally checked and completed before publication.",
   },
   cs: {
-    pageTitle: "Feine Gravur | Personalizované dárky",
+    pageTitle: `${BRAND_NAME} | Personalizované dárky`,
     notice:
       "Personalizované gravírované dárky - produktové texty, platební metody a finální údaje obchodu doplníme v dalším kroku.",
     brandSubtitle: "Personalizované dárky",
@@ -261,7 +264,7 @@ const ui = {
     terms: [
       [
         "1. Rozsah platnosti",
-        "Tyto podmínky platí pro objednávky v online obchodě Feine Gravur. Odlišná ujednání platí pouze tehdy, pokud byla písemně potvrzena.",
+        `Tyto podmínky platí pro objednávky v online obchodě ${BRAND_NAME}. Odlišná ujednání platí pouze tehdy, pokud byla písemně potvrzena.`,
       ],
       [
         "2. Objednávka",
@@ -288,7 +291,7 @@ const ui = {
       "Vzorový text pro prototyp. Údaje firmy, odstoupení od smlouvy, ochranu osobních údajů, dopravu a platby je potřeba před zveřejněním právně zkontrolovat a doplnit.",
   },
   fr: {
-    pageTitle: "Feine Gravur | Cadeaux personnalisés",
+    pageTitle: `${BRAND_NAME} | Cadeaux personnalisés`,
     notice:
       "Cadeaux gravés personnalisés - les textes produits, les moyens de paiement et les informations finales de la boutique seront complétés ensuite.",
     brandSubtitle: "Cadeaux personnalisés",
@@ -347,7 +350,7 @@ const ui = {
     terms: [
       [
         "1. Champ d'application",
-        "Ces conditions s'appliquent aux commandes passées dans la boutique en ligne Feine Gravur. Les dispositions différentes ne s'appliquent que si elles sont confirmées par écrit.",
+        `Ces conditions s'appliquent aux commandes passées dans la boutique en ligne ${BRAND_NAME}. Les dispositions différentes ne s'appliquent que si elles sont confirmées par écrit.`,
       ],
       [
         "2. Commande",
@@ -374,7 +377,7 @@ const ui = {
       "Texte exemple pour le prototype. Les informations de l'entreprise, le droit de rétractation, la confidentialité, la livraison et les moyens de paiement doivent être vérifiés juridiquement et complétés avant publication.",
   },
   it: {
-    pageTitle: "Feine Gravur | Regali personalizzati",
+    pageTitle: `${BRAND_NAME} | Regali personalizzati`,
     notice:
       "Regali incisi personalizzati - testi prodotto, metodi di pagamento e dettagli finali del negozio saranno completati nel prossimo passaggio.",
     brandSubtitle: "Regali personalizzati",
@@ -433,7 +436,7 @@ const ui = {
     terms: [
       [
         "1. Ambito",
-        "Queste condizioni si applicano agli ordini effettuati nel negozio online Feine Gravur. Accordi diversi valgono solo se confermati per iscritto.",
+        `Queste condizioni si applicano agli ordini effettuati nel negozio online ${BRAND_NAME}. Accordi diversi valgono solo se confermati per iscritto.`,
       ],
       [
         "2. Ordine",
@@ -465,7 +468,7 @@ const homeCopy = {
   de: {
     navLabel: "Start",
     eyebrow: "Geschenke mit Gravur",
-    title: "Feine Gravur",
+    title: BRAND_NAME,
     lead:
       "Personalisierte Kleinigkeiten aus Glas und Holz, die schnell bestellt sind und trotzdem sehr persönlich wirken.",
     primaryCta: "Jetzt konfigurieren",
@@ -476,7 +479,7 @@ const homeCopy = {
   en: {
     navLabel: "Home",
     eyebrow: "Engraved gifts",
-    title: "Feine Gravur",
+    title: BRAND_NAME,
     lead:
       "Personalised glass and wooden keepsakes that are easy to order and still feel truly personal.",
     primaryCta: "Start configuring",
@@ -487,7 +490,7 @@ const homeCopy = {
   cs: {
     navLabel: "Úvod",
     eyebrow: "Dárky s gravírováním",
-    title: "Feine Gravur",
+    title: BRAND_NAME,
     lead:
       "Personalizované drobnosti ze skla a dřeva, které se objednávají jednoduše a přitom působí opravdu osobně.",
     primaryCta: "Začít konfigurovat",
@@ -498,7 +501,7 @@ const homeCopy = {
   fr: {
     navLabel: "Accueil",
     eyebrow: "Cadeaux gravés",
-    title: "Feine Gravur",
+    title: BRAND_NAME,
     lead:
       "De petites attentions personnalisées en verre et en bois, faciles à commander et vraiment personnelles.",
     primaryCta: "Configurer",
@@ -509,7 +512,7 @@ const homeCopy = {
   it: {
     navLabel: "Inizio",
     eyebrow: "Regali incisi",
-    title: "Feine Gravur",
+    title: BRAND_NAME,
     lead:
       "Piccoli ricordi personalizzati in vetro e legno, semplici da ordinare e davvero personali.",
     primaryCta: "Configura ora",
@@ -1448,13 +1451,13 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     document.documentElement.lang = language;
     document.title =
       currentView === "product"
-        ? `${selectedProductCopy.name} | Feine Gravur`
+        ? `${selectedProductCopy.name} | ${BRAND_NAME}`
         : currentView === "products"
-          ? `${t.assortmentTitle} | Feine Gravur`
+          ? `${t.assortmentTitle} | ${BRAND_NAME}`
         : currentView === "cart"
-          ? `${t.cartTitle} | Feine Gravur`
+          ? `${t.cartTitle} | ${BRAND_NAME}`
           : currentView === "terms"
-            ? `${t.termsTitle} | Feine Gravur`
+            ? `${t.termsTitle} | ${BRAND_NAME}`
             : t.pageTitle;
   }, [
     currentView,
@@ -1468,7 +1471,9 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
 
   useEffect(() => {
     try {
-      const storedCart = window.localStorage.getItem("feine-gravur-cart");
+      const storedCart =
+        window.localStorage.getItem(CART_STORAGE_KEY) ??
+        window.localStorage.getItem(LEGACY_CART_STORAGE_KEY);
       if (storedCart) {
         const parsedCart = JSON.parse(storedCart) as CartItem[];
         if (Array.isArray(parsedCart)) {
@@ -1476,7 +1481,8 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
         }
       }
     } catch {
-      window.localStorage.removeItem("feine-gravur-cart");
+      window.localStorage.removeItem(CART_STORAGE_KEY);
+      window.localStorage.removeItem(LEGACY_CART_STORAGE_KEY);
     } finally {
       setCartHydrated(true);
     }
@@ -1487,7 +1493,8 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
       return;
     }
 
-    window.localStorage.setItem("feine-gravur-cart", JSON.stringify(cartItems));
+    window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+    window.localStorage.removeItem(LEGACY_CART_STORAGE_KEY);
   }, [cartHydrated, cartItems]);
 
   useEffect(() => {
@@ -1669,22 +1676,22 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   }
 
   return (
-    <div className="shop-shell">
+    <div className={`shop-shell view-${currentView}`}>
       <div className="top-notice">{t.notice}</div>
 
       <header className="shop-header">
         <a
           className="brand"
           href="/"
-          aria-label="Feine Gravur"
+          aria-label={BRAND_NAME}
           onClick={(event) => {
             event.preventDefault();
             navigateHome();
           }}
         >
-          <span className="brand-mark">FG</span>
+          <span className="brand-mark">SG</span>
           <span>
-            <strong>Feine Gravur</strong>
+            <strong>{BRAND_NAME}</strong>
             <small>{t.brandSubtitle}</small>
           </span>
         </a>
@@ -2118,6 +2125,21 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
 
         {currentView === "cart" && (
           <>
+            <div className="page-toolbar cart-toolbar">
+              <a
+                href="/"
+                onClick={(event) => {
+                  event.preventDefault();
+                  navigateHome();
+                }}
+              >
+                {flow.backHome}
+              </a>
+              <button type="button" onClick={() => navigateProducts()}>
+                {t.nav.assortment}
+              </button>
+            </div>
+
             <section className="cart-page" id="warenkorb" aria-labelledby="cart-page-title">
               <div className="section-heading cart-page-heading">
                 <div>

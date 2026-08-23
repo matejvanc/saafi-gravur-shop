@@ -18,10 +18,11 @@ async function getSiteOrigin() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const origin = await getSiteOrigin();
+  const brandName = "Saafi Gravur";
 
   return {
     metadataBase: new URL(origin),
-    title: "Feine Gravur | Personalisierte Geschenke",
+    title: `${brandName} | Personalisierte Geschenke`,
     description:
       "Mehrsprachiger E-Shop-Prototyp für Weihnachtskugeln, Holz-Lesezeichen, Anhänger, Flaschenöffner und Kugelschreiber mit Gravur.",
     icons: {
@@ -29,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
       shortcut: "/favicon.svg",
     },
     openGraph: {
-      title: "Feine Gravur | Personalisierte Geschenke",
+      title: `${brandName} | Personalisierte Geschenke`,
       description:
         "Konfigurierbare Gravurgeschenke mit eigener Namensgravur, Logo-Motiv und Sprachumschaltung.",
       images: [
@@ -37,13 +38,13 @@ export async function generateMetadata(): Promise<Metadata> {
           url: `${origin}/og.png`,
           width: 1200,
           height: 630,
-          alt: "Feine Gravur Produktkonfigurator",
+          alt: `${brandName} Produktkonfigurator`,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: "Feine Gravur | Personalisierte Geschenke",
+      title: `${brandName} | Personalisierte Geschenke`,
       description:
         "Konfigurierbare Gravurgeschenke mit eigener Namensgravur, Logo-Motiv und Sprachumschaltung.",
       images: [`${origin}/og.png`],
