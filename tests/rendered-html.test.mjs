@@ -37,6 +37,7 @@ test("server-renders the multilingual personalized shop", async () => {
   assert.match(html, /Geschenke mit Gravur/);
   assert.match(html, /christmas-baubles-main\.jpeg/);
   assert.match(html, /Gravierte Weihnachtskugeln/);
+  assert.match(html, /Beidseitig gravierte Weihnachtskugel/);
   assert.match(html, /Holz-Lesezeichen/);
   assert.match(html, /Holz-Anhänger/);
   assert.match(html, /Holz-Flaschenöffner/);
@@ -67,9 +68,25 @@ test("fallback routes serve product and cart paths for client routing", async ()
   assert.match(productHtml, /Gravierte Weihnachtskugeln/);
   assert.match(productHtml, /Logo-Motiv/);
   assert.match(productHtml, /Text bis[\s\S]*12[\s\S]*Zeichen/);
+  assert.match(productHtml, /CHF 7\.00/);
+  assert.match(productHtml, /Geschenkverpackung/);
+  assert.match(productHtml, /\+ CHF 1\.00 pro Stück/);
+  assert.doesNotMatch(productHtml, /Holz natur/);
   assert.match(productHtml, /In den Warenkorb/);
   assert.match(productHtml, /Weitere Produkte/);
   assert.doesNotMatch(productHtml, /Produkt ansehen/);
+
+  const doubleProductResponse = await render("/produkt/weihnachtskugeln-beidseitig");
+  assert.equal(doubleProductResponse.status, 200);
+  const doubleProductHtml = await doubleProductResponse.text();
+  assert.match(doubleProductHtml, /Beidseitig gravierte Weihnachtskugel/);
+  assert.match(doubleProductHtml, /Rückseiten-Gravur/);
+  assert.match(doubleProductHtml, /Merry Christmas 2026/);
+  assert.match(doubleProductHtml, /Frohe Weihnachten/);
+  assert.match(doubleProductHtml, /Veselé Vánoce/);
+  assert.match(doubleProductHtml, /CHF 9\.00/);
+  assert.match(doubleProductHtml, /Geschenkverpackung/);
+  assert.doesNotMatch(doubleProductHtml, /Holz natur/);
 
   const productsResponse = await render("/produkty");
   assert.equal(productsResponse.status, 200);
@@ -77,6 +94,7 @@ test("fallback routes serve product and cart paths for client routing", async ()
   assert.match(productsHtml, /Personalisierbare Produkte/);
   assert.match(productsHtml, /catalog-product-card/);
   assert.match(productsHtml, /Gravierte Weihnachtskugeln/);
+  assert.match(productsHtml, /Beidseitig gravierte Weihnachtskugel/);
   assert.match(productsHtml, /Holz-Kugelschreiber/);
 
   const cartResponse = await render("/kosik");
@@ -87,13 +105,18 @@ test("fallback routes serve product and cart paths for client routing", async ()
   assert.match(cartHtml, /view-cart/);
   assert.match(cartHtml, /cart-toolbar/);
   assert.match(cartHtml, /Checkout/);
-  assert.doesNotMatch(cartHtml, /Allgemeine Geschäftsbedingungen/);
+  assert.match(cartHtml, /Ich stimme der Verarbeitung meiner Angaben/);
+  assert.match(cartHtml, /Ich akzeptiere die Allgemeinen Geschäftsbedingungen/);
+  assert.match(cartHtml, /Ich habe die Cookie-Hinweise gelesen/);
+  assert.doesNotMatch(cartHtml, /Geltungsbereich/);
 
   const termsResponse = await render("/agb");
   assert.equal(termsResponse.status, 200);
   const termsHtml = await termsResponse.text();
   assert.match(termsHtml, /Allgemeine Geschäftsbedingungen/);
   assert.match(termsHtml, /Geltungsbereich/);
+  assert.match(termsHtml, /Zustimmung zur Datenverarbeitung/);
+  assert.match(termsHtml, /Cookie-Hinweise/);
   assert.match(termsHtml, /Zur Startseite/);
 });
 
@@ -129,7 +152,7 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /className={`product-card/);
   assert.match(page, /productHref/);
   assert.match(page, /parseRoute/);
-  assert.match(page, /return `\$\{value\.toFixed\(2\)\} €`;/);
+  assert.match(page, /return `CHF \$\{value\.toFixed\(2\)\}`;/);
   assert.doesNotMatch(page, /style: "currency"/);
   assert.match(page, /type PageView = "home" \| "products" \| "product" \| "cart" \| "terms";/);
   assert.match(page, /navigateProducts/);
@@ -156,6 +179,16 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /removeCartItem/);
   assert.match(page, /cart-page/);
   assert.match(page, /Gravírované vánoční ozdoby/);
+  assert.match(page, /Oboustranně gravírovaná vánoční ozdoba/);
+  assert.match(page, /backEngravingOptions/);
+  assert.match(page, /Merry Christmas 2026/);
+  assert.match(page, /Frohe Weihnachten/);
+  assert.match(page, /Veselé Vánoce/);
+  assert.match(page, /supportsGiftWrap: true/);
+  assert.match(page, /GIFT_WRAP_PRICE = 1/);
+  assert.match(page, /dataConsentLabel/);
+  assert.match(page, /cookiesCards/);
+  assert.doesNotMatch(page, /Holz natur|Natural wood|Přírodní dřevo|Bois naturel|Legno naturale/);
   assert.match(page, /Engraved Christmas Baubles/);
   assert.match(page, /Boules de Noël gravées/);
   assert.match(page, /Palline di Natale incise/);
@@ -177,6 +210,9 @@ test("starter preview files and dependencies are removed", async () => {
   assert.doesNotMatch(styles, /shop-footer div/);
   assert.match(styles, /\.view-cart \.cart-page-grid/);
   assert.match(styles, /\.view-cart \.checkout-panel/);
+  assert.match(styles, /\.consent-list/);
+  assert.match(styles, /\.option-check/);
+  assert.match(styles, /\.legal-section/);
   assert.match(styles, /\.product-photo-frame img[\s\S]*object-fit: contain/);
   assert.match(styles, /\.catalog-main-photo img[\s\S]*object-fit: contain/);
   assert.match(styles, /\.catalog-detail-photos img[\s\S]*object-fit: contain/);

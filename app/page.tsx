@@ -9,6 +9,7 @@ import {
 } from "react";
 
 const TEXT_LIMIT = 12;
+const GIFT_WRAP_PRICE = 1;
 const BRAND_NAME = "Saafi Gravur";
 const CART_STORAGE_KEY = "saafi-gravur-cart";
 const LEGACY_CART_STORAGE_KEY = "feine-gravur-cart";
@@ -22,14 +23,6 @@ const languages: Array<{ code: LanguageCode; label: string; name: string }> = [
   { code: "fr", label: "FR", name: "Français" },
   { code: "it", label: "IT", name: "Italiano" },
 ];
-
-const localeByLanguage: Record<LanguageCode, string> = {
-  de: "de-DE",
-  en: "en-GB",
-  cs: "cs-CZ",
-  fr: "fr-FR",
-  it: "it-IT",
-};
 
 const ui = {
   de: {
@@ -51,6 +44,10 @@ const ui = {
     customTextLabel: "Name oder kurzer Text",
     customTextPlaceholder: "z. B. Emilia",
     logoLabel: "Logo-Motiv",
+    giftWrapLabel: "Geschenkverpackung",
+    giftWrapPriceNote: `+ ${formatPrice(GIFT_WRAP_PRICE)} pro Stück`,
+    giftWrapCartLabel: "Geschenkverpackung",
+    backEngravingLabel: "Rückseiten-Gravur",
     previewLabel: "Gravurvorschau",
     previewFallback: "Name",
     quantity: "Menge",
@@ -117,6 +114,44 @@ const ui = {
     ],
     termsNote:
       "Mustertext für den Prototyp. Firmenangaben, Widerrufsbelehrung, Datenschutz, Versand und Zahlungsarten sollten vor Veröffentlichung rechtlich geprüft und ergänzt werden.",
+    dataConsentLabel:
+      "Ich stimme der Verarbeitung meiner Angaben zur Bearbeitung der Bestellung zu.",
+    termsConsentLabel: "Ich akzeptiere die Allgemeinen Geschäftsbedingungen.",
+    cookiesConsentLabel: "Ich habe die Cookie-Hinweise gelesen.",
+    consentWarning:
+      "Bitte bestätige Datenschutz, AGB und Cookie-Hinweise, bevor du die Bestellung vorbereitest.",
+    privacyKicker: "Datenschutz",
+    privacyTitle: "Zustimmung zur Datenverarbeitung",
+    privacyCards: [
+      [
+        "Bestelldaten",
+        "Name, Kontaktangaben, Produktwahl und Gravurtexte werden ausschließlich zur Bearbeitung der Anfrage und Bestellung verwendet.",
+      ],
+      [
+        "Personalisierte Gravur",
+        "Übermittelte Texte werden für die Fertigung gespeichert und nur so lange aufbewahrt, wie es für Bestellung, Nachfragen und gesetzliche Pflichten nötig ist.",
+      ],
+      [
+        "Kontakt",
+        "Bei Fragen zur Speicherung oder Löschung personenbezogener Daten kann der Shop direkt kontaktiert werden.",
+      ],
+    ],
+    cookiesKicker: "Cookies",
+    cookiesTitle: "Cookie-Hinweise",
+    cookiesCards: [
+      [
+        "Notwendige Cookies",
+        "Der Warenkorb nutzt lokale Speicherung im Browser, damit die Produktauswahl während des Besuchs erhalten bleibt.",
+      ],
+      [
+        "Analyse",
+        "Analyse- oder Marketing-Cookies sind im Prototyp nicht aktiv. Falls sie später genutzt werden, muss eine separate Auswahl ergänzt werden.",
+      ],
+      [
+        "Kontrolle",
+        "Browserdaten und lokale Shopdaten können jederzeit über die Browsereinstellungen gelöscht werden.",
+      ],
+    ],
   },
   en: {
     pageTitle: `${BRAND_NAME} | Personalised Gifts`,
@@ -137,6 +172,10 @@ const ui = {
     customTextLabel: "Name or short text",
     customTextPlaceholder: "e.g. Emilia",
     logoLabel: "Logo design",
+    giftWrapLabel: "Gift wrapping",
+    giftWrapPriceNote: `+ ${formatPrice(GIFT_WRAP_PRICE)} per piece`,
+    giftWrapCartLabel: "Gift wrapping",
+    backEngravingLabel: "Back engraving",
     previewLabel: "Engraving preview",
     previewFallback: "Name",
     quantity: "Quantity",
@@ -203,6 +242,44 @@ const ui = {
     ],
     termsNote:
       "Sample text for the prototype. Business details, withdrawal policy, privacy, shipping and payment methods should be legally checked and completed before publication.",
+    dataConsentLabel:
+      "I agree that my details may be processed to handle the order.",
+    termsConsentLabel: "I accept the general terms and conditions.",
+    cookiesConsentLabel: "I have read the cookie notice.",
+    consentWarning:
+      "Please confirm data processing, terms and cookie notice before preparing the order.",
+    privacyKicker: "Privacy",
+    privacyTitle: "Consent to Data Processing",
+    privacyCards: [
+      [
+        "Order data",
+        "Name, contact details, product choices and engraving text are used only to process the request and order.",
+      ],
+      [
+        "Personalised engraving",
+        "Submitted text is stored for production and kept only as long as needed for the order, questions and legal duties.",
+      ],
+      [
+        "Contact",
+        "For questions about storing or deleting personal data, customers can contact the shop directly.",
+      ],
+    ],
+    cookiesKicker: "Cookies",
+    cookiesTitle: "Cookie Notice",
+    cookiesCards: [
+      [
+        "Necessary cookies",
+        "The cart uses local browser storage so the product selection remains available during the visit.",
+      ],
+      [
+        "Analytics",
+        "Analytics or marketing cookies are not active in this prototype. If they are added later, a separate choice should be included.",
+      ],
+      [
+        "Control",
+        "Browser data and local shop data can be deleted at any time through browser settings.",
+      ],
+    ],
   },
   cs: {
     pageTitle: `${BRAND_NAME} | Personalizované dárky`,
@@ -223,6 +300,10 @@ const ui = {
     customTextLabel: "Jméno nebo krátký text",
     customTextPlaceholder: "např. Emilia",
     logoLabel: "Logo motiv",
+    giftWrapLabel: "Dárkové balení",
+    giftWrapPriceNote: `+ ${formatPrice(GIFT_WRAP_PRICE)} za kus`,
+    giftWrapCartLabel: "Dárkové balení",
+    backEngravingLabel: "Gravírování zadní strany",
     previewLabel: "Náhled gravírování",
     previewFallback: "Jméno",
     quantity: "Množství",
@@ -289,6 +370,44 @@ const ui = {
     ],
     termsNote:
       "Vzorový text pro prototyp. Údaje firmy, odstoupení od smlouvy, ochranu osobních údajů, dopravu a platby je potřeba před zveřejněním právně zkontrolovat a doplnit.",
+    dataConsentLabel:
+      "Souhlasím se zpracováním údajů pro vyřízení objednávky.",
+    termsConsentLabel: "Souhlasím s obchodními podmínkami.",
+    cookiesConsentLabel: "Beru na vědomí používání cookies.",
+    consentWarning:
+      "Před přípravou objednávky potvrď souhlas se zpracováním údajů, podmínky a cookies.",
+    privacyKicker: "Ochrana údajů",
+    privacyTitle: "Souhlas se zpracováním údajů",
+    privacyCards: [
+      [
+        "Objednávkové údaje",
+        "Jméno, kontaktní údaje, výběr produktu a texty pro gravírování se používají pouze pro vyřízení poptávky a objednávky.",
+      ],
+      [
+        "Personalizované gravírování",
+        "Odeslané texty se ukládají pro výrobu a jen po dobu potřebnou pro objednávku, dotazy a zákonné povinnosti.",
+      ],
+      [
+        "Kontakt",
+        "S dotazy ke zpracování nebo smazání osobních údajů lze obchod kontaktovat přímo.",
+      ],
+    ],
+    cookiesKicker: "Cookies",
+    cookiesTitle: "Informace o cookies",
+    cookiesCards: [
+      [
+        "Nezbytné cookies",
+        "Košík používá lokální uložení v prohlížeči, aby výběr produktů zůstal během návštěvy zachovaný.",
+      ],
+      [
+        "Analytika",
+        "Analytické ani marketingové cookies nejsou v prototypu aktivní. Pokud se později doplní, bude potřeba samostatná volba.",
+      ],
+      [
+        "Kontrola",
+        "Data prohlížeče i lokální data obchodu lze kdykoliv smazat v nastavení prohlížeče.",
+      ],
+    ],
   },
   fr: {
     pageTitle: `${BRAND_NAME} | Cadeaux personnalisés`,
@@ -309,6 +428,10 @@ const ui = {
     customTextLabel: "Nom ou texte court",
     customTextPlaceholder: "p. ex. Emilia",
     logoLabel: "Motif logo",
+    giftWrapLabel: "Emballage cadeau",
+    giftWrapPriceNote: `+ ${formatPrice(GIFT_WRAP_PRICE)} par pièce`,
+    giftWrapCartLabel: "Emballage cadeau",
+    backEngravingLabel: "Gravure verso",
     previewLabel: "Aperçu de gravure",
     previewFallback: "Nom",
     quantity: "Quantité",
@@ -375,6 +498,44 @@ const ui = {
     ],
     termsNote:
       "Texte exemple pour le prototype. Les informations de l'entreprise, le droit de rétractation, la confidentialité, la livraison et les moyens de paiement doivent être vérifiés juridiquement et complétés avant publication.",
+    dataConsentLabel:
+      "J'accepte le traitement de mes données pour la gestion de la commande.",
+    termsConsentLabel: "J'accepte les conditions générales de vente.",
+    cookiesConsentLabel: "J'ai lu les informations sur les cookies.",
+    consentWarning:
+      "Veuillez confirmer le traitement des données, les conditions et les cookies avant de préparer la commande.",
+    privacyKicker: "Confidentialité",
+    privacyTitle: "Consentement au traitement des données",
+    privacyCards: [
+      [
+        "Données de commande",
+        "Le nom, les coordonnées, le choix du produit et les textes de gravure sont utilisés uniquement pour traiter la demande et la commande.",
+      ],
+      [
+        "Gravure personnalisée",
+        "Les textes transmis sont conservés pour la fabrication uniquement le temps nécessaire à la commande, aux questions et aux obligations légales.",
+      ],
+      [
+        "Contact",
+        "Pour toute question sur l'enregistrement ou la suppression des données personnelles, la boutique peut être contactée directement.",
+      ],
+    ],
+    cookiesKicker: "Cookies",
+    cookiesTitle: "Informations sur les cookies",
+    cookiesCards: [
+      [
+        "Cookies nécessaires",
+        "Le panier utilise le stockage local du navigateur afin de conserver la sélection pendant la visite.",
+      ],
+      [
+        "Analyse",
+        "Les cookies d'analyse ou de marketing ne sont pas actifs dans ce prototype. S'ils sont ajoutés plus tard, un choix séparé devra être prévu.",
+      ],
+      [
+        "Contrôle",
+        "Les données du navigateur et les données locales de la boutique peuvent être supprimées à tout moment dans les paramètres du navigateur.",
+      ],
+    ],
   },
   it: {
     pageTitle: `${BRAND_NAME} | Regali personalizzati`,
@@ -395,6 +556,10 @@ const ui = {
     customTextLabel: "Nome o testo breve",
     customTextPlaceholder: "es. Emilia",
     logoLabel: "Motivo logo",
+    giftWrapLabel: "Confezione regalo",
+    giftWrapPriceNote: `+ ${formatPrice(GIFT_WRAP_PRICE)} al pezzo`,
+    giftWrapCartLabel: "Confezione regalo",
+    backEngravingLabel: "Incisione retro",
     previewLabel: "Anteprima incisione",
     previewFallback: "Nome",
     quantity: "Quantità",
@@ -461,6 +626,44 @@ const ui = {
     ],
     termsNote:
       "Testo campione per il prototipo. Dati aziendali, diritto di recesso, privacy, spedizione e metodi di pagamento devono essere verificati legalmente e completati prima della pubblicazione.",
+    dataConsentLabel:
+      "Acconsento al trattamento dei miei dati per la gestione dell'ordine.",
+    termsConsentLabel: "Accetto le condizioni generali di vendita.",
+    cookiesConsentLabel: "Ho letto le informazioni sui cookie.",
+    consentWarning:
+      "Conferma trattamento dati, condizioni e cookie prima di preparare l'ordine.",
+    privacyKicker: "Privacy",
+    privacyTitle: "Consenso al trattamento dei dati",
+    privacyCards: [
+      [
+        "Dati ordine",
+        "Nome, contatti, scelta del prodotto e testi di incisione sono usati solo per gestire richiesta e ordine.",
+      ],
+      [
+        "Incisione personalizzata",
+        "I testi inviati sono salvati per la produzione e conservati solo per il tempo necessario a ordine, domande e obblighi legali.",
+      ],
+      [
+        "Contatto",
+        "Per domande su conservazione o cancellazione dei dati personali è possibile contattare direttamente il negozio.",
+      ],
+    ],
+    cookiesKicker: "Cookie",
+    cookiesTitle: "Informazioni sui cookie",
+    cookiesCards: [
+      [
+        "Cookie necessari",
+        "Il carrello usa l'archiviazione locale del browser per mantenere la selezione durante la visita.",
+      ],
+      [
+        "Analisi",
+        "Cookie analitici o marketing non sono attivi nel prototipo. Se aggiunti in seguito, servirà una scelta separata.",
+      ],
+      [
+        "Controllo",
+        "I dati del browser e i dati locali del negozio possono essere eliminati in qualsiasi momento dalle impostazioni del browser.",
+      ],
+    ],
   },
 };
 
@@ -646,6 +849,10 @@ const introPhotos = [
     src: "/products/christmas-baubles-main.jpeg",
   },
   {
+    productId: "weihnachtskugeln-beidseitig",
+    src: "/products/christmas-baubles-color-set.jpeg",
+  },
+  {
     productId: "lesezeichen",
     src: "/products/wood-bookmark-page.jpeg",
   },
@@ -696,11 +903,54 @@ const logoOptions = [
   },
 ];
 
-const products = [
+type ProductTranslation = {
+  category: string;
+  badge: string;
+  name: string;
+  shortName: string;
+  delivery: string;
+  material: string;
+  size: string;
+  lead: string;
+  personalization: string;
+  finishLabel: string;
+};
+
+type ProductOption = {
+  id: string;
+  hex: string;
+  edge: string;
+  label: Record<LanguageCode, string>;
+};
+
+type ProductPhoto = {
+  id: string;
+  src: string;
+  alt: Record<LanguageCode, string>;
+};
+
+type BackEngravingOption = {
+  id: string;
+  text: string;
+};
+
+type Product = {
+  id: string;
+  price: number;
+  previewClass: string;
+  supportsGiftWrap?: boolean;
+  translations: Record<LanguageCode, ProductTranslation>;
+  finishes: ProductOption[];
+  photos: ProductPhoto[];
+  backEngravingOptions?: BackEngravingOption[];
+};
+
+const products: Product[] = [
   {
     id: "weihnachtskugeln",
-    price: 7.9,
+    price: 7,
     previewClass: "circle",
+    supportsGiftWrap: true,
     translations: {
       de: {
         category: "Weihnachten",
@@ -805,18 +1055,6 @@ const products = [
           it: "Blu notte",
         },
       },
-      {
-        id: "holz",
-        hex: "#d9b982",
-        edge: "#8a6435",
-        label: {
-          de: "Holz natur",
-          en: "Natural wood",
-          cs: "Přírodní dřevo",
-          fr: "Bois naturel",
-          it: "Legno naturale",
-        },
-      },
     ],
     photos: [
       {
@@ -850,6 +1088,157 @@ const products = [
           cs: "Sada gravírovaných vánočních ozdob v několika barvách",
           fr: "Lot de boules de Noël gravées en plusieurs couleurs",
           it: "Set di palline di Natale incise in più colori",
+        },
+      },
+    ],
+  },
+  {
+    id: "weihnachtskugeln-beidseitig",
+    price: 9,
+    previewClass: "circle",
+    supportsGiftWrap: true,
+    translations: {
+      de: {
+        category: "Weihnachten",
+        badge: "Beidseitige Gravur",
+        name: "Beidseitig gravierte Weihnachtskugel",
+        shortName: "Kugel beidseitig",
+        delivery: "4-7 Werktage",
+        material: "Glas oder Holz",
+        size: "ca. 8 cm",
+        lead:
+          "Die Vorderseite bleibt wie bei den klassischen Weihnachtskugeln personalisierbar. Auf der Rückseite wählst du einen von drei festlichen Grüßen.",
+        personalization: "Vorderseite mit Name und Motiv, Rückseite mit Weihnachtsgruß",
+        finishLabel: "Farbe / Form",
+      },
+      en: {
+        category: "Christmas",
+        badge: "Double-sided engraving",
+        name: "Double-Sided Engraved Christmas Bauble",
+        shortName: "Double bauble",
+        delivery: "4-7 working days",
+        material: "Glass or wood",
+        size: "approx. 8 cm",
+        lead:
+          "The front stays customisable like the classic Christmas bauble. Choose one of three festive greetings for the back.",
+        personalization: "Front with name and design, back with Christmas greeting",
+        finishLabel: "Colour / shape",
+      },
+      cs: {
+        category: "Vánoce",
+        badge: "Oboustranné gravírování",
+        name: "Oboustranně gravírovaná vánoční ozdoba",
+        shortName: "Ozdoba oboustranná",
+        delivery: "4-7 pracovních dnů",
+        material: "Sklo nebo dřevo",
+        size: "cca 8 cm",
+        lead:
+          "Přední strana zůstává personalizovatelná stejně jako u klasické vánoční ozdoby. Na zadní stranu si vyberete jeden ze tří svátečních textů.",
+        personalization: "Přední strana se jménem a motivem, zadní strana s vánočním textem",
+        finishLabel: "Barva / tvar",
+      },
+      fr: {
+        category: "Noël",
+        badge: "Gravure double face",
+        name: "Boule de Noël gravée double face",
+        shortName: "Boule double face",
+        delivery: "4-7 jours ouvrés",
+        material: "Verre ou bois",
+        size: "env. 8 cm",
+        lead:
+          "Le recto reste personnalisable comme la boule de Noël classique. Choisissez l'un des trois messages festifs pour le verso.",
+        personalization: "Recto avec prénom et motif, verso avec message de Noël",
+        finishLabel: "Couleur / forme",
+      },
+      it: {
+        category: "Natale",
+        badge: "Incisione fronte-retro",
+        name: "Pallina di Natale incisa fronte-retro",
+        shortName: "Pallina fronte-retro",
+        delivery: "4-7 giorni lavorativi",
+        material: "Vetro o legno",
+        size: "ca. 8 cm",
+        lead:
+          "Il fronte resta personalizzabile come la pallina di Natale classica. Sul retro scegli uno dei tre auguri festivi.",
+        personalization: "Fronte con nome e motivo, retro con augurio di Natale",
+        finishLabel: "Colore / forma",
+      },
+    },
+    finishes: [
+      {
+        id: "rot",
+        hex: "#a8323b",
+        edge: "#681722",
+        label: {
+          de: "Rot glänzend",
+          en: "Glossy red",
+          cs: "Lesklá červená",
+          fr: "Rouge brillant",
+          it: "Rosso lucido",
+        },
+      },
+      {
+        id: "gold",
+        hex: "#d6b26f",
+        edge: "#8a642d",
+        label: {
+          de: "Gold matt",
+          en: "Matte gold",
+          cs: "Matná zlatá",
+          fr: "Or mat",
+          it: "Oro opaco",
+        },
+      },
+      {
+        id: "blau",
+        hex: "#243f6e",
+        edge: "#142642",
+        label: {
+          de: "Nachtblau",
+          en: "Midnight blue",
+          cs: "Noční modrá",
+          fr: "Bleu nuit",
+          it: "Blu notte",
+        },
+      },
+    ],
+    backEngravingOptions: [
+      { id: "merry-christmas-2026", text: "Merry Christmas 2026" },
+      { id: "frohe-weihnachten", text: "Frohe Weihnachten" },
+      { id: "vesele-vanoce", text: "Veselé Vánoce" },
+    ],
+    photos: [
+      {
+        id: "main",
+        src: "/products/christmas-baubles-main.jpeg",
+        alt: {
+          de: "Hauptgrafik für beidseitig gravierte Weihnachtskugeln",
+          en: "Main graphic for double-sided engraved Christmas baubles",
+          cs: "Hlavní grafika pro oboustranně gravírované vánoční ozdoby",
+          fr: "Visuel principal pour boules de Noël gravées double face",
+          it: "Grafica principale per palline di Natale incise fronte-retro",
+        },
+      },
+      {
+        id: "wrapped",
+        src: "/products/christmas-baubles-wrapped.jpeg",
+        alt: {
+          de: "Rote beidseitig personalisierte Weihnachtskugeln mit Schleife",
+          en: "Red double-sided personalised Christmas baubles with bows",
+          cs: "Červené oboustranně personalizované vánoční ozdoby s mašlí",
+          fr: "Boules de Noël rouges personnalisées double face avec ruban",
+          it: "Palline di Natale rosse personalizzate fronte-retro con fiocco",
+        },
+      },
+      {
+        id: "set",
+        src: "/products/christmas-baubles-color-set.jpeg",
+        alt: {
+          de: "Set beidseitig gravierter Weihnachtskugeln in mehreren Farben",
+          en: "Set of double-sided engraved Christmas baubles in several colours",
+          cs: "Sada oboustranně gravírovaných vánočních ozdob v několika barvách",
+          fr: "Lot de boules de Noël gravées double face en plusieurs couleurs",
+          it: "Set di palline di Natale incise fronte-retro in più colori",
         },
       },
     ],
@@ -1351,12 +1740,14 @@ type CartItem = {
   customText: string;
   finishId: string;
   logoId: string;
+  backEngravingText?: string;
+  giftWrap?: boolean;
   quantity: number;
   price: number;
 };
 
-function formatPrice(value: number, _language: LanguageCode) {
-  return `${value.toFixed(2)} €`;
+function formatPrice(value: number) {
+  return `CHF ${value.toFixed(2)}`;
 }
 
 function getProduct(productId: string) {
@@ -1372,49 +1763,82 @@ function getFinish(productId: string, finishId: string) {
   return product.finishes.find((finish) => finish.id === finishId) ?? product.finishes[0];
 }
 
+function getBackEngravingOptions(product: Product) {
+  return product.backEngravingOptions ?? [];
+}
+
+function getDefaultBackEngravingId(productId: string) {
+  return getBackEngravingOptions(getProduct(productId))[0]?.id ?? "";
+}
+
+function getCartItemUnitPrice(item: CartItem) {
+  return item.price + (item.giftWrap ? GIFT_WRAP_PRICE : 0);
+}
+
 type HomeProps = {
   initialPath?: string;
 };
 
 export default function Home({ initialPath = "/" }: HomeProps = {}) {
   const initialRoute = getInitialRoute(initialPath);
+  const initialProductId = initialRoute.productId ?? products[0].id;
   const [language, setLanguage] = useState<LanguageCode>("de");
   const [currentView, setCurrentView] = useState<PageView>(() => initialRoute.view);
-  const [selectedProductId, setSelectedProductId] = useState(
-    () => initialRoute.productId ?? products[0].id,
-  );
+  const [selectedProductId, setSelectedProductId] = useState(() => initialProductId);
   const [selectedPhotoId, setSelectedPhotoId] = useState(
-    () => getProduct(initialRoute.productId ?? products[0].id).photos[0].id,
+    () => getProduct(initialProductId).photos[0].id,
   );
   const [selectedFinishId, setSelectedFinishId] = useState(
-    () => getProduct(initialRoute.productId ?? products[0].id).finishes[0].id,
+    () => getProduct(initialProductId).finishes[0].id,
   );
   const [customText, setCustomText] = useState("Mila");
   const [selectedLogoId, setSelectedLogoId] = useState(logoOptions[0].id);
+  const [selectedBackEngravingId, setSelectedBackEngravingId] = useState(() =>
+    getDefaultBackEngravingId(initialProductId),
+  );
+  const [selectedGiftWrap, setSelectedGiftWrap] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [cartHydrated, setCartHydrated] = useState(false);
   const [showCartChoice, setShowCartChoice] = useState(false);
   const [checkoutMessage, setCheckoutMessage] = useState(false);
+  const [checkoutWarning, setCheckoutWarning] = useState(false);
+  const [dataConsent, setDataConsent] = useState(false);
+  const [termsConsent, setTermsConsent] = useState(false);
+  const [cookiesConsent, setCookiesConsent] = useState(false);
 
   const t = ui[language];
   const home = homeCopy[language];
   const flow = flowCopy[language];
   const selectedProduct = getProduct(selectedProductId);
   const selectedProductCopy = selectedProduct.translations[language];
+  const selectedProductSupportsGiftWrap = selectedProduct.supportsGiftWrap === true;
+  const configuredUnitPrice =
+    selectedProduct.price +
+    (selectedProductSupportsGiftWrap && selectedGiftWrap ? GIFT_WRAP_PRICE : 0);
   const selectedPhoto =
     selectedProduct.photos.find((photo) => photo.id === selectedPhotoId) ??
     selectedProduct.photos[0];
   const selectedFinish =
     selectedProduct.finishes.find((finish) => finish.id === selectedFinishId) ??
     selectedProduct.finishes[0];
+  const backEngravingOptions = getBackEngravingOptions(selectedProduct);
+  const selectedBackEngraving =
+    backEngravingOptions.find((option) => option.id === selectedBackEngravingId) ??
+    backEngravingOptions[0];
   const selectedLogo = getLogo(selectedLogoId);
   const previewText = customText.trim() || t.previewFallback;
   const previewNameSize =
     previewText.length > 10 ? "0.9rem" : previewText.length > 7 ? "1.04rem" : "1.18rem";
+  const backPreviewNameSize =
+    selectedBackEngraving && selectedBackEngraving.text.length > 18
+      ? "0.62rem"
+      : selectedBackEngraving && selectedBackEngraving.text.length > 14
+        ? "0.72rem"
+        : "0.8rem";
 
   const cartTotal = useMemo(
-    () => cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    () => cartItems.reduce((sum, item) => sum + getCartItemUnitPrice(item) * item.quantity, 0),
     [cartItems],
   );
   const cartQuantity = useMemo(
@@ -1494,6 +1918,8 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     setSelectedProductId(nextProduct.id);
     setSelectedPhotoId(nextProduct.photos[0].id);
     setSelectedFinishId(nextProduct.finishes[0].id);
+    setSelectedBackEngravingId(getBackEngravingOptions(nextProduct)[0]?.id ?? "");
+    setSelectedGiftWrap(false);
   }
 
   function scrollToPageTop() {
@@ -1535,6 +1961,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   function navigateCart(sectionId?: string) {
     setCurrentView("cart");
     setShowCartChoice(false);
+    setCheckoutWarning(false);
     window.history.pushState(null, "", sectionId ? `/kosik#${sectionId}` : "/kosik");
 
     if (sectionId) {
@@ -1544,12 +1971,18 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     }
   }
 
-  function navigateTerms() {
+  function navigateTerms(sectionId?: string) {
     setCurrentView("terms");
     setShowCartChoice(false);
     setCheckoutMessage(false);
-    window.history.pushState(null, "", "/agb");
-    scrollToPageTop();
+    setCheckoutWarning(false);
+    window.history.pushState(null, "", sectionId ? `/agb#${sectionId}` : "/agb");
+
+    if (sectionId) {
+      scrollToSection(sectionId);
+    } else {
+      scrollToPageTop();
+    }
   }
 
   function selectProduct(productId: string) {
@@ -1571,11 +2004,24 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
         customText: previewText,
         finishId: selectedFinish.id,
         logoId: selectedLogo.id,
+        backEngravingText: selectedBackEngraving?.text,
+        giftWrap: selectedProductSupportsGiftWrap && selectedGiftWrap,
         quantity,
         price: selectedProduct.price,
       },
     ]);
     setShowCartChoice(true);
+  }
+
+  function prepareCheckout() {
+    if (!dataConsent || !termsConsent || !cookiesConsent) {
+      setCheckoutMessage(false);
+      setCheckoutWarning(true);
+      return;
+    }
+
+    setCheckoutWarning(false);
+    setCheckoutMessage(true);
   }
 
   function removeCartItem(itemId: number) {
@@ -1600,7 +2046,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
           <p>{productCopy.personalization}</p>
         </div>
         <div className="card-bottom">
-          <strong>{formatPrice(product.price, language)}</strong>
+          <strong>{formatPrice(product.price)}</strong>
         </div>
       </button>
     );
@@ -1629,10 +2075,20 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                     <span>
                       {item.customText} / {logo.label[language]}
                     </span>
+                    {item.backEngravingText && (
+                      <span>
+                        {t.backEngravingLabel}: {item.backEngravingText}
+                      </span>
+                    )}
+                    {item.giftWrap && (
+                      <span>
+                        {t.giftWrapCartLabel}: {formatPrice(GIFT_WRAP_PRICE)}
+                      </span>
+                    )}
                     <span>{finish.label[language]}</span>
                   </div>
                   <span>
-                    {item.quantity} x {formatPrice(item.price, language)}
+                    {item.quantity} x {formatPrice(getCartItemUnitPrice(item))}
                   </span>
                 </article>
               );
@@ -1641,7 +2097,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
         )}
         <div className="cart-total">
           <span>{t.subtotal}</span>
-          <strong>{formatPrice(cartTotal, language)}</strong>
+          <strong>{formatPrice(cartTotal)}</strong>
         </div>
         <button className="secondary-button" type="button" onClick={() => navigateCart()}>
           {flow.goToCart}
@@ -1880,7 +2336,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                           {productCopy.personalization}
                         </p>
                         <strong className="catalog-price">
-                          {formatPrice(product.price, language)}
+                          {formatPrice(product.price)}
                         </strong>
                         <button
                           className="primary-button"
@@ -1966,7 +2422,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                 </div>
 
                 <div className="price-row">
-                  <span className="price">{formatPrice(selectedProduct.price, language)}</span>
+                  <span className="price">{formatPrice(configuredUnitPrice)}</span>
                   <span className="tax-note">{t.taxNote}</span>
                 </div>
 
@@ -2036,18 +2492,80 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                     </div>
                   </div>
 
-                  <div className="preview-row" aria-label={t.previewLabel}>
-                    <div className={`engraving-card ${selectedProduct.previewClass}`}>
-                      <span className="preview-logo">{selectedLogo.mark}</span>
-                      <span className="preview-name" style={{ fontSize: previewNameSize }}>
-                        {previewText}
+                  {backEngravingOptions.length > 0 && (
+                    <div className="field-group">
+                      <span>{t.backEngravingLabel}</span>
+                      <div
+                        className="phrase-grid"
+                        role="radiogroup"
+                        aria-label={t.backEngravingLabel}
+                      >
+                        {backEngravingOptions.map((option) => (
+                          <button
+                            className={`phrase-option ${
+                              selectedBackEngraving?.id === option.id ? "selected" : ""
+                            }`}
+                            key={option.id}
+                            type="button"
+                            aria-pressed={selectedBackEngraving?.id === option.id}
+                            onClick={() => setSelectedBackEngravingId(option.id)}
+                          >
+                            {option.text}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedProductSupportsGiftWrap && (
+                    <label className="option-check">
+                      <input
+                        type="checkbox"
+                        checked={selectedGiftWrap}
+                        onChange={(event) => setSelectedGiftWrap(event.target.checked)}
+                      />
+                      <span>
+                        <strong>{t.giftWrapLabel}</strong>
+                        {t.giftWrapPriceNote}
                       </span>
+                    </label>
+                  )}
+
+                  <div className="preview-row" aria-label={t.previewLabel}>
+                    <div
+                      className={`preview-stack ${
+                        selectedBackEngraving ? "preview-stack-double" : ""
+                      }`}
+                    >
+                      <div className={`engraving-card ${selectedProduct.previewClass}`}>
+                        <span className="preview-logo">{selectedLogo.mark}</span>
+                        <span className="preview-name" style={{ fontSize: previewNameSize }}>
+                          {previewText}
+                        </span>
+                      </div>
+                      {selectedBackEngraving && (
+                        <div
+                          className={`engraving-card ${selectedProduct.previewClass} reverse-card`}
+                        >
+                          <span
+                            className="preview-name"
+                            style={{ fontSize: backPreviewNameSize }}
+                          >
+                            {selectedBackEngraving.text}
+                          </span>
+                        </div>
+                      )}
                     </div>
                     <div>
                       <strong>{selectedProductCopy.personalization}</strong>
                       <span>
                         {selectedFinish.label[language]} / {selectedLogo.label[language]}
                       </span>
+                      {selectedBackEngraving && (
+                        <span>
+                          {t.backEngravingLabel}: {selectedBackEngraving.text}
+                        </span>
+                      )}
                     </div>
                   </div>
 
@@ -2155,9 +2673,19 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                               {item.customText} / {logo.label[language]} /{" "}
                               {finish.label[language]}
                             </span>
+                            {item.backEngravingText && (
+                              <span>
+                                {t.backEngravingLabel}: {item.backEngravingText}
+                              </span>
+                            )}
+                            {item.giftWrap && (
+                              <span>
+                                {t.giftWrapCartLabel}: {formatPrice(GIFT_WRAP_PRICE)}
+                              </span>
+                            )}
                           </div>
                           <strong>
-                            {item.quantity} x {formatPrice(item.price, language)}
+                            {item.quantity} x {formatPrice(getCartItemUnitPrice(item))}
                           </strong>
                           <button
                             className="remove-button"
@@ -2175,16 +2703,52 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                 <aside className="checkout-panel" aria-labelledby="checkout-title">
                   <p className="section-kicker">{flow.checkoutTitle}</p>
                   <h2 id="checkout-title">{t.subtotal}</h2>
-                  <strong className="checkout-total">{formatPrice(cartTotal, language)}</strong>
+                  <strong className="checkout-total">{formatPrice(cartTotal)}</strong>
                   <p>{flow.checkoutNote}</p>
+                  <div className="consent-list">
+                    <label className="consent-check">
+                      <input
+                        type="checkbox"
+                        checked={dataConsent}
+                        onChange={(event) => {
+                          setDataConsent(event.target.checked);
+                          setCheckoutWarning(false);
+                        }}
+                      />
+                      <span>{t.dataConsentLabel}</span>
+                    </label>
+                    <label className="consent-check">
+                      <input
+                        type="checkbox"
+                        checked={termsConsent}
+                        onChange={(event) => {
+                          setTermsConsent(event.target.checked);
+                          setCheckoutWarning(false);
+                        }}
+                      />
+                      <span>{t.termsConsentLabel}</span>
+                    </label>
+                    <label className="consent-check">
+                      <input
+                        type="checkbox"
+                        checked={cookiesConsent}
+                        onChange={(event) => {
+                          setCookiesConsent(event.target.checked);
+                          setCheckoutWarning(false);
+                        }}
+                      />
+                      <span>{t.cookiesConsentLabel}</span>
+                    </label>
+                  </div>
                   <button
                     className="primary-button"
                     type="button"
                     disabled={cartItems.length === 0}
-                    onClick={() => setCheckoutMessage(true)}
+                    onClick={prepareCheckout}
                   >
                     {flow.checkoutCta}
                   </button>
+                  {checkoutWarning && <p className="checkout-warning">{t.consentWarning}</p>}
                   {checkoutMessage && <p className="checkout-message">{flow.checkoutMessage}</p>}
                 </aside>
               </div>
@@ -2229,6 +2793,48 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
               </div>
               <div className="terms-grid">
                 {t.terms.map(([title, body]) => (
+                  <article key={title}>
+                    <h3>{title}</h3>
+                    <p>{body}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section
+              className="terms-section terms-page legal-section"
+              id="datenschutz"
+              aria-labelledby="datenschutz-title"
+            >
+              <div className="section-heading cart-page-heading">
+                <div>
+                  <p className="section-kicker">{t.privacyKicker}</p>
+                  <h2 id="datenschutz-title">{t.privacyTitle}</h2>
+                </div>
+              </div>
+              <div className="terms-grid">
+                {t.privacyCards.map(([title, body]) => (
+                  <article key={title}>
+                    <h3>{title}</h3>
+                    <p>{body}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section
+              className="terms-section terms-page legal-section"
+              id="cookies"
+              aria-labelledby="cookies-title"
+            >
+              <div className="section-heading cart-page-heading">
+                <div>
+                  <p className="section-kicker">{t.cookiesKicker}</p>
+                  <h2 id="cookies-title">{t.cookiesTitle}</h2>
+                </div>
+              </div>
+              <div className="terms-grid">
+                {t.cookiesCards.map(([title, body]) => (
                   <article key={title}>
                     <h3>{title}</h3>
                     <p>{body}</p>
@@ -2299,6 +2905,24 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
             }}
           >
             {t.nav.terms}
+          </a>
+          <a
+            href="/agb#datenschutz"
+            onClick={(event) => {
+              event.preventDefault();
+              navigateTerms("datenschutz");
+            }}
+          >
+            {t.privacyKicker}
+          </a>
+          <a
+            href="/agb#cookies"
+            onClick={(event) => {
+              event.preventDefault();
+              navigateTerms("cookies");
+            }}
+          >
+            {t.cookiesKicker}
           </a>
           <a href="mailto:hallo@example.de">hallo@example.de</a>
         </nav>
