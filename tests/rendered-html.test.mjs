@@ -66,6 +66,7 @@ test("fallback routes serve product and cart paths for client routing", async ()
   assert.match(productHtml, /Saafi Gravur/);
   assert.doesNotMatch(productHtml, /Feine Gravur/);
   assert.match(productHtml, /Weihnachtskugel/);
+  assert.match(productHtml, /preview-row/);
   assert.match(productHtml, /Einseitig/);
   assert.match(productHtml, /Kugelset/);
   assert.match(productHtml, /Doppelseitig/);
@@ -237,12 +238,16 @@ test("starter preview files and dependencies are removed", async () => {
   assert.doesNotMatch(page, /top-notice/);
   assert.match(page, /className="term-number"/);
   assert.match(styles, /\.product-photo-frame img[\s\S]*object-fit: contain/);
+  assert.match(styles, /\.gallery-column[\s\S]*position: sticky/);
+  assert.match(styles, /\.product-photo-frame img[\s\S]*hue-rotate/);
+  assert.match(page, /getDefaultPhotoId[\s\S]*photo\.id === "set"/);
+  assert.match(page, /"--photo-hue-rotation"/);
   assert.match(styles, /\.catalog-main-photo img[\s\S]*object-fit: contain/);
   assert.match(styles, /\.catalog-detail-photos img[\s\S]*object-fit: contain/);
   assert.match(styles, /\.product-card img[\s\S]*object-fit: contain/);
   assert.match(styles, /\.intro-photo img[\s\S]*object-fit: contain/);
-  assert.match(styles, /\.home-hero::after/);
-  assert.doesNotMatch(page, /--hero-image/);
+  assert.match(styles, /\.home-hero[\s\S]*var\(--hero-image\)/);
+  assert.ok(page.includes(`"--hero-image": "url('/products/christmas-baubles-main.jpeg')"`));
   assert.match(styles, /grid-template-columns: minmax\(290px, 1\.06fr\) minmax\(330px, 0\.95fr\) minmax\(260px, 0\.42fr\);/);
   assert.match(styles, /grid-template-columns: repeat\(6, minmax\(0, 1fr\)\);/);
   assert.match(page, /maxLength={TEXT_LIMIT}/);

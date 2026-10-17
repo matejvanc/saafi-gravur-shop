@@ -3,7 +3,7 @@
 :root {
   --paper: #faf5e9;
   --surface: #fffdf7;
-  --ivory: #f1e5cf;
+  --ivory: #e8eddf;
   --ink: #25342c;
   --muted: #62685e;
   --line: #ddc99f;
@@ -258,10 +258,11 @@ main {
 .home-hero {
   align-items: flex-end;
   background:
-    radial-gradient(circle, rgba(255, 250, 242, 0.27) 1px, transparent 1.7px) 10px 10px / 38px 38px,
-    radial-gradient(ellipse at 84% 25%, rgba(189, 145, 70, 0.3), transparent 19rem),
-    radial-gradient(ellipse at 90% 84%, rgba(166, 47, 61, 0.3), transparent 22rem),
-    linear-gradient(120deg, var(--forest-deep), var(--forest) 64%, #552936);
+    linear-gradient(90deg, rgba(16, 59, 44, 0.94) 0%, rgba(16, 59, 44, 0.65) 42%, rgba(166, 47, 61, 0.12) 100%),
+    linear-gradient(180deg, rgba(166, 47, 61, 0.08), rgba(16, 59, 44, 0.72)),
+    var(--hero-image);
+  background-position: center;
+  background-size: cover;
   border: 1px solid rgba(189, 145, 70, 0.68);
   border-radius: 14px;
   color: #fffaf2;
@@ -271,25 +272,6 @@ main {
   max-width: 1440px;
   overflow: hidden;
   padding: clamp(1.25rem, 5vw, 4rem);
-  position: relative;
-}
-
-.home-hero::after {
-  background:
-    radial-gradient(ellipse at 34% 26%, rgba(255, 255, 255, 0.58), transparent 15%),
-    linear-gradient(145deg, #d64b42, #aa2035 60%, #74192a);
-  border: 7px solid #e4c278;
-  border-radius: 50%;
-  box-shadow:
-    inset -12px -16px 28px rgba(58, 8, 19, 0.3),
-    0 24px 52px rgba(0, 0, 0, 0.25);
-  content: "";
-  height: clamp(8rem, 22vw, 16rem);
-  opacity: 0.9;
-  position: absolute;
-  right: clamp(1rem, 8vw, 7rem);
-  top: 12%;
-  width: clamp(8rem, 22vw, 16rem);
 }
 
 .home-hero-copy {
@@ -373,9 +355,11 @@ main {
 }
 
 .intro-photo {
-  background: var(--ivory);
-  border: 0;
-  border-radius: 8px;
+  background:
+    radial-gradient(circle at 88% 12%, rgba(189, 145, 70, 0.25), transparent 34%),
+    linear-gradient(145deg, #e1eadf, #f1e5cf 58%, #efdbd4);
+  border: 1px solid rgba(189, 145, 70, 0.38);
+  border-radius: 12px;
   color: white;
   display: grid;
   grid-template-rows: 1fr;
@@ -470,22 +454,42 @@ main {
 }
 
 .gallery-column {
+  align-self: start;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(166, 47, 61, 0.07), transparent 35%),
+    rgba(255, 253, 247, 0.93);
+  position: sticky;
+  top: 1rem;
   padding: clamp(0.8rem, 2vw, 1.1rem);
 }
 
 .product-photo-frame {
   aspect-ratio: 1.05;
-  background: var(--ivory);
-  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--photo-accent, #bd9146) 22%, transparent), transparent 68%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.5) 1px, transparent 1.7px) 0 0 / 28px 28px,
+    linear-gradient(145deg, #dce9dc, #f4e6d5 55%, #f1dcdd);
+  border: 1px solid rgba(189, 145, 70, 0.54);
+  border-radius: 12px;
   overflow: hidden;
 }
 
 .product-photo-frame img {
   display: block;
+  filter: hue-rotate(var(--photo-hue-rotation, 0deg));
   height: 100%;
+  mix-blend-mode: multiply;
   object-fit: contain;
   object-position: center;
+  transition: filter 220ms ease;
   width: 100%;
+}
+
+.gallery-column .preview-row {
+  background:
+    linear-gradient(115deg, rgba(30, 81, 59, 0.08), rgba(189, 145, 70, 0.1)),
+    #f7f3e7;
+  margin-top: 0.8rem;
 }
 
 .thumb-row {
@@ -508,6 +512,9 @@ main {
 }
 
 .thumb-button {
+  background:
+    linear-gradient(135deg, rgba(30, 81, 59, 0.06), rgba(166, 47, 61, 0.05)),
+    #edf0e6;
   align-items: center;
   display: grid;
   gap: 0.5rem;
@@ -1067,7 +1074,9 @@ a:focus-visible {
 .catalog-detail-photos button {
   appearance: none;
   aspect-ratio: 1.18;
-  background: var(--ivory);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(189, 145, 70, 0.15), transparent 62%),
+    linear-gradient(145deg, #e1eadf, #f0e5d4 55%, #efddda);
   border: 0;
   border-radius: 8px;
   display: block;
@@ -1492,6 +1501,10 @@ a:focus-visible {
     grid-template-columns: 1fr;
   }
 
+  .gallery-column {
+    position: static;
+  }
+
   .section-heading {
     align-items: flex-start;
     flex-direction: column;
@@ -1538,14 +1551,6 @@ a:focus-visible {
   .home-hero {
     min-height: 500px;
     padding: 1.1rem;
-  }
-
-  .home-hero::after {
-    height: 8rem;
-    opacity: 0.3;
-    right: 0.85rem;
-    top: 0.7rem;
-    width: 8rem;
   }
 
   .home-hero-copy h1 {
