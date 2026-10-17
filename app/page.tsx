@@ -1639,42 +1639,36 @@ const baubleColors = [
     id: "zelena",
     hex: "#3d7f5d",
     edge: "#1f4830",
-    hueRotation: 290,
     label: { de: "Grün", en: "Green", cs: "Zelená", fr: "Vert", it: "Verde" },
   },
   {
     id: "cervena",
     hex: "#b03636",
     edge: "#671a1a",
-    hueRotation: 150,
     label: { de: "Rot", en: "Red", cs: "Červená", fr: "Rouge", it: "Rosso" },
   },
   {
     id: "zlata",
     hex: "#d4b15d",
     edge: "#88652c",
-    hueRotation: 195,
     label: { de: "Gold", en: "Gold", cs: "Zlatá", fr: "Or", it: "Oro" },
   },
   {
     id: "hneda",
     hex: "#8d5d39",
     edge: "#53311d",
-    hueRotation: 175,
     label: { de: "Braun", en: "Brown", cs: "Hnědá", fr: "Brun", it: "Marrone" },
   },
   {
     id: "ruzova",
     hex: "#d8709a",
     edge: "#7a3c59",
-    hueRotation: 130,
     label: { de: "Rosa", en: "Pink", cs: "Růžová", fr: "Rose", it: "Rosa" },
   },
   {
     id: "modra",
     hex: "#3b6fa9",
     edge: "#1d3557",
-    hueRotation: 0,
     label: { de: "Blau", en: "Blue", cs: "Modrá", fr: "Bleu", it: "Blu" },
   },
 ];
@@ -1775,14 +1769,6 @@ function getProduct(productId: string) {
   return products.find((product) => product.id === canonicalProductId) ?? products[0];
 }
 
-function getDefaultPhotoId(product: Product) {
-  if (product.id === BAUBLE_PRODUCT_ID) {
-    return product.photos.find((photo) => photo.id === "set")?.id ?? product.photos[0].id;
-  }
-
-  return product.photos[0].id;
-}
-
 function getBaubleVariant(variantId: string) {
   return baubleVariants.find((variant) => variant.id === variantId) ?? baubleVariants[0];
 }
@@ -1822,7 +1808,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     () => initialRoute.baubleVariantId ?? BAUBLE_PRODUCT_ID,
   );
   const [selectedPhotoId, setSelectedPhotoId] = useState(
-    () => getDefaultPhotoId(getProduct(initialProductId)),
+    () => getProduct(initialProductId).photos[0].id,
   );
   const [selectedFinishId, setSelectedFinishId] = useState(
     () => getProduct(initialProductId).finishes[0].id,
@@ -1864,9 +1850,6 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   const selectedFinish =
     selectedProduct.finishes.find((finish) => finish.id === selectedFinishId) ??
     selectedProduct.finishes[0];
-  const selectedBaubleColor = baubleColors.find((color) =>
-    selectedFinish.id.startsWith(`${color.id}-`),
-  ) ?? baubleColors[0];
   const backEngravingOptions = isBaubleProduct
     ? selectedBaubleVariant.backEngravingOptions ?? []
     : getBackEngravingOptions(selectedProduct);
@@ -1975,7 +1958,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   function applyProductSelection(productId: string, baubleVariantId?: string) {
     const nextProduct = getProduct(productId);
     setSelectedProductId(nextProduct.id);
-    setSelectedPhotoId(getDefaultPhotoId(nextProduct));
+    setSelectedPhotoId(nextProduct.photos[0].id);
     setSelectedFinishId(nextProduct.finishes[0].id);
     const nextBaubleVariantId = nextProduct.id === BAUBLE_PRODUCT_ID
       ? getBaubleVariant(baubleVariantId ?? BAUBLE_PRODUCT_ID).id
@@ -2445,23 +2428,10 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
 
             <section className="product-section" id="produkt" aria-labelledby="product-title">
               <div className="gallery-column">
-                <div
-                  className="product-photo-frame"
-                  style={
-                    {
-                      "--photo-accent": selectedFinish.hex,
-                      "--photo-hue-rotation": `${
-                        isBaubleProduct ? selectedBaubleColor.hueRotation : 0
-                      }deg`,
-                    } as CSSProperties
-                  }
-                >
+                <div className="product-photo-frame">
                   <img
                     src={selectedPhoto.src}
                     alt={selectedPhoto.alt[language]}
-                    style={{
-                      filter: `hue-rotate(var(--photo-hue-rotation))`,
-                    }}
                   />
                 </div>
                 <div className="preview-row" aria-label={t.previewLabel}>

@@ -3,7 +3,7 @@
 :root {
   --paper: #faf5e9;
   --surface: #fffdf7;
-  --ivory: #e8eddf;
+  --ivory: #f1e5cf;
   --ink: #25342c;
   --muted: #62685e;
   --line: #ddc99f;
@@ -26,12 +26,14 @@ html {
 body {
   margin: 0;
   background:
-    radial-gradient(ellipse at 4% 8%, rgba(166, 47, 61, 0.12), transparent 28rem),
-    radial-gradient(ellipse at 96% 22%, rgba(30, 81, 59, 0.13), transparent 30rem),
-    radial-gradient(circle, rgba(255, 255, 255, 0.78) 1px, transparent 1.8px) 14px 10px / 46px 46px,
-    radial-gradient(circle, rgba(189, 145, 70, 0.2) 1px, transparent 1.7px) 0 0 / 34px 34px,
-    linear-gradient(180deg, rgba(244, 233, 210, 0.74), rgba(250, 245, 233, 0.96) 440px),
+    radial-gradient(ellipse at 4% 8%, rgba(166, 47, 61, 0.2), transparent 32rem),
+    radial-gradient(ellipse at 96% 22%, rgba(30, 81, 59, 0.21), transparent 34rem),
+    radial-gradient(ellipse at 48% 70%, rgba(189, 145, 70, 0.14), transparent 38rem),
+    radial-gradient(circle, rgba(255, 255, 255, 0.82) 1px, transparent 1.8px) 14px 10px / 46px 46px,
+    radial-gradient(circle, rgba(189, 145, 70, 0.24) 1px, transparent 1.7px) 0 0 / 34px 34px,
+    linear-gradient(180deg, #f2e6d4, #faf5e9 48%, #e9eee4),
     var(--paper);
+  background-attachment: fixed;
   color: var(--ink);
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -355,11 +357,9 @@ main {
 }
 
 .intro-photo {
-  background:
-    radial-gradient(circle at 88% 12%, rgba(189, 145, 70, 0.25), transparent 34%),
-    linear-gradient(145deg, #e1eadf, #f1e5cf 58%, #efdbd4);
-  border: 1px solid rgba(189, 145, 70, 0.38);
-  border-radius: 12px;
+  background: var(--ivory);
+  border: 0;
+  border-radius: 8px;
   color: white;
   display: grid;
   grid-template-rows: 1fr;
@@ -455,33 +455,23 @@ main {
 
 .gallery-column {
   align-self: start;
-  background:
-    radial-gradient(circle at 8% 8%, rgba(166, 47, 61, 0.07), transparent 35%),
-    rgba(255, 253, 247, 0.93);
   position: sticky;
-  top: 1rem;
+  top: calc(76px + 1rem);
   padding: clamp(0.8rem, 2vw, 1.1rem);
 }
 
 .product-photo-frame {
   aspect-ratio: 1.05;
-  background:
-    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--photo-accent, #bd9146) 22%, transparent), transparent 68%),
-    radial-gradient(circle, rgba(255, 255, 255, 0.5) 1px, transparent 1.7px) 0 0 / 28px 28px,
-    linear-gradient(145deg, #dce9dc, #f4e6d5 55%, #f1dcdd);
-  border: 1px solid rgba(189, 145, 70, 0.54);
-  border-radius: 12px;
+  background: var(--ivory);
+  border-radius: 8px;
   overflow: hidden;
 }
 
 .product-photo-frame img {
   display: block;
-  filter: hue-rotate(var(--photo-hue-rotation, 0deg));
   height: 100%;
-  mix-blend-mode: multiply;
   object-fit: contain;
   object-position: center;
-  transition: filter 220ms ease;
   width: 100%;
 }
 
@@ -495,7 +485,7 @@ main {
 .thumb-row {
   display: grid;
   gap: 0.65rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   margin-top: 0.85rem;
 }
 
@@ -512,9 +502,6 @@ main {
 }
 
 .thumb-button {
-  background:
-    linear-gradient(135deg, rgba(30, 81, 59, 0.06), rgba(166, 47, 61, 0.05)),
-    #edf0e6;
   align-items: center;
   display: grid;
   gap: 0.5rem;
@@ -1074,9 +1061,7 @@ a:focus-visible {
 .catalog-detail-photos button {
   appearance: none;
   aspect-ratio: 1.18;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(189, 145, 70, 0.15), transparent 62%),
-    linear-gradient(145deg, #e1eadf, #f0e5d4 55%, #efddda);
+  background: var(--ivory);
   border: 0;
   border-radius: 8px;
   display: block;
@@ -1456,6 +1441,10 @@ a:focus-visible {
     justify-content: flex-start;
     min-width: 0;
     width: 100%;
+  }
+
+  .gallery-column {
+    top: 1rem;
   }
 }
 
