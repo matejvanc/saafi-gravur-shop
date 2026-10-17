@@ -36,14 +36,13 @@ test("server-renders the multilingual personalized shop", async () => {
   assert.doesNotMatch(html, /Feine Gravur/);
   assert.match(html, /Geschenke mit Gravur/);
   assert.match(html, /christmas-baubles-main\.jpeg/);
-  assert.match(html, /Gravierte Weihnachtskugeln/);
-  assert.match(html, /Beidseitig gravierte Weihnachtskugel/);
+  assert.match(html, /Weihnachtskugel/);
   assert.match(html, /Holz-Lesezeichen/);
   assert.match(html, /Holz-Anhänger/);
   assert.match(html, /Holz-Flaschenöffner/);
   assert.match(html, /Holz-Kugelschreiber/);
   assert.doesNotMatch(html, /Produkt ansehen/);
-  assert.match(html, /\/produkt\/weihnachtskugeln/);
+  assert.match(html, /\/produkt\/kule-jednostranna-1/);
   assert.match(html, /\/produkty/);
   assert.match(html, /\/kosik/);
   assert.match(html, /\/agb/);
@@ -60,12 +59,19 @@ test("server-renders the multilingual personalized shop", async () => {
 });
 
 test("fallback routes serve product and cart paths for client routing", async () => {
-  const productResponse = await render("/produkt/weihnachtskugeln");
+  const productResponse = await render("/produkt/kule-jednostranna-1");
   assert.equal(productResponse.status, 200);
   const productHtml = await productResponse.text();
   assert.match(productHtml, /Saafi Gravur/);
   assert.doesNotMatch(productHtml, /Feine Gravur/);
-  assert.match(productHtml, /Gravierte Weihnachtskugeln/);
+  assert.match(productHtml, /Weihnachtskugel/);
+  assert.match(productHtml, /Einseitig/);
+  assert.match(productHtml, /Kugelset/);
+  assert.match(productHtml, /Doppelseitig/);
+  assert.match(productHtml, /Ausführung/);
+  assert.match(productHtml, /Farbe/);
+  assert.match(productHtml, /Oberfläche/);
+  assert.doesNotMatch(productHtml, /product-switcher/);
   assert.match(productHtml, /Logo-Motiv/);
   assert.match(productHtml, /Text bis[\s\S]*12[\s\S]*Zeichen/);
   assert.match(productHtml, /CHF 7\.00/);
@@ -76,10 +82,11 @@ test("fallback routes serve product and cart paths for client routing", async ()
   assert.match(productHtml, /Weitere Produkte/);
   assert.doesNotMatch(productHtml, /Produkt ansehen/);
 
-  const doubleProductResponse = await render("/produkt/weihnachtskugeln-beidseitig");
+  const doubleProductResponse = await render("/produkt/kule-dvojstranna-1");
   assert.equal(doubleProductResponse.status, 200);
   const doubleProductHtml = await doubleProductResponse.text();
-  assert.match(doubleProductHtml, /Beidseitig gravierte Weihnachtskugel/);
+  assert.match(doubleProductHtml, /Weihnachtskugel/);
+  assert.match(doubleProductHtml, /Doppelseitig/);
   assert.match(doubleProductHtml, /Rückseiten-Gravur/);
   assert.match(doubleProductHtml, /Merry Christmas 2026/);
   assert.match(doubleProductHtml, /Frohe Weihnachten/);
@@ -93,8 +100,9 @@ test("fallback routes serve product and cart paths for client routing", async ()
   const productsHtml = await productsResponse.text();
   assert.match(productsHtml, /Personalisierbare Produkte/);
   assert.match(productsHtml, /catalog-product-card/);
-  assert.match(productsHtml, /Gravierte Weihnachtskugeln/);
-  assert.match(productsHtml, /Beidseitig gravierte Weihnachtskugel/);
+  assert.match(productsHtml, /Weihnachtskugel/);
+  assert.doesNotMatch(productsHtml, /Beidseitig gravierte Weihnachtskugel/);
+  assert.equal((productsHtml.match(/catalog-product-card/g) ?? []).length, 5);
   assert.match(productsHtml, /Holz-Kugelschreiber/);
 
   const cartResponse = await render("/kosik");
@@ -141,7 +149,8 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /const TEXT_LIMIT = 12;/);
   assert.match(page, /type LanguageCode = "de" \| "en" \| "cs" \| "fr" \| "it";/);
   assert.match(page, /useState<LanguageCode>\("de"\)/);
-  assert.match(page, /language-switcher/);
+  assert.match(page, /className="language-menu"/);
+  assert.match(page, /className="home-shortcut"/);
   assert.match(page, /document\.documentElement\.lang = language/);
   assert.match(page, /const homeCopy/);
   assert.match(page, /const flowCopy/);
@@ -178,8 +187,12 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /cart-choice/);
   assert.match(page, /removeCartItem/);
   assert.match(page, /cart-page/);
-  assert.match(page, /Gravírované vánoční ozdoby/);
-  assert.match(page, /Oboustranně gravírovaná vánoční ozdoba/);
+  assert.match(page, /name: "Vánoční koule"/);
+  assert.match(page, /const availableProducts = products\.filter/);
+  assert.match(page, /const baubleVariants = products/);
+  assert.match(page, /const baubleColors = \[/);
+  assert.match(page, /const baubleSurfaces = \[/);
+  assert.doesNotMatch(page, /className="product-switcher"/);
   assert.match(page, /backEngravingOptions/);
   assert.match(page, /Merry Christmas 2026/);
   assert.match(page, /Frohe Weihnachten/);
@@ -189,9 +202,9 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /dataConsentLabel/);
   assert.match(page, /cookiesCards/);
   assert.doesNotMatch(page, /Holz natur|Natural wood|Přírodní dřevo|Bois naturel|Legno naturale/);
-  assert.match(page, /Engraved Christmas Baubles/);
-  assert.match(page, /Boules de Noël gravées/);
-  assert.match(page, /Palline di Natale incise/);
+  assert.match(page, /name: "Christmas bauble"/);
+  assert.match(page, /name: "Boule de Noël"/);
+  assert.match(page, /name: "Pallina di Natale"/);
   assert.match(page, /navLabel: "Home"/);
   assert.match(page, /navLabel: "Úvod"/);
   assert.match(page, /navLabel: "Accueil"/);
@@ -213,13 +226,18 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(styles, /\.consent-list/);
   assert.match(styles, /\.option-check/);
   assert.match(styles, /\.legal-section/);
+  assert.match(styles, /--cranberry: #a62f3d/);
+  assert.match(styles, /--brass: #bd9146/);
+  assert.match(styles, /radial-gradient\(circle, rgba\(189, 145, 70/);
+  assert.doesNotMatch(page, /top-notice/);
+  assert.match(page, /className="term-number"/);
   assert.match(styles, /\.product-photo-frame img[\s\S]*object-fit: contain/);
   assert.match(styles, /\.catalog-main-photo img[\s\S]*object-fit: contain/);
   assert.match(styles, /\.catalog-detail-photos img[\s\S]*object-fit: contain/);
   assert.match(styles, /\.product-card img[\s\S]*object-fit: contain/);
   assert.match(styles, /\.intro-photo img[\s\S]*object-fit: contain/);
-  assert.match(styles, /grid-template-columns: minmax\(220px, 1fr\) minmax\(450px, 540px\) minmax\(330px, 1fr\);/);
-  assert.match(styles, /grid-template-columns: repeat\(4, minmax\(0, 1fr\)\);/);
+  assert.match(styles, /grid-template-columns: minmax\(290px, 1\.06fr\) minmax\(330px, 0\.95fr\) minmax\(260px, 0\.42fr\);/);
+  assert.match(styles, /grid-template-columns: repeat\(6, minmax\(0, 1fr\)\);/);
   assert.match(page, /maxLength={TEXT_LIMIT}/);
   assert.doesNotMatch(page, /kosik#agb|sortiment-title|id="sortiment"|Selected motivs|Choose a motiv|chosen motiv|custom motiv|reading motiv|Motiv series|Motiv style|motiv engraving|engraved motivs/);
   assert.match(routeFallback, /CatchAllPage/);

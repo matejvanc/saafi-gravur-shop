@@ -13,6 +13,7 @@ const GIFT_WRAP_PRICE = 1;
 const BRAND_NAME = "Saafi Gravur";
 const CART_STORAGE_KEY = "saafi-gravur-cart";
 const LEGACY_CART_STORAGE_KEY = "feine-gravur-cart";
+const LANGUAGE_STORAGE_KEY = "saafi-gravur-language";
 
 type LanguageCode = "de" | "en" | "cs" | "fr" | "it";
 
@@ -27,8 +28,6 @@ const languages: Array<{ code: LanguageCode; label: string; name: string }> = [
 const ui = {
   de: {
     pageTitle: `${BRAND_NAME} | Personalisierte Geschenke`,
-    notice:
-      "Personalisierte Gravurgeschenke - deutsche Shopoberfläche, Produkttexte und Zahlarten werden im nächsten Schritt finalisiert.",
     brandSubtitle: "Personalisierte Geschenke",
     nav: {
       configurator: "Konfigurator",
@@ -62,26 +61,26 @@ const ui = {
     detailPhoto: "Detail",
     selectProduct: "Auswählen",
     service: [
-      ["Kurze Personalisierung", "Bis 12 Zeichen für saubere Gravurflächen."],
-      ["Ausgewählte Motive", "Logo-Auswahl pro Geschenk kombinierbar."],
-      ["Mehrere Produktlinien", "Weihnachten, Lesen, Schlüssel und Holzschreibwaren."],
+      ["Mit Namen graviert", "Persönliche Details machen jedes Geschenk einzigartig."],
+      ["Mit Liebe gestaltet", "Wähle Motiv, Farbe und Ausführung passend zum Anlass."],
+      ["Geschenke aus Holz & Glas", "Weihnachtskugeln, Lesezeichen, Anhänger und mehr."],
     ],
     assortmentKicker: "Sortiment",
     assortmentTitle: "Personalisierbare Produkte",
     detailsKicker: "Produktdetails",
-    detailsTitle: "Vorbereitet für den Verkauf",
+    detailsTitle: "Kleine Geschenke, große Freude",
     detailCards: [
       [
-        "Personalisierung",
-        "Jedes Produkt nutzt denselben Bestellfluss: Text eingeben, Motiv wählen, Ausführung auswählen und in den Warenkorb legen.",
+        "Für den Weihnachtsbaum",
+        "Gestalte deine Weihnachtskugel mit Namen, Wunschmotiv und einer Farbe, die zu deiner Festtagsdekoration passt.",
       ],
       [
-        "Produktdaten",
-        "Preise, Maße und Materialien sind als Produktdaten angelegt und können später direkt pro Artikel finalisiert werden.",
+        "Für Leseratten",
+        "Ein graviertes Holzlesezeichen mit farbigem Quastenband begleitet Lieblingsbücher und eignet sich als persönliche Aufmerksamkeit.",
       ],
       [
-        "Bestellung",
-        "Der Checkout bleibt vorbereitet, bis Zahlungsarten, Versandkosten und rechtliche Pflichtangaben final feststehen.",
+        "Für jeden Tag",
+        "Holzanhänger, Flaschenöffner und Kugelschreiber erhalten mit einer individuellen Gravur eine persönliche Note.",
       ],
     ],
     termsKicker: "AGB",
@@ -89,31 +88,29 @@ const ui = {
     terms: [
       [
         "1. Geltungsbereich",
-        `Diese Bedingungen gelten für Bestellungen im Online-Shop ${BRAND_NAME}. Abweichende Regelungen gelten nur, wenn sie schriftlich bestätigt wurden.`,
+        `Diese Allgemeinen Geschäftsbedingungen regeln den Verkauf von personalisierten Gravurprodukten über den Online-Shop ${BRAND_NAME}. Sie gelten für alle Bestellungen und ergänzen die gesetzlichen Vorschriften. Abweichende Vereinbarungen sind nur wirksam, wenn sie schriftlich bestätigt wurden.`,
       ],
       [
-        "2. Bestellung",
-        "Kundinnen und Kunden wählen Produkt, Menge und Personalisierung aus. Vor dem Absenden können Eingaben geprüft und korrigiert werden.",
+        "2. Bestellung und Vertragsschluss",
+        "Der Kunde wählt Produkt, Menge, Personalisierung und Lieferadresse aus. Mit dem Absenden der Bestellung kommt ein verbindlicher Kaufvertrag zustande. Vor dem Abschluss können Angaben überprüft und korrigiert werden.",
       ],
       [
         "3. Personalisierte Waren",
-        "Gravierte Artikel werden nach Kundenvorgabe gefertigt. Schreibfehler in übermittelten Texten werden nur korrigiert, wenn sie vor Produktionsbeginn gemeldet werden.",
+        "Gravierte Produkte werden nach den vom Kunden angegebenen Texten und Motiven gefertigt. Übermittelte Texte sind verbindlich. Schreibfehler, falsche Angaben oder Änderungen nach Produktionsbeginn können zusätzliche Kosten oder Lieferverzögerungen verursachen.",
       ],
       [
-        "4. Preise und Zahlung",
-        "Alle Preise verstehen sich inklusive gesetzlicher Umsatzsteuer zuzüglich Versandkosten. Die verfügbaren Zahlungsarten werden im Checkout angezeigt.",
+        "4. Preise, Versand und Zahlung",
+        "Die Preise verstehen sich inklusive gesetzlicher Umsatzsteuer, sofern nicht anders angegeben. Versandkosten werden im Checkout transparent ausgewiesen. Zahlungen erfolgen nach den im Shop angegebenen Zahlungsarten.",
       ],
       [
-        "5. Lieferung",
-        "Die Lieferzeit richtet sich nach Produkt und Auftragslage. Verzögerungen durch unklare Personalisierungsangaben können die Fertigung verlängern.",
+        "5. Lieferzeiten",
+        "Die Lieferzeit richtet sich nach Produkt, Auftragslage und Personalisierungsaufwand. Für Verzögerungen, die durch unklare oder unvollständige Kundendaten entstehen, übernimmt der Shop keine Haftung.",
       ],
       [
-        "6. Gewährleistung",
-        "Es gelten die gesetzlichen Gewährleistungsrechte. Bei Transportschäden oder Produktionsfehlern bitten wir um eine zeitnahe Nachricht mit Foto.",
+        "6. Gewährleistung und Reklamation",
+        "Es gelten die gesetzlichen Gewährleistungsrechte. Mängel oder Transportschäden sind unverzüglich, idealerweise mit Foto, zu melden. Bei Produktionsfehlern wird nach Absprache eine Rückgabe, Nacharbeit oder Ersatzlösung vereinbart.",
       ],
     ],
-    termsNote:
-      "Mustertext für den Prototyp. Firmenangaben, Widerrufsbelehrung, Datenschutz, Versand und Zahlungsarten sollten vor Veröffentlichung rechtlich geprüft und ergänzt werden.",
     dataConsentLabel:
       "Ich stimme der Verarbeitung meiner Angaben zur Bearbeitung der Bestellung zu.",
     termsConsentLabel: "Ich akzeptiere die Allgemeinen Geschäftsbedingungen.",
@@ -155,8 +152,6 @@ const ui = {
   },
   en: {
     pageTitle: `${BRAND_NAME} | Personalised Gifts`,
-    notice:
-      "Personalised engraved gifts - product copy, payment methods and final shop details will be completed in the next step.",
     brandSubtitle: "Personalised gifts",
     nav: {
       configurator: "Configurator",
@@ -190,26 +185,26 @@ const ui = {
     detailPhoto: "Detail",
     selectProduct: "Select",
     service: [
-      ["Short personalisation", "Up to 12 characters for clean engraving areas."],
-      ["Selected designs", "Combine each gift with a logo design from the range."],
-      ["Several product lines", "Christmas, reading, keychains and wooden stationery."],
+      ["Made personal", "Add a name or short message to make a gift your own."],
+      ["Thoughtful details", "Choose a design, colour and style to suit the occasion."],
+      ["Wood and glass gifts", "Christmas baubles, bookmarks, keychains and more."],
     ],
     assortmentKicker: "Products",
     assortmentTitle: "Personalised products",
     detailsKicker: "Product details",
-    detailsTitle: "Prepared for selling",
+    detailsTitle: "Small gifts, lasting memories",
     detailCards: [
       [
-        "Personalisation",
-        "Every product uses the same order flow: enter text, choose a design, select a finish and add it to the cart.",
+        "For the Christmas tree",
+        "Personalise a Christmas bauble with a name and motif, then choose a colour and finish for your festive decorations.",
       ],
       [
-        "Product data",
-        "Prices, dimensions and materials are stored as product data and can be finalised per item later.",
+        "For book lovers",
+        "A birch plywood bookmark with a colourful tassel makes a thoughtful gift for readers and a keepsake for favourite books.",
       ],
       [
-        "Ordering",
-        "Checkout is prepared and waiting for payment methods, shipping prices and final legal details.",
+        "Made for everyday use",
+        "Engraved wooden keychains, bottle openers and ballpoint pens bring a personal touch to useful everyday gifts.",
       ],
     ],
     termsKicker: "Terms",
@@ -217,31 +212,29 @@ const ui = {
     terms: [
       [
         "1. Scope",
-        `These terms apply to orders placed in the ${BRAND_NAME} online shop. Different arrangements apply only when confirmed in writing.`,
+        `These General Terms apply to all sales of personalised engraved products via the ${BRAND_NAME} online shop. They apply alongside mandatory statutory provisions and only differ by written agreement.`,
       ],
       [
-        "2. Orders",
-        "Customers choose the product, quantity and personalisation. Entries can be reviewed and corrected before submission.",
+        "2. Order and contract formation",
+        "The customer selects the product, quantity, personalisation and delivery details. Once the order is submitted, a binding purchase contract is formed. Details can still be checked and corrected before final submission.",
       ],
       [
         "3. Personalised goods",
-        "Engraved items are made according to customer instructions. Spelling errors in submitted text can only be corrected before production begins.",
+        "Each engraved item is produced according to the customer's submitted text and motif selections. Submitted details are binding. Wrong spelling, incomplete information or changes after production starts may lead to additional costs or delays.",
       ],
       [
-        "4. Prices and payment",
-        "All prices include statutory VAT and exclude shipping costs. Available payment methods will be shown during checkout.",
+        "4. Prices, shipping and payment",
+        "All prices include applicable VAT unless otherwise stated. Shipping costs are shown transparently in the checkout. Payments are processed according to the payment methods available in the shop.",
       ],
       [
-        "5. Delivery",
-        "Delivery time depends on the product and workload. Unclear personalisation details may extend production time.",
+        "5. Delivery times",
+        "Delivery times depend on the product, production load and complexity of the personalisation. Delays caused by unclear or incomplete customer information are not considered a defect of the shop.",
       ],
       [
-        "6. Warranty",
-        "Statutory warranty rights apply. For transport damage or production defects, please contact us promptly with a photo.",
+        "6. Warranty and complaint handling",
+        "Statutory warranty rights apply. Transport damage or production defects must be reported promptly, ideally with photos. In such cases, a return, remake or replacement solution will be agreed upon.",
       ],
     ],
-    termsNote:
-      "Sample text for the prototype. Business details, withdrawal policy, privacy, shipping and payment methods should be legally checked and completed before publication.",
     dataConsentLabel:
       "I agree that my details may be processed to handle the order.",
     termsConsentLabel: "I accept the general terms and conditions.",
@@ -283,8 +276,6 @@ const ui = {
   },
   cs: {
     pageTitle: `${BRAND_NAME} | Personalizované dárky`,
-    notice:
-      "Personalizované gravírované dárky - produktové texty, platební metody a finální údaje obchodu doplníme v dalším kroku.",
     brandSubtitle: "Personalizované dárky",
     nav: {
       configurator: "Konfigurátor",
@@ -318,26 +309,26 @@ const ui = {
     detailPhoto: "Detail",
     selectProduct: "Vybrat",
     service: [
-      ["Krátká personalizace", "Do 12 znaků pro čisté gravírovací plochy."],
-      ["Vybrané motivy", "Logo motiv lze kombinovat s každým dárkem."],
-      ["Více produktových řad", "Vánoce, čtení, přívěšky a dřevěné psací potřeby."],
+      ["Dárek se jménem", "Jméno nebo krátké věnování promění dárek v osobní vzpomínku."],
+      ["Promyšlené detaily", "Vyberte motiv, barvu a provedení podle příležitosti."],
+      ["Dřevo i sklo", "Vánoční koule, záložky, přívěšky a další dárky."],
     ],
     assortmentKicker: "Produkty",
     assortmentTitle: "Personalizovatelné produkty",
     detailsKicker: "Produktové detaily",
-    detailsTitle: "Připraveno pro prodej",
+    detailsTitle: "Malé dárky s osobním příběhem",
     detailCards: [
       [
-        "Personalizace",
-        "Každý produkt používá stejný objednávkový postup: zadat text, vybrat motiv, zvolit provedení a vložit do košíku.",
+        "Na vánoční stromeček",
+        "Vánoční kouli ozdobte jménem či motivem a zvolte barvu i povrch, které ladí s vaší sváteční výzdobou.",
       ],
       [
-        "Produktová data",
-        "Ceny, rozměry a materiály jsou uložené jako produktová data a půjdou později doladit pro každý artikl.",
+        "Pro milovníky knih",
+        "Dřevěná záložka z březové překližky s barevným střapcem potěší čtenáře a označí stránku v oblíbené knize.",
       ],
       [
-        "Objednávka",
-        "Checkout je připravený a čeká na platební metody, dopravu a finální právní údaje.",
+        "Pro každý den",
+        "Dřevěný přívěšek, otvírák nebo propiska s gravírováním promění praktickou věc v osobní dárek.",
       ],
     ],
     termsKicker: "Podmínky",
@@ -345,31 +336,29 @@ const ui = {
     terms: [
       [
         "1. Rozsah platnosti",
-        `Tyto podmínky platí pro objednávky v online obchodě ${BRAND_NAME}. Odlišná ujednání platí pouze tehdy, pokud byla písemně potvrzena.`,
+        `Tyto všeobecné obchodní podmínky upravují prodej personalizovaných gravírovaných výrobků prostřednictvím online obchodu ${BRAND_NAME}. Platí vedle povinných zákonných ustanovení a mohou být odlišně upraveny pouze písemnou dohodou.`,
       ],
       [
-        "2. Objednávka",
-        "Zákazníci vybírají produkt, množství a personalizaci. Před odesláním lze údaje zkontrolovat a opravit.",
+        "2. Objednávka a uzavření smlouvy",
+        "Zákazník vybere produkt, množství, personalizaci a údaje pro doručení. Po odeslání objednávky vzniká závazná kupní smlouva. Údaje je možné ještě před dokončením objednávky zkontrolovat a upravit.",
       ],
       [
         "3. Personalizované zboží",
-        "Gravírované produkty se vyrábějí podle zadání zákazníka. Překlepy v odeslaném textu lze opravit jen před zahájením výroby.",
+        "Gravírované výrobky se vyrábějí podle textů a motivů, které zákazník zadá. Odeslané údaje jsou závazné. Chybný překlep, neúplné informace nebo změna po zahájení výroby mohou vést k dodatečným nákladům nebo prodloužení dodací lhůty.",
       ],
       [
-        "4. Ceny a platba",
-        "Všechny ceny jsou uvedeny včetně zákonné DPH a bez dopravy. Dostupné platební metody se zobrazí v checkoutu.",
+        "4. Ceny, doprava a platba",
+        "Všechny ceny jsou uvedeny včetně příslušné DPH, pokud není stanoveno jinak. Náklady na dopravu jsou v pokladně zobrazeny transparentně. Platby se provádějí podle dostupných platebních metod v e-shopu.",
       ],
       [
-        "5. Dodání",
-        "Doba dodání závisí na produktu a vytížení výroby. Nejasné údaje k personalizaci mohou výrobu prodloužit.",
+        "5. Dodací lhůty",
+        "Dodací lhůty závisí na výrobku, vytížení výroby a složitosti personalizace. Zpoždění vzniklá z důvodu nejasných nebo neúplných údajů zákazníka nejsou považována za vadu obchodu.",
       ],
       [
-        "6. Záruka",
-        "Platí zákonná práva z vadného plnění. U poškození při dopravě nebo výrobní vady prosíme o rychlou zprávu s fotografií.",
+        "6. Záruka a reklamace",
+        "Platí zákonná práva z vadného plnění. Poškození při dopravě nebo výrobní vady je nutné nahlásit neprodleně, ideálně s fotografiemi. V takových případech se dohodne vrácení, oprava, dodělání nebo náhrada.",
       ],
     ],
-    termsNote:
-      "Vzorový text pro prototyp. Údaje firmy, odstoupení od smlouvy, ochranu osobních údajů, dopravu a platby je potřeba před zveřejněním právně zkontrolovat a doplnit.",
     dataConsentLabel:
       "Souhlasím se zpracováním údajů pro vyřízení objednávky.",
     termsConsentLabel: "Souhlasím s obchodními podmínkami.",
@@ -411,8 +400,6 @@ const ui = {
   },
   fr: {
     pageTitle: `${BRAND_NAME} | Cadeaux personnalisés`,
-    notice:
-      "Cadeaux gravés personnalisés - les textes produits, les moyens de paiement et les informations finales de la boutique seront complétés ensuite.",
     brandSubtitle: "Cadeaux personnalisés",
     nav: {
       configurator: "Configurateur",
@@ -446,26 +433,26 @@ const ui = {
     detailPhoto: "Détail",
     selectProduct: "Choisir",
     service: [
-      ["Personnalisation courte", "Jusqu'à 12 caractères pour une gravure nette."],
-      ["Motifs sélectionnés", "Associez chaque cadeau à un motif de la sélection."],
-      ["Plusieurs gammes", "Noël, lecture, porte-clés et papeterie en bois."],
+      ["Un cadeau à votre image", "Ajoutez un prénom ou un petit mot pour le rendre unique."],
+      ["Des détails choisis", "Sélectionnez un motif, une couleur et une finition adaptés à l'occasion."],
+      ["Bois et verre", "Boules de Noël, marque-pages, porte-clés et cadeaux utiles."],
     ],
     assortmentKicker: "Produits",
     assortmentTitle: "Produits personnalisables",
     detailsKicker: "Détails produit",
-    detailsTitle: "Prêt pour la vente",
+    detailsTitle: "De petites attentions qui restent",
     detailCards: [
       [
-        "Personnalisation",
-        "Chaque produit suit le même parcours: saisir le texte, choisir un motif, sélectionner une finition et ajouter au panier.",
+        "Pour le sapin",
+        "Personnalisez votre boule de Noël avec un prénom ou un motif, puis choisissez sa couleur et sa finition.",
       ],
       [
-        "Données produit",
-        "Les prix, dimensions et matériaux sont enregistrés comme données produit et pourront être finalisés article par article.",
+        "Pour les lecteurs",
+        "Un marque-page en contreplaqué de bouleau avec pompon coloré accompagne les romans préférés et les nouvelles découvertes.",
       ],
       [
-        "Commande",
-        "Le paiement est préparé et attend les moyens de paiement, les frais de livraison et les mentions légales finales.",
+        "Pour tous les jours",
+        "Porte-clés, décapsuleurs et stylos en bois gravés deviennent des petits cadeaux vraiment personnels.",
       ],
     ],
     termsKicker: "CGV",
@@ -473,31 +460,29 @@ const ui = {
     terms: [
       [
         "1. Champ d'application",
-        `Ces conditions s'appliquent aux commandes passées dans la boutique en ligne ${BRAND_NAME}. Les dispositions différentes ne s'appliquent que si elles sont confirmées par écrit.`,
+        `Ces conditions générales s'appliquent à toutes les ventes de produits gravés personnalisés via la boutique en ligne ${BRAND_NAME}. Elles s'appliquent en plus des règles légales obligatoires et ne peuvent être modifiées que par accord écrit.`,
       ],
       [
-        "2. Commande",
-        "Les clients choisissent le produit, la quantité et la personnalisation. Les informations peuvent être vérifiées et corrigées avant l'envoi.",
+        "2. Commande et conclusion du contrat",
+        "Le client choisit le produit, la quantité, la personnalisation et les données de livraison. Une fois la commande envoyée, un contrat d'achat est conclu. Les informations peuvent encore être vérifiées et modifiées avant l'envoi final.",
       ],
       [
         "3. Produits personnalisés",
-        "Les articles gravés sont fabriqués selon les indications du client. Les erreurs dans le texte transmis ne peuvent être corrigées qu'avant le début de la production.",
+        "Les articles gravés sont fabriqués selon les textes et motifs transmis par le client. Les indications fournies sont définitives. Une erreur orthographique, des informations incomplètes ou une modification après le début de la production peuvent entraîner des coûts supplémentaires ou des retards.",
       ],
       [
-        "4. Prix et paiement",
-        "Tous les prix incluent la TVA légale et n'incluent pas les frais de livraison. Les moyens de paiement disponibles seront affichés au paiement.",
+        "4. Prix, livraison et paiement",
+        "Tous les prix incluent la TVA applicable, sauf indication contraire. Les frais de livraison sont affichés de manière transparente au moment du paiement. Les paiements sont effectués selon les moyens de paiement disponibles dans le shop.",
       ],
       [
-        "5. Livraison",
-        "Le délai de livraison dépend du produit et de la charge de production. Des informations de personnalisation imprécises peuvent prolonger la fabrication.",
+        "5. Délais de livraison",
+        "Les délais de livraison dépendent du produit, de la charge de production et de la complexité de la personnalisation. Les retards causés par des données client incomplètes ou imprécises ne sont pas considérés comme un défaut du shop.",
       ],
       [
-        "6. Garantie",
-        "Les droits légaux de garantie s'appliquent. En cas de dommage de transport ou de défaut de fabrication, merci de nous contacter rapidement avec une photo.",
+        "6. Garantie et réclamations",
+        "Les droits légaux à la garantie s'appliquent. Les dommages de transport ou défauts de fabrication doivent être signalés rapidement, idéalement avec photos. Un échange, une reprise ou une solution de remplacement sera alors convenu.",
       ],
     ],
-    termsNote:
-      "Texte exemple pour le prototype. Les informations de l'entreprise, le droit de rétractation, la confidentialité, la livraison et les moyens de paiement doivent être vérifiés juridiquement et complétés avant publication.",
     dataConsentLabel:
       "J'accepte le traitement de mes données pour la gestion de la commande.",
     termsConsentLabel: "J'accepte les conditions générales de vente.",
@@ -539,8 +524,6 @@ const ui = {
   },
   it: {
     pageTitle: `${BRAND_NAME} | Regali personalizzati`,
-    notice:
-      "Regali incisi personalizzati - testi prodotto, metodi di pagamento e dettagli finali del negozio saranno completati nel prossimo passaggio.",
     brandSubtitle: "Regali personalizzati",
     nav: {
       configurator: "Configuratore",
@@ -574,26 +557,26 @@ const ui = {
     detailPhoto: "Dettaglio",
     selectProduct: "Scegli",
     service: [
-      ["Personalizzazione breve", "Fino a 12 caratteri per aree di incisione pulite."],
-      ["Motivi selezionati", "Abbina ogni regalo a un motivo logo della selezione."],
-      ["Più linee prodotto", "Natale, lettura, portachiavi e articoli in legno."],
+      ["Un regalo personale", "Aggiungi un nome o un breve messaggio per renderlo unico."],
+      ["Dettagli scelti da te", "Scegli motivo, colore e finitura per l'occasione."],
+      ["Legno e vetro", "Palline di Natale, segnalibri, portachiavi e regali utili."],
     ],
     assortmentKicker: "Prodotti",
     assortmentTitle: "Prodotti personalizzabili",
     detailsKicker: "Dettagli prodotto",
-    detailsTitle: "Pronto per la vendita",
+    detailsTitle: "Piccoli regali, ricordi speciali",
     detailCards: [
       [
-        "Personalizzazione",
-        "Ogni prodotto usa lo stesso flusso d'ordine: inserisci il testo, scegli un motivo, seleziona la finitura e aggiungi al carrello.",
+        "Per l'albero di Natale",
+        "Personalizza la pallina natalizia con un nome o un motivo e scegli colore e finitura per le tue decorazioni.",
       ],
       [
-        "Dati prodotto",
-        "Prezzi, dimensioni e materiali sono salvati come dati prodotto e potranno essere finalizzati per ogni articolo.",
+        "Per chi ama leggere",
+        "Un segnalibro in compensato di betulla con nappina colorata è un pensiero personale per ogni lettore.",
       ],
       [
-        "Ordine",
-        "Il checkout è pronto e attende metodi di pagamento, costi di spedizione e informazioni legali finali.",
+        "Per ogni giorno",
+        "Portachiavi, apribottiglie e penne in legno incisi aggiungono un tocco personale a oggetti pratici.",
       ],
     ],
     termsKicker: "Condizioni",
@@ -624,8 +607,6 @@ const ui = {
         "Si applicano i diritti di garanzia previsti dalla legge. In caso di danni da trasporto o difetti di produzione, contattaci presto con una foto.",
       ],
     ],
-    termsNote:
-      "Testo campione per il prototipo. Dati aziendali, diritto di recesso, privacy, spedizione e metodi di pagamento devono essere verificati legalmente e completati prima della pubblicazione.",
     dataConsentLabel:
       "Acconsento al trattamento dei miei dati per la gestione dell'ordine.",
     termsConsentLabel: "Accetto le condizioni generali di vendita.",
@@ -673,7 +654,7 @@ const homeCopy = {
     eyebrow: "Geschenke mit Gravur",
     title: BRAND_NAME,
     lead:
-      "Personalisierte Kleinigkeiten aus Glas und Holz, die schnell bestellt sind und trotzdem sehr persönlich wirken.",
+      "Persönliche Weihnachtskugeln und liebevoll gravierte Geschenke aus Holz – gestaltet für festliche Momente und kleine Freuden im Alltag.",
     primaryCta: "Jetzt konfigurieren",
     secondaryCta: "Sortiment ansehen",
     highlights: ["Eigener Text", "Motiv auswählen", "Liebevoll verpackt"],
@@ -684,7 +665,7 @@ const homeCopy = {
     eyebrow: "Engraved gifts",
     title: BRAND_NAME,
     lead:
-      "Personalised glass and wooden keepsakes that are easy to order and still feel truly personal.",
+      "Personalised Christmas baubles and thoughtfully engraved wooden gifts, made to bring a little warmth to the festive season and beyond.",
     primaryCta: "Start configuring",
     secondaryCta: "View products",
     highlights: ["Custom text", "Choose a design", "Packed with care"],
@@ -695,7 +676,7 @@ const homeCopy = {
     eyebrow: "Dárky s gravírováním",
     title: BRAND_NAME,
     lead:
-      "Personalizované drobnosti ze skla a dřeva, které se objednávají jednoduše a přitom působí opravdu osobně.",
+      "Vánoční koule s vlastním motivem i pečlivě gravírované dřevěné dárky pro sváteční chvíle a každodenní radost.",
     primaryCta: "Začít konfigurovat",
     secondaryCta: "Zobrazit produkty",
     highlights: ["Vlastní text", "Výběr motivu", "Pečlivě zabalené"],
@@ -706,7 +687,7 @@ const homeCopy = {
     eyebrow: "Cadeaux gravés",
     title: BRAND_NAME,
     lead:
-      "De petites attentions personnalisées en verre et en bois, faciles à commander et vraiment personnelles.",
+      "Boules de Noël personnalisées et cadeaux en bois gravés avec soin, pour les fêtes comme pour les petits plaisirs du quotidien.",
     primaryCta: "Configurer",
     secondaryCta: "Voir les produits",
     highlights: ["Texte personnalisé", "Choix du motif", "Emballé avec soin"],
@@ -717,7 +698,7 @@ const homeCopy = {
     eyebrow: "Regali incisi",
     title: BRAND_NAME,
     lead:
-      "Piccoli ricordi personalizzati in vetro e legno, semplici da ordinare e davvero personali.",
+      "Palline di Natale personalizzate e regali in legno incisi con cura, per le feste e per i piccoli momenti di ogni giorno.",
     primaryCta: "Configura ora",
     secondaryCta: "Vedi prodotti",
     highlights: ["Testo personalizzato", "Scegli il motivo", "Confezionato con cura"],
@@ -845,12 +826,8 @@ const flowCopy = {
 
 const introPhotos = [
   {
-    productId: "weihnachtskugeln",
+    productId: "kule-jednostranna-1",
     src: "/products/christmas-baubles-main.jpeg",
-  },
-  {
-    productId: "weihnachtskugeln-beidseitig",
-    src: "/products/christmas-baubles-color-set.jpeg",
   },
   {
     productId: "lesezeichen",
@@ -873,33 +850,33 @@ const introPhotos = [
 const logoOptions = [
   {
     id: "herz",
-    mark: "♡",
+    mark: "♥",
     label: { de: "Herz", en: "Heart", cs: "Srdce", fr: "Cœur", it: "Cuore" },
   },
   {
-    id: "sterne",
+    id: "fisch",
+    mark: "◌",
+    label: { de: "Fisch", en: "Fish", cs: "Ryba", fr: "Poisson", it: "Pesce" },
+  },
+  {
+    id: "auto",
+    mark: "◇",
+    label: { de: "Auto", en: "Car", cs: "Auto", fr: "Voiture", it: "Auto" },
+  },
+  {
+    id: "zug",
+    mark: "▣",
+    label: { de: "Zug", en: "Train", cs: "Vlak", fr: "Train", it: "Treno" },
+  },
+  {
+    id: "srdicko",
+    mark: "❤",
+    label: { de: "Srdicko", en: "Heart", cs: "Srdíčko", fr: "Cœur", it: "Cuore" },
+  },
+  {
+    id: "tlapka",
     mark: "✦",
-    label: { de: "Sterne", en: "Stars", cs: "Hvězdy", fr: "Étoiles", it: "Stelle" },
-  },
-  {
-    id: "pfote",
-    mark: "●",
-    label: { de: "Pfote", en: "Paw", cs: "Tlapka", fr: "Patte", it: "Zampa" },
-  },
-  {
-    id: "buch",
-    mark: "▱",
-    label: { de: "Buch", en: "Book", cs: "Kniha", fr: "Livre", it: "Libro" },
-  },
-  {
-    id: "initiale",
-    mark: "A",
-    label: { de: "Initiale", en: "Initial", cs: "Iniciála", fr: "Initiale", it: "Iniziale" },
-  },
-  {
-    id: "lineart",
-    mark: "◎",
-    label: { de: "Line-Art", en: "Line art", cs: "Linka", fr: "Line art", it: "Line art" },
+    label: { de: "Tlapka", en: "Paw", cs: "Tlapka", fr: "Patte", it: "Zampa" },
   },
 ];
 
@@ -947,260 +924,351 @@ type Product = {
 
 const products: Product[] = [
   {
-    id: "weihnachtskugeln",
+    id: "kule-jednostranna-1",
     price: 7,
     previewClass: "circle",
     supportsGiftWrap: true,
     translations: {
       de: {
-        category: "Weihnachten",
-        badge: "Saisonfavorit",
-        name: "Gravierte Weihnachtskugeln",
-        shortName: "Weihnachtskugeln",
+        category: "Kugeln",
+        badge: "Personalisierbar",
+        name: "Weihnachtskugel",
+        shortName: "Weihnachtskugel",
         delivery: "4-7 Werktage",
         material: "Glas oder Holz",
         size: "ca. 8 cm",
-        lead:
-          "Personalisierte Weihnachtskugeln mit Name, Kurztext und gewähltem Motiv. Ideal als kleines Geschenk oder für den eigenen Baum.",
-        personalization: "Name, Jahr, Herz, Sterne oder Wunschmotiv",
-        finishLabel: "Farbe / Form",
+        lead: "Gestalte eine Weihnachtskugel mit einem Namen oder kurzen Gruß. Du kannst zwischen einseitiger Gravur, einem Kugelset und zwei doppelseitigen Ausführungen wählen und anschließend Farbe und Oberfläche bestimmen.",
+        personalization: "Name oder kurzer Gruß; Ausführung und Kugelfarbe auswählbar",
+        finishLabel: "Farbe / Oberfläche",
       },
       en: {
-        category: "Christmas",
-        badge: "Season favourite",
-        name: "Engraved Christmas Baubles",
-        shortName: "Baubles",
+        category: "Baubles",
+        badge: "Personalised",
+        name: "Christmas bauble",
+        shortName: "Christmas bauble",
         delivery: "4-7 working days",
         material: "Glass or wood",
         size: "approx. 8 cm",
-        lead:
-          "Personalised Christmas baubles with a name, short text and chosen design. Perfect as a small gift or for your own tree.",
-        personalization: "Name, year, heart, stars or custom design",
-        finishLabel: "Colour / shape",
+        lead: "Create a Christmas bauble engraved with a name or short greeting. Choose a one-sided design, a bauble set or one of two double-sided styles, then select the colour and finish.",
+        personalization: "Name or short greeting; choose the style and bauble colour",
+        finishLabel: "Colour / finish",
       },
       cs: {
-        category: "Vánoce",
-        badge: "Sezónní favorit",
-        name: "Gravírované vánoční ozdoby",
-        shortName: "Vánoční ozdoby",
+        category: "Koule",
+        badge: "Personalizovatelná",
+        name: "Vánoční koule",
+        shortName: "Vánoční koule",
         delivery: "4-7 pracovních dnů",
         material: "Sklo nebo dřevo",
         size: "cca 8 cm",
-        lead:
-          "Personalizované vánoční ozdoby se jménem, krátkým textem a vybraným motivem. Ideální jako malý dárek nebo na vlastní stromek.",
-        personalization: "Jméno, rok, srdce, hvězdy nebo vlastní motiv",
-        finishLabel: "Barva / tvar",
+        lead: "Vytvořte vánoční kouli se jménem nebo krátkým přáním. Vyberte jednostranné provedení, set koulí nebo jednu ze dvou oboustranných variant a potom barvu a povrch.",
+        personalization: "Jméno nebo krátké přání; volba provedení a barvy",
+        finishLabel: "Barva / povrch",
       },
       fr: {
-        category: "Noël",
-        badge: "Favori de saison",
-        name: "Boules de Noël gravées",
-        shortName: "Boules de Noël",
+        category: "Boules",
+        badge: "Personnalisable",
+        name: "Boule de Noël",
+        shortName: "Boule de Noël",
         delivery: "4-7 jours ouvrés",
         material: "Verre ou bois",
         size: "env. 8 cm",
-        lead:
-          "Boules de Noël personnalisées avec prénom, texte court et motif choisi. Idéales comme petit cadeau ou pour votre propre sapin.",
-        personalization: "Prénom, année, cœur, étoiles ou motif au choix",
-        finishLabel: "Couleur / forme",
+        lead: "Créez une boule de Noël gravée avec un prénom ou un court message. Choisissez un modèle simple face, un lot ou l'une des deux versions double face, puis la couleur et la finition.",
+        personalization: "Prénom ou court message; modèle et couleur au choix",
+        finishLabel: "Couleur / finition",
       },
       it: {
-        category: "Natale",
-        badge: "Preferito stagionale",
-        name: "Palline di Natale incise",
-        shortName: "Palline di Natale",
+        category: "Palline",
+        badge: "Personalizzabile",
+        name: "Pallina di Natale",
+        shortName: "Pallina di Natale",
         delivery: "4-7 giorni lavorativi",
         material: "Vetro o legno",
         size: "ca. 8 cm",
-        lead:
-          "Palline di Natale personalizzate con nome, testo breve e motivo scelto. Perfette come piccolo regalo o per il proprio albero.",
-        personalization: "Nome, anno, cuore, stelle o motivo personalizzato",
-        finishLabel: "Colore / forma",
+        lead: "Crea una pallina di Natale incisa con un nome o un breve augurio. Scegli il modello a un lato, il set o una delle due versioni fronte-retro, poi colore e finitura.",
+        personalization: "Nome o breve augurio; modello e colore a scelta",
+        finishLabel: "Colore / finitura",
       },
     },
     finishes: [
-      {
-        id: "rot",
-        hex: "#a8323b",
-        edge: "#681722",
-        label: {
-          de: "Rot glänzend",
-          en: "Glossy red",
-          cs: "Lesklá červená",
-          fr: "Rouge brillant",
-          it: "Rosso lucido",
-        },
-      },
-      {
-        id: "gold",
-        hex: "#d6b26f",
-        edge: "#8a642d",
-        label: {
-          de: "Gold matt",
-          en: "Matte gold",
-          cs: "Matná zlatá",
-          fr: "Or mat",
-          it: "Oro opaco",
-        },
-      },
-      {
-        id: "blau",
-        hex: "#243f6e",
-        edge: "#142642",
-        label: {
-          de: "Nachtblau",
-          en: "Midnight blue",
-          cs: "Noční modrá",
-          fr: "Bleu nuit",
-          it: "Blu notte",
-        },
-      },
+      { id: "zelena-glanz", hex: "#3d7f5d", edge: "#1f4830", label: { de: "Grün glänzend", en: "Green gloss", cs: "Zelená lesklá", fr: "Vert brillant", it: "Verde lucido" } },
+      { id: "zelena-mat", hex: "#3d7f5d", edge: "#1f4830", label: { de: "Grün matt", en: "Green matte", cs: "Zelená matná", fr: "Vert mat", it: "Verde opaco" } },
+      { id: "cervena-glanz", hex: "#b03636", edge: "#671a1a", label: { de: "Rot glänzend", en: "Red gloss", cs: "Červená lesklá", fr: "Rouge brillant", it: "Rosso lucido" } },
+      { id: "cervena-mat", hex: "#b03636", edge: "#671a1a", label: { de: "Rot matt", en: "Red matte", cs: "Červená matná", fr: "Rouge mat", it: "Rosso opaco" } },
+      { id: "zlata-glanz", hex: "#d4b15d", edge: "#88652c", label: { de: "Gold glänzend", en: "Gold gloss", cs: "Zlatá lesklá", fr: "Or brillant", it: "Oro lucido" } },
+      { id: "zlata-mat", hex: "#d4b15d", edge: "#88652c", label: { de: "Gold matt", en: "Gold matte", cs: "Zlatá matná", fr: "Or mat", it: "Oro opaco" } },
+      { id: "hneda-glanz", hex: "#8d5d39", edge: "#53311d", label: { de: "Braun glänzend", en: "Brown gloss", cs: "Hnědá lesklá", fr: "Brun brillant", it: "Marrone lucido" } },
+      { id: "hneda-mat", hex: "#8d5d39", edge: "#53311d", label: { de: "Braun matt", en: "Brown matte", cs: "Hnědá matná", fr: "Brun mat", it: "Marrone opaco" } },
+      { id: "ruzova-glanz", hex: "#d8709a", edge: "#7a3c59", label: { de: "Rosa glänzend", en: "Pink gloss", cs: "Růžová lesklá", fr: "Rose brillant", it: "Rosa lucido" } },
+      { id: "ruzova-mat", hex: "#d8709a", edge: "#7a3c59", label: { de: "Rosa matt", en: "Pink matte", cs: "Růžová matná", fr: "Rose mat", it: "Rosa opaco" } },
+      { id: "modra-glanz", hex: "#3b6fa9", edge: "#1d3557", label: { de: "Blau glänzend", en: "Blue gloss", cs: "Modrá lesklá", fr: "Bleu brillant", it: "Blu lucido" } },
+      { id: "modra-mat", hex: "#3b6fa9", edge: "#1d3557", label: { de: "Blau matt", en: "Blue matte", cs: "Modrá matná", fr: "Bleu mat", it: "Blu opaco" } },
     ],
     photos: [
-      {
-        id: "main",
-        src: "/products/christmas-baubles-main.jpeg",
-        alt: {
-          de: "Hauptgrafik für gravierte Weihnachtskugeln",
-          en: "Main graphic for engraved Christmas baubles",
-          cs: "Hlavní grafika pro gravírované vánoční ozdoby",
-          fr: "Visuel principal pour boules de Noël gravées",
-          it: "Grafica principale per palline di Natale incise",
-        },
-      },
-      {
-        id: "wrapped",
-        src: "/products/christmas-baubles-wrapped.jpeg",
-        alt: {
-          de: "Rote personalisierte Weihnachtskugeln mit Schleife",
-          en: "Red personalised Christmas baubles with bows",
-          cs: "Červené personalizované vánoční ozdoby s mašlí",
-          fr: "Boules de Noël rouges personnalisées avec ruban",
-          it: "Palline di Natale rosse personalizzate con fiocco",
-        },
-      },
-      {
-        id: "set",
-        src: "/products/christmas-baubles-color-set.jpeg",
-        alt: {
-          de: "Set gravierter Weihnachtskugeln in mehreren Farben",
-          en: "Set of engraved Christmas baubles in several colours",
-          cs: "Sada gravírovaných vánočních ozdob v několika barvách",
-          fr: "Lot de boules de Noël gravées en plusieurs couleurs",
-          it: "Set di palline di Natale incise in più colori",
-        },
-      },
+      { id: "main", src: "/products/christmas-baubles-main.jpeg", alt: { de: "Hauptgrafik für einseitig gravierte Weihnachtskugel", en: "Main graphic for one-sided engraved bauble", cs: "Hlavní grafika pro jednostranně gravírovanou kouli", fr: "Visuel principal pour boule gravée sur une face", it: "Grafica principale per pallina incisa su un lato" } },
+      { id: "wrapped", src: "/products/christmas-baubles-wrapped.jpeg", alt: { de: "Einseitig gravierte Kugel mit Schleife", en: "One-sided engraved bauble with bow", cs: "Jednostranně gravírovaná koule s mašlí", fr: "Boule gravée sur une face avec ruban", it: "Pallina incisa su un lato con fiocco" } },
+      { id: "set", src: "/products/christmas-baubles-color-set.jpeg", alt: { de: "Set einseitig gravierter Kugeln in mehreren Farben", en: "Set of one-sided engraved baubles in several colours", cs: "Sada jednostranně gravírovaných koulí v několika barvách", fr: "Ensemble de boules gravées sur une face en plusieurs couleurs", it: "Set di palline incise su un lato in più colori" } },
     ],
   },
   {
-    id: "weihnachtskugeln-beidseitig",
+    id: "kule-jednostranna-2",
+    price: 8,
+    previewClass: "circle",
+    supportsGiftWrap: true,
+    translations: {
+      de: {
+        category: "Kugeln",
+        badge: "Einseitig",
+        name: "Personalisiertes Kugelset",
+        shortName: "Kugelset",
+        delivery: "4-7 Werktage",
+        material: "Glas oder Holz",
+        size: "ca. 8 cm",
+        lead: "Ein abgestimmtes Set personalisierter Weihnachtskugeln mit Namen oder kurzem Gruß – eine schöne Erinnerung für die Familie oder ein gemeinsames Geschenk.",
+        personalization: "Namen oder kurze Grüße für ein persönliches Kugelset",
+        finishLabel: "Farbe / Oberfläche",
+      },
+      en: {
+        category: "Baubles",
+        badge: "One-sided",
+        name: "Personalised Bauble Set",
+        shortName: "Bauble set",
+        delivery: "4-7 working days",
+        material: "Glass or wood",
+        size: "approx. 8 cm",
+        lead: "A coordinated set of personalised Christmas baubles engraved with names or short greetings, made for family trees and thoughtful shared gifts.",
+        personalization: "Names or short greetings across a bauble set",
+        finishLabel: "Colour / finish",
+      },
+      cs: {
+        category: "Koule",
+        badge: "Jednostranná",
+        name: "Personalizovaný set koulí",
+        shortName: "Set koulí",
+        delivery: "4-7 pracovních dnů",
+        material: "Sklo nebo dřevo",
+        size: "cca 8 cm",
+        lead: "Ladící set personalizovaných vánočních koulí se jmény nebo krátkým přáním potěší rodinu i jako společný dárek.",
+        personalization: "Jména nebo krátká přání na set koulí",
+        finishLabel: "Barva / povrch",
+      },
+      fr: {
+        category: "Boules",
+        badge: "Simple face",
+        name: "Set de boules personnalisées",
+        shortName: "Set de boules",
+        delivery: "4-7 jours ouvrés",
+        material: "Verre ou bois",
+        size: "env. 8 cm",
+        lead: "Un ensemble assorti de boules de Noël gravées avec des prénoms ou de courts messages, à offrir en famille ou à garder comme souvenir.",
+        personalization: "Prénoms ou courts messages pour un ensemble",
+        finishLabel: "Couleur / finition",
+      },
+      it: {
+        category: "Palline",
+        badge: "Una faccia",
+        name: "Set di palline personalizzate",
+        shortName: "Set palline",
+        delivery: "4-7 giorni lavorativi",
+        material: "Vetro o legno",
+        size: "ca. 8 cm",
+        lead: "Un set coordinato di palline natalizie incise con nomi o brevi auguri, ideale per l'albero di famiglia o come regalo condiviso.",
+        personalization: "Nomi o brevi auguri per un set di palline",
+        finishLabel: "Colore / finitura",
+      },
+    },
+    finishes: [
+      { id: "zelena-glanz", hex: "#3d7f5d", edge: "#1f4830", label: { de: "Grün glänzend", en: "Green gloss", cs: "Zelená lesklá", fr: "Vert brillant", it: "Verde lucido" } },
+      { id: "zelena-mat", hex: "#3d7f5d", edge: "#1f4830", label: { de: "Grün matt", en: "Green matte", cs: "Zelená matná", fr: "Vert mat", it: "Verde opaco" } },
+      { id: "cervena-glanz", hex: "#b03636", edge: "#671a1a", label: { de: "Rot glänzend", en: "Red gloss", cs: "Červená lesklá", fr: "Rouge brillant", it: "Rosso lucido" } },
+      { id: "cervena-mat", hex: "#b03636", edge: "#671a1a", label: { de: "Rot matt", en: "Red matte", cs: "Červená matná", fr: "Rouge mat", it: "Rosso opaco" } },
+      { id: "zlata-glanz", hex: "#d4b15d", edge: "#88652c", label: { de: "Gold glänzend", en: "Gold gloss", cs: "Zlatá lesklá", fr: "Or brillant", it: "Oro lucido" } },
+      { id: "zlata-mat", hex: "#d4b15d", edge: "#88652c", label: { de: "Gold matt", en: "Gold matte", cs: "Zlatá matná", fr: "Or mat", it: "Oro opaco" } },
+      { id: "hneda-glanz", hex: "#8d5d39", edge: "#53311d", label: { de: "Braun glänzend", en: "Brown gloss", cs: "Hnědá lesklá", fr: "Brun brillant", it: "Marrone lucido" } },
+      { id: "hneda-mat", hex: "#8d5d39", edge: "#53311d", label: { de: "Braun matt", en: "Brown matte", cs: "Hnědá matná", fr: "Brun mat", it: "Marrone opaco" } },
+      { id: "ruzova-glanz", hex: "#d8709a", edge: "#7a3c59", label: { de: "Rosa glänzend", en: "Pink gloss", cs: "Růžová lesklá", fr: "Rose brillant", it: "Rosa lucido" } },
+      { id: "ruzova-mat", hex: "#d8709a", edge: "#7a3c59", label: { de: "Rosa matt", en: "Pink matte", cs: "Růžová matná", fr: "Rose mat", it: "Rosa opaco" } },
+      { id: "modra-glanz", hex: "#3b6fa9", edge: "#1d3557", label: { de: "Blau glänzend", en: "Blue gloss", cs: "Modrá lesklá", fr: "Bleu brillant", it: "Blu lucido" } },
+      { id: "modra-mat", hex: "#3b6fa9", edge: "#1d3557", label: { de: "Blau matt", en: "Blue matte", cs: "Modrá matná", fr: "Bleu mat", it: "Blu opaco" } },
+    ],
+    photos: [
+      { id: "main", src: "/products/christmas-baubles-main.jpeg", alt: { de: "Grafik für die personalisierte Kugel", en: "Graphic for the personalised bauble", cs: "Grafika pro personalizovanou kouli", fr: "Visuel pour boule personnalisée", it: "Grafica per pallina personalizzata" } },
+      { id: "wrapped", src: "/products/christmas-baubles-wrapped.jpeg", alt: { de: "Personalisiertes Kugelset mit Schleife", en: "Personalised bauble set with bow", cs: "Personalizovaný set koulí s mašlí", fr: "Set de boules personnalisées avec ruban", it: "Set di palline personalizzate con fiocco" } },
+      { id: "set", src: "/products/christmas-baubles-color-set.jpeg", alt: { de: "Mehrfarbiges Kugelset", en: "Multi-colour bauble set", cs: "Vícebarevný set koulí", fr: "Set de boules multicolores", it: "Set di palline multicolori" } },
+    ],
+  },
+  {
+    id: "kule-dvojstranna-1",
     price: 9,
     previewClass: "circle",
     supportsGiftWrap: true,
     translations: {
       de: {
-        category: "Weihnachten",
-        badge: "Beidseitige Gravur",
-        name: "Beidseitig gravierte Weihnachtskugel",
+        category: "Kugeln",
+        badge: "Beidseitig",
+        name: "Beidseitig gravierte Kugel",
         shortName: "Kugel beidseitig",
         delivery: "4-7 Werktage",
         material: "Glas oder Holz",
         size: "ca. 8 cm",
-        lead:
-          "Die Vorderseite bleibt wie bei den klassischen Weihnachtskugeln personalisierbar. Auf der Rückseite wählst du einen von drei festlichen Grüßen.",
-        personalization: "Vorderseite mit Name und Motiv, Rückseite mit Weihnachtsgruß",
-        finishLabel: "Farbe / Form",
+        lead: "Vorderseite mit Namen und Motiv, Rückseite mit festlichem Spruch. Perfekt für besondere Gaben.",
+        personalization: "Vorderseite mit Namen und Motiv, Rückseite mit Wunschtext",
+        finishLabel: "Farbe / Oberfläche",
       },
       en: {
-        category: "Christmas",
-        badge: "Double-sided engraving",
-        name: "Double-Sided Engraved Christmas Bauble",
+        category: "Baubles",
+        badge: "Double-sided",
+        name: "Double-Sided Engraved Bauble",
         shortName: "Double bauble",
         delivery: "4-7 working days",
         material: "Glass or wood",
         size: "approx. 8 cm",
-        lead:
-          "The front stays customisable like the classic Christmas bauble. Choose one of three festive greetings for the back.",
-        personalization: "Front with name and design, back with Christmas greeting",
-        finishLabel: "Colour / shape",
+        lead: "Front side with name and motif, back side with festive message. Ideal for special gifts.",
+        personalization: "Front with name and motif, back with custom text",
+        finishLabel: "Colour / finish",
       },
       cs: {
-        category: "Vánoce",
-        badge: "Oboustranné gravírování",
-        name: "Oboustranně gravírovaná vánoční ozdoba",
-        shortName: "Ozdoba oboustranná",
+        category: "Koule",
+        badge: "Oboustranná",
+        name: "Oboustranně gravírovaná koule",
+        shortName: "Koule oboustranná",
         delivery: "4-7 pracovních dnů",
         material: "Sklo nebo dřevo",
         size: "cca 8 cm",
-        lead:
-          "Přední strana zůstává personalizovatelná stejně jako u klasické vánoční ozdoby. Na zadní stranu si vyberete jeden ze tří svátečních textů.",
-        personalization: "Přední strana se jménem a motivem, zadní strana s vánočním textem",
-        finishLabel: "Barva / tvar",
+        lead: "Přední strana s jménem a motivem, zadní strana se svátečním textem. Ideální pro speciální dárky.",
+        personalization: "Přední strana se jménem a motivem, zadní strana s přáním",
+        finishLabel: "Barva / povrch",
       },
       fr: {
-        category: "Noël",
-        badge: "Gravure double face",
-        name: "Boule de Noël gravée double face",
+        category: "Boules",
+        badge: "Double face",
+        name: "Boule gravée double face",
         shortName: "Boule double face",
         delivery: "4-7 jours ouvrés",
         material: "Verre ou bois",
         size: "env. 8 cm",
-        lead:
-          "Le recto reste personnalisable comme la boule de Noël classique. Choisissez l'un des trois messages festifs pour le verso.",
-        personalization: "Recto avec prénom et motif, verso avec message de Noël",
-        finishLabel: "Couleur / forme",
+        lead: "Face avant avec prénom et motif, dos avec message festif. Idéal pour cadeaux spéciaux.",
+        personalization: "Face avant avec nom et motif, dos avec texte souhaité",
+        finishLabel: "Couleur / finition",
       },
       it: {
-        category: "Natale",
-        badge: "Incisione fronte-retro",
-        name: "Pallina di Natale incisa fronte-retro",
+        category: "Palline",
+        badge: "Fronte-retro",
+        name: "Pallina incisa fronte-retro",
         shortName: "Pallina fronte-retro",
         delivery: "4-7 giorni lavorativi",
         material: "Vetro o legno",
         size: "ca. 8 cm",
-        lead:
-          "Il fronte resta personalizzabile come la pallina di Natale classica. Sul retro scegli uno dei tre auguri festivi.",
-        personalization: "Fronte con nome e motivo, retro con augurio di Natale",
-        finishLabel: "Colore / forma",
+        lead: "Fronte con nome e motivo, retro con messaggio festivo. Perfetta per regali speciali.",
+        personalization: "Fronte con nome e motivo, retro con testo personalizzato",
+        finishLabel: "Colore / finitura",
       },
     },
     finishes: [
-      {
-        id: "rot",
-        hex: "#a8323b",
-        edge: "#681722",
-        label: {
-          de: "Rot glänzend",
-          en: "Glossy red",
-          cs: "Lesklá červená",
-          fr: "Rouge brillant",
-          it: "Rosso lucido",
-        },
+      { id: "zelena-glanz", hex: "#3d7f5d", edge: "#1f4830", label: { de: "Grün glänzend", en: "Green gloss", cs: "Zelená lesklá", fr: "Vert brillant", it: "Verde lucido" } },
+      { id: "zelena-mat", hex: "#3d7f5d", edge: "#1f4830", label: { de: "Grün matt", en: "Green matte", cs: "Zelená matná", fr: "Vert mat", it: "Verde opaco" } },
+      { id: "cervena-glanz", hex: "#b03636", edge: "#671a1a", label: { de: "Rot glänzend", en: "Red gloss", cs: "Červená lesklá", fr: "Rouge brillant", it: "Rosso lucido" } },
+      { id: "cervena-mat", hex: "#b03636", edge: "#671a1a", label: { de: "Rot matt", en: "Red matte", cs: "Červená matná", fr: "Rouge mat", it: "Rosso opaco" } },
+      { id: "zlata-glanz", hex: "#d4b15d", edge: "#88652c", label: { de: "Gold glänzend", en: "Gold gloss", cs: "Zlatá lesklá", fr: "Or brillant", it: "Oro lucido" } },
+      { id: "zlata-mat", hex: "#d4b15d", edge: "#88652c", label: { de: "Gold matt", en: "Gold matte", cs: "Zlatá matná", fr: "Or mat", it: "Oro opaco" } },
+      { id: "hneda-glanz", hex: "#8d5d39", edge: "#53311d", label: { de: "Braun glänzend", en: "Brown gloss", cs: "Hnědá lesklá", fr: "Brun brillant", it: "Marrone lucido" } },
+      { id: "hneda-mat", hex: "#8d5d39", edge: "#53311d", label: { de: "Braun matt", en: "Brown matte", cs: "Hnědá matná", fr: "Brun mat", it: "Marrone opaco" } },
+      { id: "ruzova-glanz", hex: "#d8709a", edge: "#7a3c59", label: { de: "Rosa glänzend", en: "Pink gloss", cs: "Růžová lesklá", fr: "Rose brillant", it: "Rosa lucido" } },
+      { id: "ruzova-mat", hex: "#d8709a", edge: "#7a3c59", label: { de: "Rosa matt", en: "Pink matte", cs: "Růžová matná", fr: "Rose mat", it: "Rosa opaco" } },
+      { id: "modra-glanz", hex: "#3b6fa9", edge: "#1d3557", label: { de: "Blau glänzend", en: "Blue gloss", cs: "Modrá lesklá", fr: "Bleu brillant", it: "Blu lucido" } },
+      { id: "modra-mat", hex: "#3b6fa9", edge: "#1d3557", label: { de: "Blau matt", en: "Blue matte", cs: "Modrá matná", fr: "Bleu mat", it: "Blu opaco" } },
+    ],
+    backEngravingOptions: [
+      { id: "merry-christmas", text: "Merry Christmas" },
+      { id: "frohe-weihnachten", text: "Frohe Weihnachten" },
+      { id: "sretan-bozic", text: "Sretan Božić" },
+    ],
+    photos: [
+      { id: "main", src: "/products/christmas-baubles-main.jpeg", alt: { de: "Hauptgrafik für beidseitig gravierte Kugel", en: "Main graphic for double-sided engraved bauble", cs: "Hlavní grafika pro oboustranně gravírovanou kouli", fr: "Visuel principal pour boule gravée double face", it: "Grafica principale per pallina incisa fronte-retro" } },
+      { id: "wrapped", src: "/products/christmas-baubles-wrapped.jpeg", alt: { de: "Beidseitig gravierte Kugel mit Schleife", en: "Double-sided engraved bauble with bow", cs: "Oboustranně gravírovaná koule s mašlí", fr: "Boule gravée double face avec ruban", it: "Pallina incisa fronte-retro con fiocco" } },
+      { id: "set", src: "/products/christmas-baubles-color-set.jpeg", alt: { de: "Set beidseitig gravierter Kugeln in mehreren Farben", en: "Set of double-sided engraved baubles in several colours", cs: "Sada oboustranně gravírovaných koulí v několika barvách", fr: "Set de boules gravées double face en plusieurs couleurs", it: "Set di palline incise fronte-retro in più colori" } },
+    ],
+  },
+  {
+    id: "kule-dvojstranna-2",
+    price: 10,
+    previewClass: "circle",
+    supportsGiftWrap: true,
+    translations: {
+      de: {
+        category: "Kugeln",
+        badge: "Beidseitig",
+        name: "Festliche Doppelseiten-Kugel",
+        shortName: "Doppelseiten-Kugel",
+        delivery: "4-7 Werktage",
+        material: "Glas oder Holz",
+        size: "ca. 8 cm",
+        lead: "Zwei schöne Seiten für Namen, Spruch und weihnachtliche Grüße. Ideal für besondere Momente.",
+        personalization: "Vorderseite mit Namen und Motiv, Rückseite mit Wunschtext",
+        finishLabel: "Farbe / Oberfläche",
       },
-      {
-        id: "gold",
-        hex: "#d6b26f",
-        edge: "#8a642d",
-        label: {
-          de: "Gold matt",
-          en: "Matte gold",
-          cs: "Matná zlatá",
-          fr: "Or mat",
-          it: "Oro opaco",
-        },
+      en: {
+        category: "Baubles",
+        badge: "Double-sided",
+        name: "Festive Double-Sided Bauble",
+        shortName: "Double-sided bauble",
+        delivery: "4-7 working days",
+        material: "Glass or wood",
+        size: "approx. 8 cm",
+        lead: "Two beautiful sides for names, wishes and festive greetings. Ideal for special moments.",
+        personalization: "Front with name and motif, back with custom text",
+        finishLabel: "Colour / finish",
       },
-      {
-        id: "blau",
-        hex: "#243f6e",
-        edge: "#142642",
-        label: {
-          de: "Nachtblau",
-          en: "Midnight blue",
-          cs: "Noční modrá",
-          fr: "Bleu nuit",
-          it: "Blu notte",
-        },
+      cs: {
+        category: "Koule",
+        badge: "Oboustranná",
+        name: "Sváteční oboustranná koule",
+        shortName: "Oboustranná koule",
+        delivery: "4-7 pracovních dnů",
+        material: "Sklo nebo dřevo",
+        size: "cca 8 cm",
+        lead: "Dvě hezké strany pro jméno, přání a vánoční pozdrav. Ideální pro zvláštní chvíle.",
+        personalization: "Přední strana se jménem a motivem, zadní strana s přáním",
+        finishLabel: "Barva / povrch",
       },
+      fr: {
+        category: "Boules",
+        badge: "Double face",
+        name: "Boule festive double face",
+        shortName: "Boule festive",
+        delivery: "4-7 jours ouvrés",
+        material: "Verre ou bois",
+        size: "env. 8 cm",
+        lead: "Deux belles faces pour prénom, texte et souhait festif. Idéal pour moments spéciaux.",
+        personalization: "Face avant avec nom et motif, dos avec texte souhaité",
+        finishLabel: "Couleur / finition",
+      },
+      it: {
+        category: "Palline",
+        badge: "Fronte-retro",
+        name: "Pallina festiva fronte-retro",
+        shortName: "Pallina festiva",
+        delivery: "4-7 giorni lavorativi",
+        material: "Vetro o legno",
+        size: "ca. 8 cm",
+        lead: "Due bellissimi lati per nome, augurio e messaggio festivo. Perfetta per momenti speciali.",
+        personalization: "Fronte con nome e motivo, retro con testo personalizzato",
+        finishLabel: "Colore / finitura",
+      },
+    },
+    finishes: [
+      { id: "zelena-glanz", hex: "#3d7f5d", edge: "#1f4830", label: { de: "Grün glänzend", en: "Green gloss", cs: "Zelená lesklá", fr: "Vert brillant", it: "Verde lucido" } },
+      { id: "zelena-mat", hex: "#3d7f5d", edge: "#1f4830", label: { de: "Grün matt", en: "Green matte", cs: "Zelená matná", fr: "Vert mat", it: "Verde opaco" } },
+      { id: "cervena-glanz", hex: "#b03636", edge: "#671a1a", label: { de: "Rot glänzend", en: "Red gloss", cs: "Červená lesklá", fr: "Rouge brillant", it: "Rosso lucido" } },
+      { id: "cervena-mat", hex: "#b03636", edge: "#671a1a", label: { de: "Rot matt", en: "Red matte", cs: "Červená matná", fr: "Rouge mat", it: "Rosso opaco" } },
+      { id: "zlata-glanz", hex: "#d4b15d", edge: "#88652c", label: { de: "Gold glänzend", en: "Gold gloss", cs: "Zlatá lesklá", fr: "Or brillant", it: "Oro lucido" } },
+      { id: "zlata-mat", hex: "#d4b15d", edge: "#88652c", label: { de: "Gold matt", en: "Gold matte", cs: "Zlatá matná", fr: "Or mat", it: "Oro opaco" } },
+      { id: "hneda-glanz", hex: "#8d5d39", edge: "#53311d", label: { de: "Braun glänzend", en: "Brown gloss", cs: "Hnědá lesklá", fr: "Brun brillant", it: "Marrone lucido" } },
+      { id: "hneda-mat", hex: "#8d5d39", edge: "#53311d", label: { de: "Braun matt", en: "Brown matte", cs: "Hnědá matná", fr: "Brun mat", it: "Marrone opaco" } },
+      { id: "ruzova-glanz", hex: "#d8709a", edge: "#7a3c59", label: { de: "Rosa glänzend", en: "Pink gloss", cs: "Růžová lesklá", fr: "Rose brillant", it: "Rosa lucido" } },
+      { id: "ruzova-mat", hex: "#d8709a", edge: "#7a3c59", label: { de: "Rosa matt", en: "Pink matte", cs: "Růžová matná", fr: "Rose mat", it: "Rosa opaco" } },
+      { id: "modra-glanz", hex: "#3b6fa9", edge: "#1d3557", label: { de: "Blau glänzend", en: "Blue gloss", cs: "Modrá lesklá", fr: "Bleu brillant", it: "Blu lucido" } },
+      { id: "modra-mat", hex: "#3b6fa9", edge: "#1d3557", label: { de: "Blau matt", en: "Blue matte", cs: "Modrá matná", fr: "Bleu mat", it: "Blu opaco" } },
     ],
     backEngravingOptions: [
       { id: "merry-christmas-2026", text: "Merry Christmas 2026" },
@@ -1208,39 +1276,9 @@ const products: Product[] = [
       { id: "vesele-vanoce", text: "Veselé Vánoce" },
     ],
     photos: [
-      {
-        id: "main",
-        src: "/products/christmas-baubles-main.jpeg",
-        alt: {
-          de: "Hauptgrafik für beidseitig gravierte Weihnachtskugeln",
-          en: "Main graphic for double-sided engraved Christmas baubles",
-          cs: "Hlavní grafika pro oboustranně gravírované vánoční ozdoby",
-          fr: "Visuel principal pour boules de Noël gravées double face",
-          it: "Grafica principale per palline di Natale incise fronte-retro",
-        },
-      },
-      {
-        id: "wrapped",
-        src: "/products/christmas-baubles-wrapped.jpeg",
-        alt: {
-          de: "Rote beidseitig personalisierte Weihnachtskugeln mit Schleife",
-          en: "Red double-sided personalised Christmas baubles with bows",
-          cs: "Červené oboustranně personalizované vánoční ozdoby s mašlí",
-          fr: "Boules de Noël rouges personnalisées double face avec ruban",
-          it: "Palline di Natale rosse personalizzate fronte-retro con fiocco",
-        },
-      },
-      {
-        id: "set",
-        src: "/products/christmas-baubles-color-set.jpeg",
-        alt: {
-          de: "Set beidseitig gravierter Weihnachtskugeln in mehreren Farben",
-          en: "Set of double-sided engraved Christmas baubles in several colours",
-          cs: "Sada oboustranně gravírovaných vánočních ozdob v několika barvách",
-          fr: "Lot de boules de Noël gravées double face en plusieurs couleurs",
-          it: "Set di palline di Natale incise fronte-retro in più colori",
-        },
-      },
+      { id: "main", src: "/products/christmas-baubles-main.jpeg", alt: { de: "Hauptgrafik für festliche Doppelseiten-Kugel", en: "Main graphic for festive double-sided bauble", cs: "Hlavní grafika pro sváteční oboustrannou kouli", fr: "Visuel principal pour boule festive double face", it: "Grafica principale per pallina festiva fronte-retro" } },
+      { id: "wrapped", src: "/products/christmas-baubles-wrapped.jpeg", alt: { de: "Festliche doppelseitige Kugel mit Schleife", en: "Festive double-sided bauble with bow", cs: "Sváteční oboustranná koule s mašlí", fr: "Boule festive double face avec ruban", it: "Pallina festiva fronte-retro con fiocco" } },
+      { id: "set", src: "/products/christmas-baubles-color-set.jpeg", alt: { de: "Set festlicher doppelseitiger Kugeln", en: "Set of festive double-sided baubles", cs: "Sada svátečních oboustranných koulí", fr: "Set de boules festives double face", it: "Set di palline festive fronte-retro" } },
     ],
   },
   {
@@ -1256,9 +1294,8 @@ const products: Product[] = [
         delivery: "3-6 Werktage",
         material: "Birkensperrholz",
         size: "ca. 15 x 4 cm",
-        lead:
-          "Leichtes Holz-Lesezeichen mit Gravur und farbiger Quaste. Name und Motiv werden passend zur Form gesetzt.",
-        personalization: "Name, kurzer Spruch oder Lesemotiv",
+        lead: "Schmales Lesezeichen aus Birkensperrholz mit individueller Namensgravur oder kurzem Zitat. Ein farbiges Quastenband markiert die Seite und macht es zum persönlichen Geschenk für Leser.",
+        personalization: "Name oder kurzer Buchtitel; Quastenfarbe auswählbar",
         finishLabel: "Quaste",
       },
       en: {
@@ -1269,9 +1306,8 @@ const products: Product[] = [
         delivery: "3-6 working days",
         material: "Birch plywood",
         size: "approx. 15 x 4 cm",
-        lead:
-          "Light wooden bookmark with engraving and coloured tassel. Name and design are placed to suit the shape.",
-        personalization: "Name, short quote or reading design",
+        lead: "A slim birch plywood bookmark engraved with a name or a short favourite quote. Choose a coloured tassel to make a thoughtful gift for a book lover.",
+        personalization: "Name or short book quote; choose a tassel colour",
         finishLabel: "Tassel",
       },
       cs: {
@@ -1282,9 +1318,8 @@ const products: Product[] = [
         delivery: "3-6 pracovních dnů",
         material: "Březová překližka",
         size: "cca 15 x 4 cm",
-        lead:
-          "Lehká dřevěná záložka s gravírováním a barevným střapcem. Jméno a motiv jsou zasazené podle tvaru.",
-        personalization: "Jméno, krátký citát nebo čtecí motiv",
+        lead: "Úzká záložka z březové překližky s gravírovaným jménem nebo krátkým citátem. Barevný střapec pomůže rychle najít rozečtenou stránku a potěší každého čtenáře.",
+        personalization: "Jméno nebo krátký citát; výběr barvy střapce",
         finishLabel: "Střapec",
       },
       fr: {
@@ -1295,9 +1330,8 @@ const products: Product[] = [
         delivery: "3-6 jours ouvrés",
         material: "Contreplaqué de bouleau",
         size: "env. 15 x 4 cm",
-        lead:
-          "Marque-page léger en bois avec gravure et pompon coloré. Le prénom et le motif sont placés selon la forme.",
-        personalization: "Prénom, courte citation ou motif lecture",
+        lead: "Un marque-page fin en contreplaqué de bouleau, gravé avec un prénom ou une courte citation. Choisissez un pompon coloré pour retrouver facilement votre page et offrir un cadeau attentionné.",
+        personalization: "Prénom ou courte citation; couleur du pompon au choix",
         finishLabel: "Pompon",
       },
       it: {
@@ -1308,61 +1342,19 @@ const products: Product[] = [
         delivery: "3-6 giorni lavorativi",
         material: "Compensato di betulla",
         size: "ca. 15 x 4 cm",
-        lead:
-          "Segnalibro leggero in legno con incisione e nappina colorata. Nome e motivo vengono posizionati in armonia con la forma.",
-        personalization: "Nome, frase breve o motivo lettura",
+        lead: "Un segnalibro sottile in compensato di betulla, inciso con un nome o una breve citazione. Scegli una nappina colorata per ritrovare la pagina e fare un regalo pensato per chi ama leggere.",
+        personalization: "Nome o breve citazione; scegli il colore della nappina",
         finishLabel: "Nappina",
       },
     },
     finishes: [
-      {
-        id: "orange",
-        hex: "#e59a2f",
-        edge: "#a96513",
-        label: { de: "Orange", en: "Orange", cs: "Oranžová", fr: "Orange", it: "Arancione" },
-      },
-      {
-        id: "violett",
-        hex: "#5c3c98",
-        edge: "#362260",
-        label: { de: "Violett", en: "Purple", cs: "Fialová", fr: "Violet", it: "Viola" },
-      },
-      {
-        id: "natur",
-        hex: "#c7a577",
-        edge: "#80623f",
-        label: {
-          de: "Naturband",
-          en: "Natural cord",
-          cs: "Přírodní šňůrka",
-          fr: "Cordon naturel",
-          it: "Cordino naturale",
-        },
-      },
+      { id: "orange", hex: "#e59a2f", edge: "#a96513", label: { de: "Orange", en: "Orange", cs: "Oranžová", fr: "Orange", it: "Arancione" } },
+      { id: "violett", hex: "#5c3c98", edge: "#362260", label: { de: "Violett", en: "Purple", cs: "Fialová", fr: "Violet", it: "Viola" } },
+      { id: "natur", hex: "#c7a577", edge: "#80623f", label: { de: "Naturband", en: "Natural cord", cs: "Přírodní šňůrka", fr: "Cordon naturel", it: "Cordino naturale" } },
     ],
     photos: [
-      {
-        id: "name",
-        src: "/products/wood-bookmark-name.jpeg",
-        alt: {
-          de: "Holz-Lesezeichen mit Namensgravur und gelber Quaste",
-          en: "Wooden bookmark with name engraving and yellow tassel",
-          cs: "Dřevěná záložka s gravírovaným jménem a žlutým střapcem",
-          fr: "Marque-page en bois avec prénom gravé et pompon jaune",
-          it: "Segnalibro in legno con nome inciso e nappina gialla",
-        },
-      },
-      {
-        id: "page",
-        src: "/products/wood-bookmark-page.jpeg",
-        alt: {
-          de: "Holz-Lesezeichen mit graviertem Lesespruch",
-          en: "Wooden bookmark with engraved reading quote",
-          cs: "Dřevěná záložka s gravírovaným čtecím nápisem",
-          fr: "Marque-page en bois avec citation de lecture gravée",
-          it: "Segnalibro in legno con frase di lettura incisa",
-        },
-      },
+      { id: "name", src: "/products/wood-bookmark-name.jpeg", alt: { de: "Holz-Lesezeichen mit Namensgravur und gelber Quaste", en: "Wooden bookmark with name engraving and yellow tassel", cs: "Dřevěná záložka s gravírovaným jménem a žlutým střapcem", fr: "Marque-page en bois avec prénom gravé et pompon jaune", it: "Segnalibro in legno con nome inciso e nappina gialla" } },
+      { id: "page", src: "/products/wood-bookmark-page.jpeg", alt: { de: "Holz-Lesezeichen mit graviertem Lesespruch", en: "Wooden bookmark with engraved reading quote", cs: "Dřevěná záložka s gravírovaným čtecím nápisem", fr: "Marque-page en bois avec citation de lecture gravée", it: "Segnalibro in legno con frase di lettura incisa" } },
     ],
   },
   {
@@ -1378,9 +1370,8 @@ const products: Product[] = [
         delivery: "3-6 Werktage",
         material: "Rundes Holzplättchen",
         size: "ca. 5 cm",
-        lead:
-          "Runder Holz-Anhänger mit feiner Motivgravur. Auf Wunsch mit kurzem Namen auf der Rückseite oder als schlichte Motivserie.",
-        personalization: "Name, Initiale oder Symbol",
+        lead: "Runder Anhänger aus Holz mit fein graviertem Sternzeichen-, klassischen oder minimalistischen Motiv. Ein kurzer Name auf der Rückseite macht den Schlüsselanhänger zu einem persönlichen Begleiter.",
+        personalization: "Motivstil wählen; kurzer Name auf der Rückseite",
         finishLabel: "Motivwelt",
       },
       en: {
@@ -1391,9 +1382,8 @@ const products: Product[] = [
         delivery: "3-6 working days",
         material: "Round wooden disc",
         size: "approx. 5 cm",
-        lead:
-          "Round wooden keychain with fine design engraving. Add a short name on the back or keep it as a clean design piece.",
-        personalization: "Name, initial or symbol",
+        lead: "A round wooden keychain engraved with a zodiac, classic or minimal design. Add a short name to the reverse to make this useful little keepsake your own.",
+        personalization: "Choose a design style; add a short name on the back",
         finishLabel: "Design style",
       },
       cs: {
@@ -1404,9 +1394,8 @@ const products: Product[] = [
         delivery: "3-6 pracovních dnů",
         material: "Kulaté dřevěné kolečko",
         size: "cca 5 cm",
-        lead:
-          "Kulatý dřevěný přívěšek s jemným gravírovaným motivem. Na přání se jménem na zadní straně nebo jako čistá motivová série.",
-        personalization: "Jméno, iniciála nebo symbol",
+        lead: "Kulatý dřevěný přívěšek s jemným motivem ve stylu znamení zvěrokruhu, klasiky nebo minimalismu. Krátké jméno na zadní straně z něj udělá osobní ozdobu na klíče.",
+        personalization: "Výběr stylu motivu; krátké jméno na zadní straně",
         finishLabel: "Styl motivu",
       },
       fr: {
@@ -1417,9 +1406,8 @@ const products: Product[] = [
         delivery: "3-6 jours ouvrés",
         material: "Disque rond en bois",
         size: "env. 5 cm",
-        lead:
-          "Porte-clés rond en bois avec gravure fine. Ajoutez un prénom court au verso ou gardez un motif épuré.",
-        personalization: "Prénom, initiale ou symbole",
+        lead: "Un porte-clés rond en bois orné d'une gravure au choix: signe astrologique, style classique ou minimaliste. Ajoutez un prénom court au verso pour le rendre vraiment personnel.",
+        personalization: "Choix du style; prénom court au verso",
         finishLabel: "Univers motif",
       },
       it: {
@@ -1430,55 +1418,19 @@ const products: Product[] = [
         delivery: "3-6 giorni lavorativi",
         material: "Disco rotondo in legno",
         size: "ca. 5 cm",
-        lead:
-          "Portachiavi rotondo in legno con fine incisione del motivo. Aggiungi un nome breve sul retro o lascialo come motivo essenziale.",
-        personalization: "Nome, iniziale o simbolo",
+        lead: "Un portachiavi rotondo in legno con incisione in stile zodiacale, classico o minimalista. Aggiungi un nome breve sul retro per un ricordo davvero personale.",
+        personalization: "Scegli lo stile; nome breve sul retro",
         finishLabel: "Stile motivo",
       },
     },
     finishes: [
-      {
-        id: "zodiac",
-        hex: "#d8bd8b",
-        edge: "#8d6a37",
-        label: { de: "Sternzeichen", en: "Zodiac", cs: "Znamení", fr: "Zodiaque", it: "Zodiaco" },
-      },
-      {
-        id: "classic",
-        hex: "#cfa66d",
-        edge: "#805a2f",
-        label: { de: "Klassisch", en: "Classic", cs: "Klasické", fr: "Classique", it: "Classico" },
-      },
-      {
-        id: "minimal",
-        hex: "#eee1c6",
-        edge: "#9a7a50",
-        label: { de: "Minimal", en: "Minimal", cs: "Minimal", fr: "Minimal", it: "Minimal" },
-      },
+      { id: "zodiac", hex: "#d8bd8b", edge: "#8d6a37", label: { de: "Sternzeichen", en: "Zodiac", cs: "Znamení", fr: "Zodiaque", it: "Zodiaco" } },
+      { id: "classic", hex: "#cfa66d", edge: "#805a2f", label: { de: "Klassisch", en: "Classic", cs: "Klasické", fr: "Classique", it: "Classico" } },
+      { id: "minimal", hex: "#eee1c6", edge: "#9a7a50", label: { de: "Minimal", en: "Minimal", cs: "Minimal", fr: "Minimal", it: "Minimal" } },
     ],
     photos: [
-      {
-        id: "zodiac",
-        src: "/products/wood-pendants-zodiac.jpeg",
-        alt: {
-          de: "Mehrere runde Holz-Anhänger mit gravierten Motiven",
-          en: "Several round wooden keychains with engraved designs",
-          cs: "Více kulatých dřevěných přívěšků s gravírovanými motivy",
-          fr: "Plusieurs porte-clés ronds en bois avec motifs gravés",
-          it: "Diversi portachiavi rotondi in legno con motivi incisi",
-        },
-      },
-      {
-        id: "detail",
-        src: "/products/wood-pendant-detail.jpeg",
-        alt: {
-          de: "Detailaufnahme eines runden Holz-Anhängers mit Gravur",
-          en: "Close-up of a round wooden keychain with engraving",
-          cs: "Detail kulatého dřevěného přívěšku s gravírováním",
-          fr: "Gros plan d'un porte-clés rond en bois gravé",
-          it: "Dettaglio di un portachiavi rotondo in legno inciso",
-        },
-      },
+      { id: "zodiac", src: "/products/wood-pendants-zodiac.jpeg", alt: { de: "Mehrere runde Holz-Anhänger mit gravierten Motiven", en: "Several round wooden keychains with engraved designs", cs: "Více kulatých dřevěných přívěšků s gravírovanými motivy", fr: "Plusieurs porte-clés ronds en bois avec motifs gravés", it: "Diversi portachiavi rotondi in legno con motivi incisi" } },
+      { id: "detail", src: "/products/wood-pendant-detail.jpeg", alt: { de: "Detailaufnahme eines runden Holz-Anhängers mit Gravur", en: "Close-up of a round wooden keychain with engraving", cs: "Detail kulatého dřevěného přívěšku s gravírováním", fr: "Gros plan d'un porte-clés rond en bois gravé", it: "Dettaglio di un portachiavi rotondo in legno inciso" } },
     ],
   },
   {
@@ -1494,9 +1446,8 @@ const products: Product[] = [
         delivery: "4-7 Werktage",
         material: "Holzgriff & Metallkopf",
         size: "ca. 14 cm",
-        lead:
-          "Stabiler Flaschenöffner mit Holzgriff und persönlicher Gravur. Ein praktisches Geschenk für Feiern, Küche und Grillabende.",
-        personalization: "Name oder kurzer Titel",
+        lead: "Robuster Flaschenöffner mit glattem Holzgriff und Metallkopf. Verleihe dem Griff mit einem Namen oder kurzen Text sowie einer Schriftart deiner Wahl eine persönliche Note.",
+        personalization: "Name oder kurzer Text; Schriftart auswählbar",
         finishLabel: "Gravurstil",
       },
       en: {
@@ -1507,9 +1458,8 @@ const products: Product[] = [
         delivery: "4-7 working days",
         material: "Wooden handle & metal head",
         size: "approx. 14 cm",
-        lead:
-          "Sturdy bottle opener with wooden handle and personal engraving. A practical gift for parties, kitchens and barbecues.",
-        personalization: "Name or short title",
+        lead: "A sturdy bottle opener with a smooth wooden handle and metal opener. Personalise the handle with a name or short message in your choice of lettering style.",
+        personalization: "Name or short message; choose a lettering style",
         finishLabel: "Engraving style",
       },
       cs: {
@@ -1520,9 +1470,8 @@ const products: Product[] = [
         delivery: "4-7 pracovních dnů",
         material: "Dřevěná rukojeť a kovová hlavice",
         size: "cca 14 cm",
-        lead:
-          "Pevný otvírák s dřevěnou rukojetí a osobním gravírováním. Praktický dárek na oslavy, do kuchyně i ke grilu.",
-        personalization: "Jméno nebo krátký titul",
+        lead: "Pevný otvírák s hladkou dřevěnou rukojetí a kovovou hlavicí. Vygravíruj na rukojeť jméno nebo krátký text a zvol si styl písma.",
+        personalization: "Jméno nebo krátký text; volba stylu písma",
         finishLabel: "Styl gravírování",
       },
       fr: {
@@ -1533,9 +1482,8 @@ const products: Product[] = [
         delivery: "4-7 jours ouvrés",
         material: "Manche en bois et tête métal",
         size: "env. 14 cm",
-        lead:
-          "Décapsuleur solide avec manche en bois et gravure personnelle. Un cadeau pratique pour les fêtes, la cuisine et les barbecues.",
-        personalization: "Prénom ou petit titre",
+        lead: "Un décapsuleur robuste avec un manche en bois lisse et une tête en métal. Faites graver un prénom ou un court message dans le style d'écriture de votre choix.",
+        personalization: "Prénom ou court message; style d'écriture au choix",
         finishLabel: "Style de gravure",
       },
       it: {
@@ -1546,44 +1494,18 @@ const products: Product[] = [
         delivery: "4-7 giorni lavorativi",
         material: "Manico in legno e testa in metallo",
         size: "ca. 14 cm",
-        lead:
-          "Apribottiglie robusto con manico in legno e incisione personale. Un regalo pratico per feste, cucina e grigliate.",
-        personalization: "Nome o titolo breve",
+        lead: "Un robusto apribottiglie con manico in legno liscio e testa in metallo. Personalizza il manico con un nome o un breve messaggio e scegli lo stile di scrittura.",
+        personalization: "Nome o breve messaggio; scegli lo stile di scrittura",
         finishLabel: "Stile incisione",
       },
     },
     finishes: [
-      {
-        id: "script",
-        hex: "#bf8f56",
-        edge: "#76512c",
-        label: { de: "Schreibschrift", en: "Script", cs: "Psací písmo", fr: "Écriture", it: "Corsivo" },
-      },
-      {
-        id: "bold",
-        hex: "#c8a06f",
-        edge: "#7d5632",
-        label: { de: "Kräftig", en: "Bold", cs: "Výrazné", fr: "Marqué", it: "Marcato" },
-      },
-      {
-        id: "classic",
-        hex: "#d4b785",
-        edge: "#8a673b",
-        label: { de: "Klassisch", en: "Classic", cs: "Klasické", fr: "Classique", it: "Classico" },
-      },
+      { id: "script", hex: "#bf8f56", edge: "#76512c", label: { de: "Schreibschrift", en: "Script", cs: "Psací písmo", fr: "Écriture", it: "Corsivo" } },
+      { id: "bold", hex: "#c8a06f", edge: "#7d5632", label: { de: "Kräftig", en: "Bold", cs: "Výrazné", fr: "Marqué", it: "Marcato" } },
+      { id: "classic", hex: "#d4b785", edge: "#8a673b", label: { de: "Klassisch", en: "Classic", cs: "Klasické", fr: "Classique", it: "Classico" } },
     ],
     photos: [
-      {
-        id: "single",
-        src: "/products/wood-opener.jpeg",
-        alt: {
-          de: "Holz-Flaschenöffner mit graviertem Namen",
-          en: "Wooden bottle opener with engraved name",
-          cs: "Dřevěný otvírák s gravírovaným jménem",
-          fr: "Décapsuleur en bois avec prénom gravé",
-          it: "Apribottiglie in legno con nome inciso",
-        },
-      },
+      { id: "single", src: "/products/wood-opener.jpeg", alt: { de: "Holz-Flaschenöffner mit graviertem Namen", en: "Wooden bottle opener with engraved name", cs: "Dřevěný otvírák s gravírovaným jménem", fr: "Décapsuleur en bois avec prénom gravé", it: "Apribottiglie in legno con nome inciso" } },
     ],
   },
   {
@@ -1599,9 +1521,8 @@ const products: Product[] = [
         delivery: "3-6 Werktage",
         material: "Holz & Metall",
         size: "ca. 14 cm",
-        lead:
-          "Eleganter Kugelschreiber aus Holz mit Namensgravur. Passt als kleines Dankeschön, Firmenpräsent oder persönliches Set.",
-        personalization: "Name oder kurzer Gruß",
+        lead: "Kugelschreiber in Bambusoptik mit Metallclip und persönlicher Gravur. Der Name oder kurze Gruß macht ihn zu einem praktischen Begleiter und einer passenden Aufmerksamkeit für Büro oder Schule.",
+        personalization: "Name oder kurzer Gruß; Metallclip auswählen",
         finishLabel: "Clipfarbe",
       },
       en: {
@@ -1612,9 +1533,8 @@ const products: Product[] = [
         delivery: "3-6 working days",
         material: "Wood & metal",
         size: "approx. 14 cm",
-        lead:
-          "Elegant wooden ballpoint pen with name engraving. Ideal as a small thank-you, company gift or personal set.",
-        personalization: "Name or short greeting",
+        lead: "A bamboo-look wooden ballpoint pen with a metal clip and personal engraving. Add a name or short greeting for a useful desk companion or a thoughtful gift for work and study.",
+        personalization: "Name or short greeting; choose the metal clip",
         finishLabel: "Clip colour",
       },
       cs: {
@@ -1625,9 +1545,8 @@ const products: Product[] = [
         delivery: "3-6 pracovních dnů",
         material: "Dřevo a kov",
         size: "cca 14 cm",
-        lead:
-          "Elegantní dřevěná propiska s gravírovaným jménem. Hodí se jako drobné poděkování, firemní dárek nebo osobní sada.",
-        personalization: "Jméno nebo krátké věnování",
+        lead: "Dřevěná propiska s bambusovým vzhledem, kovovým klipem a osobním gravírováním. Jméno nebo krátké věnování z ní udělá praktického společníka do kanceláře i do školy.",
+        personalization: "Jméno nebo krátké věnování; volba kovového klipu",
         finishLabel: "Barva klipu",
       },
       fr: {
@@ -1638,9 +1557,8 @@ const products: Product[] = [
         delivery: "3-6 jours ouvrés",
         material: "Bois et métal",
         size: "env. 14 cm",
-        lead:
-          "Stylo bille élégant en bois avec gravure du prénom. Parfait comme petit merci, cadeau d'entreprise ou ensemble personnel.",
-        personalization: "Prénom ou court message",
+        lead: "Un stylo bille en bois d'aspect bambou, avec clip métallique et gravure personnalisée. Un prénom ou un court message en fait un compagnon utile au bureau ou pour les études.",
+        personalization: "Prénom ou court message; choix du clip métallique",
         finishLabel: "Couleur du clip",
       },
       it: {
@@ -1651,53 +1569,132 @@ const products: Product[] = [
         delivery: "3-6 giorni lavorativi",
         material: "Legno e metallo",
         size: "ca. 14 cm",
-        lead:
-          "Elegante penna a sfera in legno con nome inciso. Perfetta come piccolo grazie, regalo aziendale o set personale.",
-        personalization: "Nome o breve dedica",
+        lead: "Una penna a sfera in legno effetto bambù, con clip in metallo e incisione personalizzata. Un nome o una breve dedica la rende utile in ufficio, a scuola o come regalo.",
+        personalization: "Nome o breve dedica; scegli la clip in metallo",
         finishLabel: "Colore clip",
       },
     },
     finishes: [
-      {
-        id: "silber",
-        hex: "#d4d8da",
-        edge: "#858c90",
-        label: { de: "Silber", en: "Silver", cs: "Stříbrná", fr: "Argent", it: "Argento" },
-      },
-      {
-        id: "chrom",
-        hex: "#b9c0c2",
-        edge: "#6b7275",
-        label: { de: "Chrom", en: "Chrome", cs: "Chrom", fr: "Chrome", it: "Cromo" },
-      },
-      {
-        id: "natur",
-        hex: "#d7b679",
-        edge: "#8b6332",
-        label: { de: "Natur", en: "Natural", cs: "Přírodní", fr: "Naturel", it: "Naturale" },
-      },
+      { id: "silber", hex: "#d4d8da", edge: "#858c90", label: { de: "Silber", en: "Silver", cs: "Stříbrná", fr: "Argent", it: "Argento" } },
+      { id: "chrom", hex: "#b9c0c2", edge: "#6b7275", label: { de: "Chrom", en: "Chrome", cs: "Chrom", fr: "Chrome", it: "Cromo" } },
+      { id: "natur", hex: "#d7b679", edge: "#8b6332", label: { de: "Natur", en: "Natural", cs: "Přírodní", fr: "Naturel", it: "Naturale" } },
     ],
     photos: [
-      {
-        id: "single",
-        src: "/products/wood-pen.jpeg",
-        alt: {
-          de: "Holz-Kugelschreiber mit graviertem Namen",
-          en: "Wooden ballpoint pen with engraved name",
-          cs: "Dřevěná propiska s gravírovaným jménem",
-          fr: "Stylo bille en bois avec prénom gravé",
-          it: "Penna a sfera in legno con nome inciso",
-        },
-      },
+      { id: "single", src: "/products/wood-pen.jpeg", alt: { de: "Holz-Kugelschreiber mit graviertem Namen", en: "Wooden ballpoint pen with engraved name", cs: "Dřevěná propiska s gravírovaným jménem", fr: "Stylo bille en bois avec prénom gravé", it: "Penna a sfera in legno con nome inciso" } },
     ],
   },
 ];
+
+const BAUBLE_PRODUCT_ID = "kule-jednostranna-1";
+const baubleProductIds = [
+  BAUBLE_PRODUCT_ID,
+  "kule-jednostranna-2",
+  "kule-dvojstranna-1",
+  "kule-dvojstranna-2",
+];
+const baubleVariantLabels: Record<string, Record<LanguageCode, string>> = {
+  [BAUBLE_PRODUCT_ID]: {
+    de: "Einseitig",
+    en: "One-sided",
+    cs: "Jednostranná",
+    fr: "Simple face",
+    it: "Un lato",
+  },
+  "kule-jednostranna-2": {
+    de: "Kugelset",
+    en: "Bauble set",
+    cs: "Set koulí",
+    fr: "Set de boules",
+    it: "Set palline",
+  },
+  "kule-dvojstranna-1": {
+    de: "Doppelseitig",
+    en: "Double-sided",
+    cs: "Oboustranná",
+    fr: "Double face",
+    it: "Fronte-retro",
+  },
+  "kule-dvojstranna-2": {
+    de: "Festlich doppelseitig",
+    en: "Festive double-sided",
+    cs: "Sváteční oboustranná",
+    fr: "Double face festive",
+    it: "Fronte-retro festiva",
+  },
+};
+const baubleVariants = products
+  .filter((product) => baubleProductIds.includes(product.id))
+  .map((product) => ({
+    id: product.id,
+    price: product.price,
+    label: baubleVariantLabels[product.id],
+    backEngravingOptions: product.backEngravingOptions,
+  }));
+const availableProducts = products.filter(
+  (product) => !baubleProductIds.includes(product.id) || product.id === BAUBLE_PRODUCT_ID,
+);
+const baubleColors = [
+  {
+    id: "zelena",
+    hex: "#3d7f5d",
+    edge: "#1f4830",
+    label: { de: "Grün", en: "Green", cs: "Zelená", fr: "Vert", it: "Verde" },
+  },
+  {
+    id: "cervena",
+    hex: "#b03636",
+    edge: "#671a1a",
+    label: { de: "Rot", en: "Red", cs: "Červená", fr: "Rouge", it: "Rosso" },
+  },
+  {
+    id: "zlata",
+    hex: "#d4b15d",
+    edge: "#88652c",
+    label: { de: "Gold", en: "Gold", cs: "Zlatá", fr: "Or", it: "Oro" },
+  },
+  {
+    id: "hneda",
+    hex: "#8d5d39",
+    edge: "#53311d",
+    label: { de: "Braun", en: "Brown", cs: "Hnědá", fr: "Brun", it: "Marrone" },
+  },
+  {
+    id: "ruzova",
+    hex: "#d8709a",
+    edge: "#7a3c59",
+    label: { de: "Rosa", en: "Pink", cs: "Růžová", fr: "Rose", it: "Rosa" },
+  },
+  {
+    id: "modra",
+    hex: "#3b6fa9",
+    edge: "#1d3557",
+    label: { de: "Blau", en: "Blue", cs: "Modrá", fr: "Bleu", it: "Blu" },
+  },
+];
+const baubleSurfaces = [
+  {
+    id: "glanz",
+    label: { de: "Glänzend", en: "Glossy", cs: "Lesklá", fr: "Brillante", it: "Lucida" },
+  },
+  {
+    id: "mat",
+    label: { de: "Matt", en: "Matte", cs: "Matná", fr: "Mate", it: "Opaca" },
+  },
+];
+const baubleOptionLabels = {
+  de: { variant: "Ausführung", color: "Farbe", surface: "Oberfläche" },
+  en: { variant: "Style", color: "Colour", surface: "Finish" },
+  cs: { variant: "Provedení", color: "Barva", surface: "Povrch" },
+  fr: { variant: "Modèle", color: "Couleur", surface: "Finition" },
+  it: { variant: "Modello", color: "Colore", surface: "Finitura" },
+} satisfies Record<LanguageCode, { variant: string; color: string; surface: string }>;
 
 type PageView = "home" | "products" | "product" | "cart" | "terms";
 
 type RouteState = {
   view: PageView;
   productId?: string;
+  baubleVariantId?: string;
 };
 
 function productHref(productId: string) {
@@ -1708,7 +1705,11 @@ function parseRoute(pathname: string): RouteState {
   const [firstSegment, secondSegment] = pathname.split("/").filter(Boolean);
 
   if (firstSegment === "produkt" && secondSegment && products.some((product) => product.id === secondSegment)) {
-    return { view: "product", productId: secondSegment };
+    return {
+      view: "product",
+      productId: baubleProductIds.includes(secondSegment) ? BAUBLE_PRODUCT_ID : secondSegment,
+      baubleVariantId: baubleProductIds.includes(secondSegment) ? secondSegment : undefined,
+    };
   }
 
   if (firstSegment === "kosik") {
@@ -1734,9 +1735,21 @@ function getInitialRoute(initialPath = "/"): RouteState {
   return parseRoute(window.location.pathname);
 }
 
+function getInitialLanguage(): LanguageCode {
+  if (typeof window === "undefined") {
+    return "de";
+  }
+
+  const storedLanguage = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
+  return storedLanguage && languages.some((option) => option.code === storedLanguage)
+    ? (storedLanguage as LanguageCode)
+    : "de";
+}
+
 type CartItem = {
   id: number;
   productId: string;
+  baubleVariantId?: string;
   customText: string;
   finishId: string;
   logoId: string;
@@ -1751,7 +1764,12 @@ function formatPrice(value: number) {
 }
 
 function getProduct(productId: string) {
-  return products.find((product) => product.id === productId) ?? products[0];
+  const canonicalProductId = baubleProductIds.includes(productId) ? BAUBLE_PRODUCT_ID : productId;
+  return products.find((product) => product.id === canonicalProductId) ?? products[0];
+}
+
+function getBaubleVariant(variantId: string) {
+  return baubleVariants.find((variant) => variant.id === variantId) ?? baubleVariants[0];
 }
 
 function getLogo(logoId: string) {
@@ -1785,6 +1803,9 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   const [language, setLanguage] = useState<LanguageCode>("de");
   const [currentView, setCurrentView] = useState<PageView>(() => initialRoute.view);
   const [selectedProductId, setSelectedProductId] = useState(() => initialProductId);
+  const [selectedBaubleVariantId, setSelectedBaubleVariantId] = useState(
+    () => initialRoute.baubleVariantId ?? BAUBLE_PRODUCT_ID,
+  );
   const [selectedPhotoId, setSelectedPhotoId] = useState(
     () => getProduct(initialProductId).photos[0].id,
   );
@@ -1812,9 +1833,14 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   const flow = flowCopy[language];
   const selectedProduct = getProduct(selectedProductId);
   const selectedProductCopy = selectedProduct.translations[language];
+  const isBaubleProduct = selectedProduct.id === BAUBLE_PRODUCT_ID;
+  const selectedBaubleVariant = getBaubleVariant(selectedBaubleVariantId);
   const selectedProductSupportsGiftWrap = selectedProduct.supportsGiftWrap === true;
+  const configuredProductPrice = isBaubleProduct
+    ? selectedBaubleVariant.price
+    : selectedProduct.price;
   const configuredUnitPrice =
-    selectedProduct.price +
+    configuredProductPrice +
     (selectedProductSupportsGiftWrap && selectedGiftWrap ? GIFT_WRAP_PRICE : 0);
   const selectedPhoto =
     selectedProduct.photos.find((photo) => photo.id === selectedPhotoId) ??
@@ -1822,7 +1848,9 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   const selectedFinish =
     selectedProduct.finishes.find((finish) => finish.id === selectedFinishId) ??
     selectedProduct.finishes[0];
-  const backEngravingOptions = getBackEngravingOptions(selectedProduct);
+  const backEngravingOptions = isBaubleProduct
+    ? selectedBaubleVariant.backEngravingOptions ?? []
+    : getBackEngravingOptions(selectedProduct);
   const selectedBackEngraving =
     backEngravingOptions.find((option) => option.id === selectedBackEngravingId) ??
     backEngravingOptions[0];
@@ -1847,6 +1875,13 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   );
 
   useEffect(() => {
+    const storedLanguage = getInitialLanguage();
+    if (storedLanguage !== language) {
+      setLanguage(storedLanguage);
+    }
+  }, []);
+
+  useEffect(() => {
     document.documentElement.lang = language;
     document.title =
       currentView === "product"
@@ -1867,6 +1902,10 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     t.pageTitle,
     t.termsTitle,
   ]);
+
+  useEffect(() => {
+    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+  }, [language]);
 
   useEffect(() => {
     try {
@@ -1903,7 +1942,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
       setShowCartChoice(false);
 
       if (route.productId) {
-        applyProductSelection(route.productId);
+        applyProductSelection(route.productId, route.baubleVariantId);
       }
     }
 
@@ -1913,13 +1952,21 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     return () => window.removeEventListener("popstate", syncRoute);
   }, []);
 
-  function applyProductSelection(productId: string) {
+  function applyProductSelection(productId: string, baubleVariantId?: string) {
     const nextProduct = getProduct(productId);
     setSelectedProductId(nextProduct.id);
     setSelectedPhotoId(nextProduct.photos[0].id);
     setSelectedFinishId(nextProduct.finishes[0].id);
-    setSelectedBackEngravingId(getBackEngravingOptions(nextProduct)[0]?.id ?? "");
+    const nextBaubleVariantId = nextProduct.id === BAUBLE_PRODUCT_ID
+      ? getBaubleVariant(baubleVariantId ?? BAUBLE_PRODUCT_ID).id
+      : BAUBLE_PRODUCT_ID;
+    setSelectedBaubleVariantId(nextBaubleVariantId);
+    const nextBackEngravingOptions = nextProduct.id === BAUBLE_PRODUCT_ID
+      ? getBaubleVariant(nextBaubleVariantId).backEngravingOptions ?? []
+      : getBackEngravingOptions(nextProduct);
+    setSelectedBackEngravingId(nextBackEngravingOptions[0]?.id ?? "");
     setSelectedGiftWrap(false);
+    setCustomText("Mila");
   }
 
   function scrollToPageTop() {
@@ -1994,6 +2041,12 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     scrollToPageTop();
   }
 
+  function selectBaubleVariant(variantId: string) {
+    const variant = getBaubleVariant(variantId);
+    setSelectedBaubleVariantId(variant.id);
+    setSelectedBackEngravingId(variant.backEngravingOptions?.[0]?.id ?? "");
+  }
+
   function addToCart(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setCartItems((items) => [
@@ -2001,13 +2054,14 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
       {
         id: Date.now(),
         productId: selectedProduct.id,
+        baubleVariantId: isBaubleProduct ? selectedBaubleVariant.id : undefined,
         customText: previewText,
         finishId: selectedFinish.id,
         logoId: selectedLogo.id,
         backEngravingText: selectedBackEngraving?.text,
         giftWrap: selectedProductSupportsGiftWrap && selectedGiftWrap,
         quantity,
-        price: selectedProduct.price,
+        price: configuredProductPrice,
       },
     ]);
     setShowCartChoice(true);
@@ -2067,11 +2121,15 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
               const product = getProduct(item.productId);
               const finish = getFinish(item.productId, item.finishId);
               const logo = getLogo(item.logoId);
+              const baubleVariant = baubleProductIds.includes(item.productId)
+                ? getBaubleVariant(item.baubleVariantId ?? item.productId)
+                : undefined;
 
               return (
                 <article className="cart-line" key={item.id}>
                   <div>
                     <strong>{product.translations[language].shortName}</strong>
+                    {baubleVariant && <span>{baubleVariant.label[language]}</span>}
                     <span>
                       {item.customText} / {logo.label[language]}
                     </span>
@@ -2108,8 +2166,6 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
 
   return (
     <div className={`shop-shell view-${currentView}`}>
-      <div className="top-notice">{t.notice}</div>
-
       <header className="shop-header">
         <a
           className="brand"
@@ -2127,16 +2183,6 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
           </span>
         </a>
         <nav className="main-nav" aria-label={t.nav.assortment}>
-          <a
-            className={currentView === "home" ? "active" : ""}
-            href="/"
-            onClick={(event) => {
-              event.preventDefault();
-              navigateHome();
-            }}
-          >
-            {home.navLabel}
-          </a>
           <a
             className={currentView === "products" ? "active" : ""}
             href="/produkty"
@@ -2169,30 +2215,59 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
           </a>
         </nav>
         <div className="header-actions">
-          <div className="language-switcher" aria-label={t.languageLabel}>
-            {languages.map((option) => (
-              <button
-                className={language === option.code ? "selected" : ""}
-                key={option.code}
-                type="button"
-                aria-label={option.name}
-                aria-pressed={language === option.code}
-                onClick={() => setLanguage(option.code)}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
           <a
-            className="header-cart"
-            href="/kosik"
+            className="home-shortcut"
+            href="/"
+            aria-label={home.navLabel}
+            title={home.navLabel}
             onClick={(event) => {
               event.preventDefault();
-              navigateCart();
+              navigateHome();
             }}
           >
-            {t.cartTitle} {cartQuantity > 0 ? `(${cartQuantity})` : ""}
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+              <path
+                d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V10Z"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.8"
+              />
+            </svg>
           </a>
+          <details className="language-menu">
+            <summary aria-label={t.languageLabel}>
+              <span>{language.toUpperCase()}</span>
+            </summary>
+            <div className="language-options">
+              {languages.map((option) => (
+                <button
+                  className={language === option.code ? "selected" : ""}
+                  key={option.code}
+                  type="button"
+                  aria-pressed={language === option.code}
+                  onClick={(event) => {
+                    setLanguage(option.code);
+                    event.currentTarget.closest("details")?.removeAttribute("open");
+                  }}
+                >
+                  {option.label} — {option.name}
+                </button>
+              ))}
+            </div>
+          </details>
+          {cartQuantity > 0 && (
+            <a
+              className="header-cart"
+              href="/kosik"
+              onClick={(event) => {
+                event.preventDefault();
+                navigateCart();
+              }}
+            >
+              {t.cartTitle} ({cartQuantity})
+            </a>
+          )}
         </div>
       </header>
 
@@ -2291,7 +2366,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
               </div>
 
               <div className="catalog-list">
-                {products.map((product) => {
+                {availableProducts.map((product) => {
                   const productCopy = product.translations[language];
                   const [mainPhoto, ...detailPhotos] = product.photos;
                   const catalogDetails = detailPhotos.length > 0 ? detailPhotos : product.photos;
@@ -2396,20 +2471,6 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
 
               <div className="purchase-panel">
                 <p className="breadcrumbs">{t.breadcrumbs}</p>
-                <div className="product-switcher" aria-label={t.nav.assortment}>
-                  {products.map((product) => (
-                    <button
-                      className={selectedProduct.id === product.id ? "selected" : ""}
-                      key={product.id}
-                      type="button"
-                      aria-pressed={selectedProduct.id === product.id}
-                      onClick={() => selectProduct(product.id)}
-                    >
-                      {product.translations[language].shortName}
-                    </button>
-                  ))}
-                </div>
-
                 <p className="product-badge">{selectedProductCopy.badge}</p>
                 <h1 id="product-title">{selectedProductCopy.name}</h1>
                 <p className="product-lead">{selectedProductCopy.lead}</p>
@@ -2427,6 +2488,96 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                 </div>
 
                 <form className="configurator" onSubmit={addToCart}>
+                  {isBaubleProduct && (
+                    <>
+                      <div className="field-group">
+                        <span>{baubleOptionLabels[language].variant}</span>
+                        <div
+                          className="phrase-grid"
+                          role="radiogroup"
+                          aria-label={baubleOptionLabels[language].variant}
+                        >
+                          {baubleVariants.map((variant) => (
+                            <button
+                              className={`phrase-option ${
+                                selectedBaubleVariant.id === variant.id ? "selected" : ""
+                              }`}
+                              key={variant.id}
+                              type="button"
+                              aria-pressed={selectedBaubleVariant.id === variant.id}
+                              onClick={() => selectBaubleVariant(variant.id)}
+                            >
+                              {variant.label[language]} · {formatPrice(variant.price)}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="field-group">
+                        <span>{baubleOptionLabels[language].color}</span>
+                        <div
+                          className="color-grid"
+                          role="radiogroup"
+                          aria-label={baubleOptionLabels[language].color}
+                        >
+                          {baubleColors.map((color) => (
+                            <button
+                              className={`color-option ${
+                                selectedFinish.id.startsWith(`${color.id}-`) ? "selected" : ""
+                              }`}
+                              key={color.id}
+                              type="button"
+                              aria-pressed={selectedFinish.id.startsWith(`${color.id}-`)}
+                              onClick={() => {
+                                const surfaceId = selectedFinish.id.endsWith("-mat") ? "mat" : "glanz";
+                                setSelectedFinishId(`${color.id}-${surfaceId}`);
+                              }}
+                            >
+                              <span
+                                className="swatch"
+                                style={
+                                  {
+                                    "--swatch": color.hex,
+                                    "--swatch-edge": color.edge,
+                                  } as CSSProperties
+                                }
+                              />
+                              <span>{color.label[language]}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="field-group">
+                        <span>{baubleOptionLabels[language].surface}</span>
+                        <div
+                          className="phrase-grid"
+                          role="radiogroup"
+                          aria-label={baubleOptionLabels[language].surface}
+                        >
+                          {baubleSurfaces.map((surface) => {
+                            const selected = selectedFinish.id.endsWith(`-${surface.id}`);
+                            return (
+                              <button
+                                className={`phrase-option ${selected ? "selected" : ""}`}
+                                key={surface.id}
+                                type="button"
+                                aria-pressed={selected}
+                                onClick={() => {
+                                  const colorId = selectedFinish.id.slice(
+                                    0,
+                                    selectedFinish.id.lastIndexOf("-"),
+                                  );
+                                  setSelectedFinishId(`${colorId}-${surface.id}`);
+                                }}
+                              >
+                                {surface.label[language]}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </>
+                  )}
+
                   <label className="field-group" htmlFor="custom-text">
                     <span>{t.customTextLabel}</span>
                     <input
@@ -2438,37 +2589,39 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                     />
                   </label>
 
-                  <div className="field-group">
-                    <span>{selectedProductCopy.finishLabel}</span>
-                    <div
-                      className="color-grid"
-                      role="radiogroup"
-                      aria-label={selectedProductCopy.finishLabel}
-                    >
-                      {selectedProduct.finishes.map((finish) => (
-                        <button
-                          className={`color-option ${
-                            selectedFinish.id === finish.id ? "selected" : ""
-                          }`}
-                          key={finish.id}
-                          type="button"
-                          aria-pressed={selectedFinish.id === finish.id}
-                          onClick={() => setSelectedFinishId(finish.id)}
-                        >
-                          <span
-                            className="swatch"
-                            style={
-                              {
-                                "--swatch": finish.hex,
-                                "--swatch-edge": finish.edge,
-                              } as CSSProperties
-                            }
-                          />
-                          <span>{finish.label[language]}</span>
-                        </button>
-                      ))}
+                  {!isBaubleProduct && (
+                    <div className="field-group">
+                      <span>{selectedProductCopy.finishLabel}</span>
+                      <div
+                        className="color-grid"
+                        role="radiogroup"
+                        aria-label={selectedProductCopy.finishLabel}
+                      >
+                        {selectedProduct.finishes.map((finish) => (
+                          <button
+                            className={`color-option ${
+                              selectedFinish.id === finish.id ? "selected" : ""
+                            }`}
+                            key={finish.id}
+                            type="button"
+                            aria-pressed={selectedFinish.id === finish.id}
+                            onClick={() => setSelectedFinishId(finish.id)}
+                          >
+                            <span
+                              className="swatch"
+                              style={
+                                {
+                                  "--swatch": finish.hex,
+                                  "--swatch-edge": finish.edge,
+                                } as CSSProperties
+                              }
+                            />
+                            <span>{finish.label[language]}</span>
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   <div className="field-group">
                     <span>{t.logoLabel}</span>
@@ -2542,6 +2695,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                         <span className="preview-name" style={{ fontSize: previewNameSize }}>
                           {previewText}
                         </span>
+                        <span className="preview-motif">{selectedLogo.label[language]}</span>
                       </div>
                       {selectedBackEngraving && (
                         <div
@@ -2608,7 +2762,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                 <h2 id="related-title">{flow.otherProducts}</h2>
               </div>
               <div className="product-card-grid">
-                {products
+                {availableProducts
                   .filter((product) => product.id !== selectedProduct.id)
                   .map((product) => renderProductCard(product))}
               </div>
@@ -2656,6 +2810,9 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                       const product = getProduct(item.productId);
                       const finish = getFinish(item.productId, item.finishId);
                       const logo = getLogo(item.logoId);
+                      const baubleVariant = baubleProductIds.includes(item.productId)
+                        ? getBaubleVariant(item.baubleVariantId ?? item.productId)
+                        : undefined;
 
                       return (
                         <article className="cart-page-line" key={item.id}>
@@ -2669,6 +2826,9 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                               {product.translations[language].category}
                             </p>
                             <h3>{product.translations[language].name}</h3>
+                            {baubleVariant && (
+                              <span>{baubleVariant.label[language]}</span>
+                            )}
                             <span>
                               {item.customText} / {logo.label[language]} /{" "}
                               {finish.label[language]}
@@ -2760,7 +2920,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                 <h2 id="cart-more-title">{flow.otherProducts}</h2>
               </div>
               <div className="product-card-grid">
-                {products.map((product) => renderProductCard(product, selectedProduct.id === product.id))}
+                {availableProducts.map((product) => renderProductCard(product, selectedProduct.id === product.id))}
               </div>
             </section>
           </>
@@ -2792,9 +2952,12 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                 <p>{t.termsNote}</p>
               </div>
               <div className="terms-grid">
-                {t.terms.map(([title, body]) => (
+                {t.terms.map(([title, body], index) => (
                   <article key={title}>
-                    <h3>{title}</h3>
+                    <h3>
+                      <span className="term-number">{index + 1}</span>
+                      {title.replace(/^\d+\.\s*/, "")}
+                    </h3>
                     <p>{body}</p>
                   </article>
                 ))}
