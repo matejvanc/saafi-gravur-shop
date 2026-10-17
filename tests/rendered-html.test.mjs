@@ -239,6 +239,8 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(styles, /\.catalog-detail-photos img[\s\S]*object-fit: contain/);
   assert.match(styles, /\.product-card img[\s\S]*object-fit: contain/);
   assert.match(styles, /\.intro-photo img[\s\S]*object-fit: contain/);
+  assert.match(styles, /\.home-hero::after/);
+  assert.doesNotMatch(page, /--hero-image/);
   assert.match(styles, /grid-template-columns: minmax\(290px, 1\.06fr\) minmax\(330px, 0\.95fr\) minmax\(260px, 0\.42fr\);/);
   assert.match(styles, /grid-template-columns: repeat\(6, minmax\(0, 1fr\)\);/);
   assert.match(page, /maxLength={TEXT_LIMIT}/);

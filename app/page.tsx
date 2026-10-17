@@ -2242,16 +2242,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
       <main>
         {currentView === "home" && (
           <>
-            <section
-              className="home-hero"
-              id="start"
-              aria-labelledby="home-title"
-              style={
-                {
-                  "--hero-image": "url('/products/christmas-baubles-main.jpeg')",
-                } as CSSProperties
-              }
-            >
+            <section className="home-hero" id="start" aria-labelledby="home-title">
               <div className="home-hero-copy">
                 <p className="section-kicker">{home.eyebrow}</p>
                 <h1 id="home-title">{home.title}</h1>
