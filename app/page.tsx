@@ -5,6 +5,7 @@ import {
   type FormEvent,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -1827,6 +1828,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   const [dataConsent, setDataConsent] = useState(false);
   const [termsConsent, setTermsConsent] = useState(false);
   const [cookiesConsent, setCookiesConsent] = useState(false);
+  const languageMenuRef = useRef<HTMLDetailsElement>(null);
 
   const t = ui[language];
   const home = homeCopy[language];
@@ -1938,6 +1940,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   useEffect(() => {
     function syncRoute() {
       const route = parseRoute(window.location.pathname);
+      closeLanguageMenu();
       setCurrentView(route.view);
       setShowCartChoice(false);
 
@@ -1975,6 +1978,10 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     });
   }
 
+  function closeLanguageMenu() {
+    languageMenuRef.current?.removeAttribute("open");
+  }
+
   function scrollToSection(sectionId: string) {
     window.requestAnimationFrame(() => {
       document.getElementById(sectionId)?.scrollIntoView({
@@ -1985,6 +1992,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   }
 
   function navigateHome(sectionId?: string) {
+    closeLanguageMenu();
     setCurrentView("home");
     setShowCartChoice(false);
     setCheckoutMessage(false);
@@ -1998,6 +2006,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   }
 
   function navigateProducts() {
+    closeLanguageMenu();
     setCurrentView("products");
     setShowCartChoice(false);
     setCheckoutMessage(false);
@@ -2006,6 +2015,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   }
 
   function navigateCart(sectionId?: string) {
+    closeLanguageMenu();
     setCurrentView("cart");
     setShowCartChoice(false);
     setCheckoutWarning(false);
@@ -2019,6 +2029,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   }
 
   function navigateTerms(sectionId?: string) {
+    closeLanguageMenu();
     setCurrentView("terms");
     setShowCartChoice(false);
     setCheckoutMessage(false);
@@ -2033,6 +2044,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   }
 
   function selectProduct(productId: string) {
+    closeLanguageMenu();
     applyProductSelection(productId);
     setCurrentView("product");
     setShowCartChoice(false);
@@ -2203,7 +2215,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
               />
             </svg>
           </a>
-          <details className="language-menu">
+          <details className="language-menu" ref={languageMenuRef}>
             <summary aria-label={t.languageLabel}>
               <span>{language.toUpperCase()}</span>
             </summary>
@@ -2214,9 +2226,9 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                   key={option.code}
                   type="button"
                   aria-pressed={language === option.code}
-                  onClick={(event) => {
+                  onClick={() => {
                     setLanguage(option.code);
-                    event.currentTarget.closest("details")?.removeAttribute("open");
+                    closeLanguageMenu();
                   }}
                 >
                   {option.label} — {option.name}

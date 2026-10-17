@@ -153,6 +153,8 @@ test("starter preview files and dependencies are removed", async () => {
   assert.doesNotMatch(page, /className="main-nav"/);
   assert.match(page, /className="language-menu"/);
   assert.match(page, /className="home-shortcut"/);
+  assert.match(page, /const languageMenuRef = useRef<HTMLDetailsElement>\(null\);/);
+  assert.match(page, /function closeLanguageMenu\(\)[\s\S]*?removeAttribute\("open"\)/);
   assert.match(page, /document\.documentElement\.lang = language/);
   assert.match(page, /const homeCopy/);
   assert.match(page, /const flowCopy/);
