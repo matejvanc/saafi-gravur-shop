@@ -2182,38 +2182,6 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
             <small>{t.brandSubtitle}</small>
           </span>
         </a>
-        <nav className="main-nav" aria-label={t.nav.assortment}>
-          <a
-            className={currentView === "products" ? "active" : ""}
-            href="/produkty"
-            onClick={(event) => {
-              event.preventDefault();
-              navigateProducts();
-            }}
-          >
-            {t.nav.assortment}
-          </a>
-          <a
-            className={currentView === "cart" ? "active" : ""}
-            href="/kosik"
-            onClick={(event) => {
-              event.preventDefault();
-              navigateCart();
-            }}
-          >
-            {t.cartTitle}
-          </a>
-          <a
-            className={currentView === "terms" ? "active" : ""}
-            href="/agb"
-            onClick={(event) => {
-              event.preventDefault();
-              navigateTerms();
-            }}
-          >
-            {t.nav.terms}
-          </a>
-        </nav>
         <div className="header-actions">
           <a
             className="home-shortcut"

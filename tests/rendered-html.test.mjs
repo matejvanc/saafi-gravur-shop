@@ -55,6 +55,7 @@ test("server-renders the multilingual personalized shop", async () => {
   assert.match(html, />Produkte</);
   assert.match(html, /Warenkorb/);
   assert.match(html, />AGB</);
+  assert.doesNotMatch(html, /class="main-nav"/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 });
 
@@ -149,6 +150,7 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /const TEXT_LIMIT = 12;/);
   assert.match(page, /type LanguageCode = "de" \| "en" \| "cs" \| "fr" \| "it";/);
   assert.match(page, /useState<LanguageCode>\("de"\)/);
+  assert.doesNotMatch(page, /className="main-nav"/);
   assert.match(page, /className="language-menu"/);
   assert.match(page, /className="home-shortcut"/);
   assert.match(page, /document\.documentElement\.lang = language/);
@@ -221,6 +223,7 @@ test("starter preview files and dependencies are removed", async () => {
   assert.doesNotMatch(page, /viewProduct|card-action|footerSubtitle|Produkt ansehen/);
   assert.doesNotMatch(page, /Demo-Shop|Demo shop for personalised engraved gifts|Boutique démo|Demo obchod/);
   assert.doesNotMatch(styles, /shop-footer div/);
+  assert.doesNotMatch(styles, /\.main-nav/);
   assert.match(styles, /\.view-cart \.cart-page-grid/);
   assert.match(styles, /\.view-cart \.checkout-panel/);
   assert.match(styles, /\.consent-list/);
