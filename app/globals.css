@@ -2656,7 +2656,13 @@ main {
 }
 
 .photo-dialog {
-  background: #111d16;
+  background: rgba(12, 25, 18, 0.78);
+  backdrop-filter: blur(6px);
+}
+
+.photo-dialog::backdrop {
+  background: rgba(8, 20, 13, 0.56);
+  backdrop-filter: blur(3px);
 }
 
 @media (max-width: 1120px) {
