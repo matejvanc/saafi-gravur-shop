@@ -2418,18 +2418,23 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
               ))}
             </div>
           </details>
-          {cartQuantity > 0 && currentView !== "product" && (
-            <a
-              className="header-cart"
-              href="/kosik"
-              onClick={(event) => {
-                event.preventDefault();
-                navigateCart();
-              }}
-            >
-              {t.cartTitle} ({cartQuantity})
-            </a>
-          )}
+          <a
+            className="header-cart"
+            href="/kosik"
+            aria-label={cartQuantity > 0 ? `${t.cartTitle} (${cartQuantity})` : t.cartTitle}
+            title={t.cartTitle}
+            onClick={(event) => {
+              event.preventDefault();
+              navigateCart();
+            }}
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+              <path d="M3 4h2l2.1 11.1a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L21 8H6" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.7" />
+              <circle cx="9.5" cy="20" r="1.2" fill="currentColor" />
+              <circle cx="18" cy="20" r="1.2" fill="currentColor" />
+            </svg>
+            {cartQuantity > 0 && <span className="header-cart-count">{cartQuantity}</span>}
+          </a>
         </div>
       </header>
 
