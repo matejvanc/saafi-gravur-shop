@@ -1937,6 +1937,16 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   }, []);
 
   useEffect(() => {
+    setSelectedBackEngravingId(
+      getDefaultBackEngravingId(
+        selectedProductId,
+        language,
+        selectedBaubleVariantId,
+      ),
+    );
+  }, [language]);
+
+  useEffect(() => {
     function closeMenusOutside(event: PointerEvent) {
       const target = event.target;
       if (!(target instanceof Node)) return;
@@ -2219,7 +2229,9 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   function selectBaubleVariant(variantId: string) {
     const variant = getBaubleVariant(variantId);
     setSelectedBaubleVariantId(variant.id);
-    setSelectedBackEngravingId(variant.backEngravingOptions?.[0]?.id ?? "");
+    setSelectedBackEngravingId(
+      getLocalizedBackEngravingId(variant.backEngravingOptions ?? [], language),
+    );
   }
 
   function addToCart(event: FormEvent<HTMLFormElement>) {

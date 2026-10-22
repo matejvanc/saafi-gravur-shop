@@ -175,6 +175,8 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /document\.addEventListener\("pointerdown", closeMenusOutside\)/);
   assert.match(page, /const christmasBackEngravingOptions: BackEngravingOption\[\]/);
   assert.match(page, /christmasBackEngravingByLanguage/);
+  assert.match(page, /getDefaultBackEngravingId\(\s*selectedProductId,\s*language,\s*selectedBaubleVariantId/);
+  assert.match(page, /getLocalizedBackEngravingId\(variant\.backEngravingOptions \?\? \[\], language\)/);
   assert.match(page, /className="language-menu engraving-menu"/);
   assert.match(page, /className="account-shortcut"/);
   assert.doesNotMatch(page, /className="home-shortcut"/);
