@@ -828,27 +828,12 @@ const flowCopy = {
   },
 };
 
-const introPhotos = [
-  {
-    productId: "kule-jednostranna-1",
-    src: "/products/christmas-baubles-main.jpeg",
-  },
-  {
-    productId: "lesezeichen",
-    src: "/products/wood-bookmark-page.jpeg",
-  },
-  {
-    productId: "anhaenger",
-    src: "/products/wood-pendants-zodiac.jpeg",
-  },
-  {
-    productId: "flaschenoeffner",
-    src: "/products/wood-opener.jpeg",
-  },
-  {
-    productId: "kugelschreiber",
-    src: "/products/wood-pen.jpeg",
-  },
+const introProductIds = [
+  "kule-jednostranna-1",
+  "lesezeichen",
+  "anhaenger",
+  "flaschenoeffner",
+  "kugelschreiber",
 ];
 
 const logoOptions = [
@@ -2571,18 +2556,19 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
             </section>
 
             <section className="intro-gallery" id="produkte" aria-label={home.galleryLabel}>
-              {introPhotos.map((photo) => {
-                const product = getProduct(photo.productId);
+              {introProductIds.map((productId) => {
+                const product = getProduct(productId);
                 const productCopy = product.translations[language];
+                const mainPhoto = product.photos[0];
 
                 return (
                   <button
                     className="intro-photo"
-                    key={photo.productId}
+                    key={productId}
                     type="button"
                     onClick={() => selectProduct(product.id)}
                   >
-                    <img src={photo.src} alt={productCopy.name} />
+                    <img src={mainPhoto.src} alt={productCopy.name} />
                     <span>{productCopy.name}</span>
                   </button>
                 );

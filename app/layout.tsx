@@ -26,8 +26,8 @@ export async function generateMetadata(): Promise<Metadata> {
     description:
       "Mehrsprachiger E-Shop-Prototyp für Weihnachtskugeln, Holz-Lesezeichen, Anhänger, Flaschenöffner und Kugelschreiber mit Gravur.",
     icons: {
-      icon: "/favicon.svg",
-      shortcut: "/favicon.svg",
+      icon: "/favicon.svg?v=2",
+      shortcut: "/favicon.svg?v=2",
     },
     openGraph: {
       title: `${brandName} | Personalisierte Geschenke`,

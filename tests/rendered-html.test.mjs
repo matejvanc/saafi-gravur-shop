@@ -142,7 +142,7 @@ test("fallback routes serve product and cart paths for client routing", async ()
 });
 
 test("starter preview files and dependencies are removed", async () => {
-  const [page, routeFallback, layout, packageJson, styles, accountAuth, worker] = await Promise.all([
+  const [page, routeFallback, layout, packageJson, styles, accountAuth, worker, favicon] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/[...path]/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
@@ -150,6 +150,7 @@ test("starter preview files and dependencies are removed", async () => {
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../app/account-auth.ts", import.meta.url), "utf8"),
     readFile(new URL("../worker/index.ts", import.meta.url), "utf8"),
+    readFile(new URL("../public/favicon.svg", import.meta.url), "utf8"),
   ]);
 
   const openerProductStart = page.indexOf('id: "flaschenoeffner"');
@@ -195,7 +196,11 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /const flowCopy/);
   assert.match(page, /initialPath/);
   assert.match(page, /intro-gallery/);
+  assert.match(page, /const introProductIds = \[[\s\S]*?"lesezeichen"[\s\S]*?"anhaenger"[\s\S]*?\];[\s\S]*?const mainPhoto = product\.photos\[0\];[\s\S]*?<img src=\{mainPhoto\.src\} alt=\{productCopy\.name\}/);
   assert.match(page, /id="produkte"/);
+  assert.match(favicon, /<text[^>]*>S<\/text>/);
+  assert.match(favicon, /<text[^>]*>G<\/text>/);
+  assert.match(layout, /icon: "\/favicon\.svg\?v=2"/);
   assert.match(page, /scrollIntoView/);
   assert.match(page, /className={`product-card/);
   assert.match(page, /productHref/);
@@ -210,11 +215,9 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /section-heading-left/);
   assert.match(page, /navigateTerms/);
   assert.match(page, /href="\/agb"/);
-  assert.match(page, /productId: "flaschenoeffner",\s+src: "\/products\/wood-opener\.jpeg"/);
+  assert.match(page, /const introProductIds = \[[\s\S]*?"flaschenoeffner"[\s\S]*?"kugelschreiber"[\s\S]*?\];/);
   assert.match(openerProductBlock, /src: "\/products\/wood-opener\.jpeg"/);
   assert.doesNotMatch(openerProductBlock, /wood-opener-pen-set\.jpeg/);
-  assert.match(page, /productId: "kugelschreiber"/);
-  assert.match(page, /productId: "kugelschreiber",\s+src: "\/products\/wood-pen\.jpeg"/);
   assert.match(penProductBlock, /src: "\/products\/wood-pen\.jpeg"/);
   assert.doesNotMatch(penProductBlock, /wood-opener-pen-set\.jpeg/);
   assert.doesNotMatch(page, /wood-opener-pen-set\.jpeg/);
