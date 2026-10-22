@@ -588,8 +588,8 @@ main {
 
 .gallery-column {
   align-self: start;
-  max-height: calc(100vh - 92px);
-  overflow-y: auto;
+  max-height: none;
+  overflow: visible;
   position: sticky;
   top: calc(76px + 1rem);
   padding: clamp(0.8rem, 2vw, 1.1rem);

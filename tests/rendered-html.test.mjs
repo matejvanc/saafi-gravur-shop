@@ -291,7 +291,7 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /className="term-number"/);
   assert.match(styles, /\.product-photo-frame img[\s\S]*object-fit: contain/);
   assert.match(styles, /\.product-photo-frame \{\s+aspect-ratio: 1\.2[\s\S]*max-height: min\(54vh, 500px\)/);
-  assert.match(styles, /\.gallery-column \{\s+align-self: start;\s+max-height: calc\(100vh - 92px\)/);
+  assert.match(styles, /\.gallery-column \{\s+align-self: start;\s+max-height: none;\s+overflow: visible;\s+position: sticky/);
   assert.match(styles, /\.engraving-menu \.language-options/);
   assert.match(styles, /\.gallery-column[\s\S]*position: sticky/);
   assert.doesNotMatch(styles, /\.product-photo-frame img[\s\S]*hue-rotate|mix-blend-mode: multiply/);
