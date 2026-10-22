@@ -2763,6 +2763,10 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                   className="photo-dialog"
                   ref={photoDialogRef}
                   aria-label={selectedProductCopy.name}
+                  onCancel={(event) => {
+                    event.preventDefault();
+                    event.currentTarget.close();
+                  }}
                   onClick={(event) => {
                     if (event.target === event.currentTarget) event.currentTarget.close();
                   }}
