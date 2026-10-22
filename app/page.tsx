@@ -2318,41 +2318,6 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     setSelectedPhotoId(photos[nextIndex].id);
   }
 
-  function renderCartSummary() {
-    return (
-      <aside className="cart-summary cart-summary-compact" id="warenkorb" aria-label={t.cartTitle}>
-        <div className="cart-summary-compact-head">
-          <h2>{t.cartHeading}</h2>
-          <div className="cart-total">
-            <span>{t.subtotal}</span>
-            <strong>{formatPrice(cartTotal)}</strong>
-          </div>
-        </div>
-        {cartItems.length === 0 ? (
-          <p className="compact-cart-empty">{t.compactCartEmpty}</p>
-        ) : (
-          <div className="compact-cart-items" aria-live="polite">
-            {cartItems.map((item) => {
-              const product = getProduct(item.productId);
-
-              return (
-                <article className="compact-cart-line" key={item.id}>
-                  <span>
-                    <strong>{product.translations[language].shortName}</strong>
-                    {" · "}{item.customText} × {item.quantity}
-                  </span>
-                  <strong>
-                    {formatPrice(item.quantity * getCartItemUnitPrice(item))}
-                  </strong>
-                </article>
-              );
-            })}
-          </div>
-        )}
-      </aside>
-    );
-  }
-
   return (
     <div className={`shop-shell view-${currentView}`}>
       <div className="holiday-ribbon" aria-label={holidayMessage}>
@@ -2453,7 +2418,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
               ))}
             </div>
           </details>
-          {cartQuantity > 0 && (
+          {cartQuantity > 0 && currentView !== "product" && (
             <a
               className="header-cart"
               href="/kosik"
@@ -2569,7 +2534,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
               aria-labelledby="home-title"
               style={
                 {
-                  "--hero-image": "url('/products/christmas-baubles-main.jpeg')",
+                  "--hero-image": "url('/products/christmas-baubles-wrapped.jpeg')",
                 } as CSSProperties
               }
             >
@@ -2731,7 +2696,6 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
               >
                 {flow.backHome}
               </a>
-              {renderCartSummary()}
             </div>
 
             <section className="product-section" id="produkt" aria-labelledby="product-title">
