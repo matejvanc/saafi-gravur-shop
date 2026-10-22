@@ -915,6 +915,22 @@ type BackEngravingOption = {
   text: string;
 };
 
+const christmasBackEngravingOptions: BackEngravingOption[] = [
+  { id: "merry-christmas", text: "Merry Christmas" },
+  { id: "frohe-weihnachten", text: "Frohe Weihnachten" },
+  { id: "vesele-vanoce", text: "Veselé Vánoce" },
+  { id: "joyeux-noel", text: "Joyeux Noël" },
+  { id: "buon-natale", text: "Buon Natale" },
+];
+
+const christmasBackEngravingByLanguage: Record<LanguageCode, string> = {
+  en: "merry-christmas",
+  de: "frohe-weihnachten",
+  cs: "vesele-vanoce",
+  fr: "joyeux-noel",
+  it: "buon-natale",
+};
+
 type Product = {
   id: string;
   price: number;
@@ -1182,11 +1198,7 @@ const products: Product[] = [
       { id: "modra-glanz", hex: "#3b6fa9", edge: "#1d3557", label: { de: "Blau glänzend", en: "Blue gloss", cs: "Modrá lesklá", fr: "Bleu brillant", it: "Blu lucido" } },
       { id: "modra-mat", hex: "#3b6fa9", edge: "#1d3557", label: { de: "Blau matt", en: "Blue matte", cs: "Modrá matná", fr: "Bleu mat", it: "Blu opaco" } },
     ],
-    backEngravingOptions: [
-      { id: "merry-christmas", text: "Merry Christmas" },
-      { id: "frohe-weihnachten", text: "Frohe Weihnachten" },
-      { id: "sretan-bozic", text: "Sretan Božić" },
-    ],
+    backEngravingOptions: christmasBackEngravingOptions,
     photos: [
       { id: "main", src: "/products/christmas-baubles-main.jpeg", alt: { de: "Hauptgrafik für beidseitig gravierte Kugel", en: "Main graphic for double-sided engraved bauble", cs: "Hlavní grafika pro oboustranně gravírovanou kouli", fr: "Visuel principal pour boule gravée double face", it: "Grafica principale per pallina incisa fronte-retro" } },
       { id: "wrapped", src: "/products/christmas-baubles-wrapped.jpeg", alt: { de: "Beidseitig gravierte Kugel mit Schleife", en: "Double-sided engraved bauble with bow", cs: "Oboustranně gravírovaná koule s mašlí", fr: "Boule gravée double face avec ruban", it: "Pallina incisa fronte-retro con fiocco" } },
@@ -1274,11 +1286,7 @@ const products: Product[] = [
       { id: "modra-glanz", hex: "#3b6fa9", edge: "#1d3557", label: { de: "Blau glänzend", en: "Blue gloss", cs: "Modrá lesklá", fr: "Bleu brillant", it: "Blu lucido" } },
       { id: "modra-mat", hex: "#3b6fa9", edge: "#1d3557", label: { de: "Blau matt", en: "Blue matte", cs: "Modrá matná", fr: "Bleu mat", it: "Blu opaco" } },
     ],
-    backEngravingOptions: [
-      { id: "merry-christmas-2026", text: "Merry Christmas 2026" },
-      { id: "frohe-weihnachten", text: "Frohe Weihnachten" },
-      { id: "vesele-vanoce", text: "Veselé Vánoce" },
-    ],
+    backEngravingOptions: christmasBackEngravingOptions,
     photos: [
       { id: "main", src: "/products/christmas-baubles-main.jpeg", alt: { de: "Hauptgrafik für festliche Doppelseiten-Kugel", en: "Main graphic for festive double-sided bauble", cs: "Hlavní grafika pro sváteční oboustrannou kouli", fr: "Visuel principal pour boule festive double face", it: "Grafica principale per pallina festiva fronte-retro" } },
       { id: "wrapped", src: "/products/christmas-baubles-wrapped.jpeg", alt: { de: "Festliche doppelseitige Kugel mit Schleife", en: "Festive double-sided bauble with bow", cs: "Sváteční oboustranná koule s mašlí", fr: "Boule festive double face avec ruban", it: "Pallina festiva fronte-retro con fiocco" } },
@@ -1789,8 +1797,26 @@ function getBackEngravingOptions(product: Product) {
   return product.backEngravingOptions ?? [];
 }
 
-function getDefaultBackEngravingId(productId: string) {
-  return getBackEngravingOptions(getProduct(productId))[0]?.id ?? "";
+function getLocalizedBackEngravingId(
+  options: BackEngravingOption[],
+  language: LanguageCode,
+) {
+  return (
+    options.find((option) => option.id === christmasBackEngravingByLanguage[language])
+      ?.id ?? options[0]?.id ?? ""
+  );
+}
+
+function getDefaultBackEngravingId(
+  productId: string,
+  language: LanguageCode = "de",
+  baubleVariantId?: string,
+) {
+  const options =
+    productId === BAUBLE_PRODUCT_ID && baubleVariantId
+      ? getBaubleVariant(baubleVariantId).backEngravingOptions ?? []
+      : getBackEngravingOptions(getProduct(productId));
+  return getLocalizedBackEngravingId(options, language);
 }
 
 function getCartItemUnitPrice(item: CartItem) {
@@ -1819,7 +1845,11 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   const [customText, setCustomText] = useState("Mila");
   const [selectedLogoId, setSelectedLogoId] = useState(logoOptions[0].id);
   const [selectedBackEngravingId, setSelectedBackEngravingId] = useState(() =>
-    getDefaultBackEngravingId(initialProductId),
+    getDefaultBackEngravingId(
+      initialProductId,
+      "de",
+      initialRoute.baubleVariantId,
+    ),
   );
   const [selectedGiftWrap, setSelectedGiftWrap] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -1843,6 +1873,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   const [accountRetryCount, setAccountRetryCount] = useState(0);
   const accountDialogRef = useRef<HTMLDialogElement>(null);
   const languageMenuRef = useRef<HTMLDetailsElement>(null);
+  const backEngravingMenuRef = useRef<HTMLDetailsElement>(null);
 
   const t = ui[language];
   const account = accountCopy[language];
@@ -1895,7 +1926,30 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     const storedLanguage = getInitialLanguage();
     if (storedLanguage !== language) {
       setLanguage(storedLanguage);
+      setSelectedBackEngravingId(
+        getDefaultBackEngravingId(
+          selectedProductId,
+          storedLanguage,
+          selectedBaubleVariantId,
+        ),
+      );
     }
+  }, []);
+
+  useEffect(() => {
+    function closeMenusOutside(event: PointerEvent) {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (!languageMenuRef.current?.contains(target)) {
+        languageMenuRef.current?.removeAttribute("open");
+      }
+      if (!backEngravingMenuRef.current?.contains(target)) {
+        backEngravingMenuRef.current?.removeAttribute("open");
+      }
+    }
+
+    document.addEventListener("pointerdown", closeMenusOutside);
+    return () => document.removeEventListener("pointerdown", closeMenusOutside);
   }, []);
 
   useEffect(() => {
@@ -2035,7 +2089,9 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     const nextBackEngravingOptions = nextProduct.id === BAUBLE_PRODUCT_ID
       ? getBaubleVariant(nextBaubleVariantId).backEngravingOptions ?? []
       : getBackEngravingOptions(nextProduct);
-    setSelectedBackEngravingId(nextBackEngravingOptions[0]?.id ?? "");
+    setSelectedBackEngravingId(
+      getLocalizedBackEngravingId(nextBackEngravingOptions, language),
+    );
     setSelectedGiftWrap(false);
     setCustomText("Mila");
   }
@@ -2337,6 +2393,9 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                   aria-pressed={language === option.code}
                   onClick={() => {
                     setLanguage(option.code);
+                    setSelectedBackEngravingId(
+                      getLocalizedBackEngravingId(backEngravingOptions, option.code),
+                    );
                     closeLanguageMenu();
                   }}
                 >
@@ -2868,25 +2927,32 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                   {backEngravingOptions.length > 0 && (
                     <div className="field-group">
                       <span>{t.backEngravingLabel}</span>
-                      <div
-                        className="phrase-grid"
-                        role="radiogroup"
-                        aria-label={t.backEngravingLabel}
+                      <details
+                        className="language-menu engraving-menu"
+                        ref={backEngravingMenuRef}
                       >
+                        <summary aria-label={t.backEngravingLabel}>
+                          <span>{selectedBackEngraving?.text}</span>
+                        </summary>
+                        <div className="language-options">
                         {backEngravingOptions.map((option) => (
                           <button
-                            className={`phrase-option ${
+                            className={
                               selectedBackEngraving?.id === option.id ? "selected" : ""
-                            }`}
+                            }
                             key={option.id}
                             type="button"
                             aria-pressed={selectedBackEngraving?.id === option.id}
-                            onClick={() => setSelectedBackEngravingId(option.id)}
+                            onClick={() => {
+                              setSelectedBackEngravingId(option.id);
+                              backEngravingMenuRef.current?.removeAttribute("open");
+                            }}
                           >
                             {option.text}
                           </button>
                         ))}
-                      </div>
+                        </div>
+                      </details>
                     </div>
                   )}
 

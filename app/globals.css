@@ -195,6 +195,22 @@ button:disabled {
   z-index: 25;
 }
 
+.engraving-menu {
+  display: block;
+  width: 100%;
+}
+
+.engraving-menu summary {
+  background: #fffdf8;
+  width: 100%;
+}
+
+.engraving-menu .language-options {
+  left: 0;
+  right: auto;
+  width: 100%;
+}
+
 .language-options button {
   background: transparent;
   border: 0;
@@ -562,15 +578,18 @@ main {
 
 .gallery-column {
   align-self: start;
+  max-height: calc(100vh - 92px);
+  overflow-y: auto;
   position: sticky;
   top: calc(76px + 1rem);
   padding: clamp(0.8rem, 2vw, 1.1rem);
 }
 
 .product-photo-frame {
-  aspect-ratio: 1.05;
+  aspect-ratio: 1.2;
   background: var(--ivory);
   border-radius: 8px;
+  max-height: min(40vh, 360px);
   overflow: hidden;
 }
 
@@ -1598,6 +1617,8 @@ a:focus-visible {
   }
 
   .gallery-column {
+    max-height: none;
+    overflow: visible;
     position: static;
   }
 
@@ -1636,6 +1657,16 @@ a:focus-visible {
     grid-column: auto;
     position: static;
     width: 100%;
+  }
+}
+
+@media (min-width: 901px) and (max-height: 760px) {
+  .product-photo-frame {
+    aspect-ratio: 1.35;
+  }
+
+  .gallery-column .preview-row {
+    margin-top: 0.55rem;
   }
 }
 
