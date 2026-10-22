@@ -65,6 +65,7 @@ const ui = {
     detailPhoto: "Detail",
     compactCartEmpty: "Warenkorb leer",
     enlargePhoto: "Foto vergrößern",
+    togglePhotoZoom: "Foto-Zoom umschalten",
     closePhoto: "Foto schließen",
     previousPhoto: "Vorheriges Foto",
     nextPhoto: "Nächstes Foto",
@@ -194,6 +195,7 @@ const ui = {
     detailPhoto: "Detail",
     compactCartEmpty: "Cart is empty",
     enlargePhoto: "Enlarge photo",
+    togglePhotoZoom: "Toggle photo zoom",
     closePhoto: "Close photo",
     previousPhoto: "Previous photo",
     nextPhoto: "Next photo",
@@ -323,6 +325,7 @@ const ui = {
     detailPhoto: "Detail",
     compactCartEmpty: "Košík je prázdný",
     enlargePhoto: "Zvětšit fotku",
+    togglePhotoZoom: "Přepnout přiblížení fotky",
     closePhoto: "Zavřít fotku",
     previousPhoto: "Předchozí fotka",
     nextPhoto: "Další fotka",
@@ -452,6 +455,7 @@ const ui = {
     detailPhoto: "Détail",
     compactCartEmpty: "Le panier est vide",
     enlargePhoto: "Agrandir la photo",
+    togglePhotoZoom: "Changer le zoom de la photo",
     closePhoto: "Fermer la photo",
     previousPhoto: "Photo précédente",
     nextPhoto: "Photo suivante",
@@ -581,6 +585,7 @@ const ui = {
     detailPhoto: "Dettaglio",
     compactCartEmpty: "Il carrello è vuoto",
     enlargePhoto: "Ingrandisci foto",
+    togglePhotoZoom: "Cambia zoom foto",
     closePhoto: "Chiudi foto",
     previousPhoto: "Foto precedente",
     nextPhoto: "Foto successiva",
@@ -1849,6 +1854,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   const [selectedPhotoId, setSelectedPhotoId] = useState(
     () => getProduct(initialProductId).photos[0].id,
   );
+  const [photoZoomed, setPhotoZoomed] = useState(false);
   const [selectedFinishId, setSelectedFinishId] = useState(
     () => getProduct(initialProductId).finishes[0].id,
   );
@@ -2316,6 +2322,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     const currentIndex = photos.findIndex((photo) => photo.id === selectedPhoto.id);
     const nextIndex = (currentIndex + direction + photos.length) % photos.length;
     setSelectedPhotoId(photos[nextIndex].id);
+    setPhotoZoomed(false);
   }
 
   return (
@@ -2709,7 +2716,10 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                   className="product-photo-open"
                   type="button"
                   aria-label={t.enlargePhoto}
-                  onClick={() => photoDialogRef.current?.showModal()}
+                  onClick={() => {
+                    setPhotoZoomed(false);
+                    photoDialogRef.current?.showModal();
+                  }}
                 >
                   <span className="product-photo-frame">
                     <img
@@ -2797,14 +2807,28 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                     }
                   }}
                 >
-                  <button
-                    className="photo-dialog-close"
-                    type="button"
-                    aria-label={t.closePhoto}
-                    onClick={() => photoDialogRef.current?.close()}
-                  >
-                    ×
-                  </button>
+                  <div className="photo-lightbox-toolbar">
+                    <span>{selectedProductCopy.name}</span>
+                    <div>
+                      <button
+                        className="photo-dialog-zoom"
+                        type="button"
+                        aria-label={t.togglePhotoZoom}
+                        aria-pressed={photoZoomed}
+                        onClick={() => setPhotoZoomed((zoomed) => !zoomed)}
+                      >
+                        {photoZoomed ? "−" : "+"}
+                      </button>
+                      <button
+                        className="photo-dialog-close"
+                        type="button"
+                        aria-label={t.closePhoto}
+                        onClick={() => photoDialogRef.current?.close()}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  </div>
                   <div className="photo-lightbox-view">
                     <button
                       className="photo-lightbox-arrow"
@@ -2814,7 +2838,11 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                     >
                       ‹
                     </button>
-                    <img src={selectedPhoto.src} alt={selectedPhoto.alt[language]} />
+                    <img
+                      className={photoZoomed ? "zoomed" : ""}
+                      src={selectedPhoto.src}
+                      alt={selectedPhoto.alt[language]}
+                    />
                     <button
                       className="photo-lightbox-arrow"
                       type="button"

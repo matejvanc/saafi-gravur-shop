@@ -2971,7 +2971,23 @@ main {
 
 /* Correct the holiday artwork: use the real product photograph, never the promo poster. */
 .shop-shell {
-  min-height: 100vh;
+  background:
+    linear-gradient(rgba(250, 249, 245, 0.9), rgba(250, 249, 245, 0.94)),
+    url("/products/christmas-baubles-wrapped.jpeg") center / cover fixed;
+}
+
+body::before {
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.88) 0 1px, transparent 1.7px),
+    radial-gradient(circle, rgba(210, 190, 145, 0.46) 0 1px, transparent 1.8px);
+  background-position: 0 0, 19px 23px;
+  background-size: 43px 43px, 67px 67px;
+  content: "";
+  inset: 0;
+  opacity: 0.42;
+  pointer-events: none;
+  position: fixed;
+  z-index: 30;
 }
 
 .holiday-ribbon {
@@ -3133,6 +3149,10 @@ main {
 }
 
 @media (max-width: 560px) {
+  .shop-shell {
+    background-attachment: scroll, scroll;
+  }
+
   .home-hero {
     align-items: flex-end;
     background-image:
@@ -3145,109 +3165,6 @@ main {
   }
 
   .home-hero-copy {
-    max-width: 100%;
-  }
-}
-
-/* Keep the festive glitter confined to the opened product photo viewer. */
-.photo-dialog {
-  background-color: #0b2c1e;
-  background-image:
-    radial-gradient(circle, rgba(235, 241, 245, 0.82) 0 1px, transparent 1.8px),
-    radial-gradient(circle, rgba(203, 216, 226, 0.58) 0 1.3px, transparent 2.1px),
-    radial-gradient(ellipse at 50% 42%, rgba(37, 91, 62, 0.64), transparent 55%),
-    linear-gradient(150deg, #102f22, #071d14 62%, #123b28);
-  background-position: 7px 11px, 32px 27px, center, center;
-  background-size: 79px 79px, 131px 131px, 100% 100%, 100% 100%;
-  border: 1px solid rgba(211, 222, 230, 0.46);
-  border-radius: 12px;
-  display: block;
-  height: auto;
-  inset: 0;
-  margin: auto;
-  max-height: 94dvh;
-  max-width: min(96vw, 1280px);
-  overflow: auto;
-  padding: clamp(0.65rem, 2vw, 1.2rem);
-  position: fixed;
-  width: 100%;
-}
-
-.photo-dialog::backdrop {
-  background: rgba(4, 15, 10, 0.78);
-  backdrop-filter: blur(5px);
-}
-
-.photo-lightbox-toolbar {
-  display: none;
-}
-
-.photo-dialog-close {
-  background: var(--cranberry);
-  border: 1px solid rgba(211, 222, 230, 0.52);
-  border-radius: 50%;
-  color: white;
-  display: flex;
-  font-size: 1.6rem;
-  height: 42px;
-  margin: 0 0 0.6rem auto;
-  padding: 0;
-  width: 42px;
-}
-
-.photo-lightbox-view {
-  align-items: center;
-  display: grid;
-  gap: clamp(0.35rem, 2vw, 1.25rem);
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  justify-items: center;
-  min-height: auto;
-  padding: 0;
-}
-
-.photo-lightbox-view > img {
-  display: block;
-  height: auto;
-  max-height: min(76dvh, 760px);
-  max-width: 100%;
-  object-fit: contain;
-  transform: none;
-  width: 100%;
-}
-
-.photo-lightbox-arrow {
-  background: rgba(18, 68, 45, 0.9);
-  border-color: rgba(211, 222, 230, 0.42);
-}
-
-.photo-lightbox-thumbs {
-  background: transparent;
-  border-top: 0;
-  margin-top: 0.85rem;
-  min-height: auto;
-  padding: 0.2rem;
-}
-
-.photo-lightbox-thumbs .thumb-button {
-  background: rgba(15, 54, 36, 0.9);
-  border-color: rgba(220, 231, 236, 0.42);
-  color: var(--surface);
-}
-
-.photo-lightbox-thumbs .thumb-button img {
-  background: var(--ivory);
-}
-
-@media (max-width: 560px) {
-  .photo-dialog {
-    border-radius: 8px;
-    max-height: 94dvh;
-    max-width: calc(100vw - 1rem);
-    padding: 0.6rem;
-  }
-
-  .photo-lightbox-view > img {
-    max-height: min(72dvh, 760px);
     max-width: 100%;
   }
 }
