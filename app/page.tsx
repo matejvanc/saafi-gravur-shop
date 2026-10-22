@@ -3014,33 +3014,6 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
       <footer className="shop-footer" id="kontakt">
         <nav className="footer-links" aria-label={t.nav.assortment}>
           <a
-            href="/"
-            onClick={(event) => {
-              event.preventDefault();
-              navigateHome();
-            }}
-          >
-            {home.navLabel}
-          </a>
-          <a
-            href="/produkty"
-            onClick={(event) => {
-              event.preventDefault();
-              navigateProducts();
-            }}
-          >
-            {t.nav.assortment}
-          </a>
-          <a
-            href="/kosik"
-            onClick={(event) => {
-              event.preventDefault();
-              navigateCart();
-            }}
-          >
-            {t.cartTitle}
-          </a>
-          <a
             href="/agb"
             onClick={(event) => {
               event.preventDefault();

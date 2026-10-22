@@ -56,6 +56,10 @@ test("server-renders the multilingual personalized shop", async () => {
   assert.match(html, /Warenkorb/);
   assert.match(html, />AGB</);
   assert.doesNotMatch(html, /class="main-nav"/);
+  assert.doesNotMatch(html, /<nav class="footer-links"[^>]*>[\s\S]*?href="\/"/);
+  assert.doesNotMatch(html, /<nav class="footer-links"[^>]*>[\s\S]*?href="\/produkty"/);
+  assert.doesNotMatch(html, /<nav class="footer-links"[^>]*>[\s\S]*?href="\/kosik"/);
+  assert.match(html, /<nav class="footer-links"[^>]*>[\s\S]*?href="\/agb"/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 });
 
@@ -142,11 +146,16 @@ test("starter preview files and dependencies are removed", async () => {
   const openerProductStart = page.indexOf('id: "flaschenoeffner"');
   const penProductStart = page.indexOf('id: "kugelschreiber"');
   const pageTypesStart = page.indexOf('type PageView');
+  const footerStart = page.indexOf('<footer className="shop-footer"');
+  const footerEnd = page.indexOf("</footer>", footerStart);
   assert.notEqual(openerProductStart, -1);
   assert.notEqual(penProductStart, -1);
   assert.notEqual(pageTypesStart, -1);
+  assert.notEqual(footerStart, -1);
+  assert.notEqual(footerEnd, -1);
   const openerProductBlock = page.slice(openerProductStart, penProductStart);
   const penProductBlock = page.slice(penProductStart, pageTypesStart);
+  const footerBlock = page.slice(footerStart, footerEnd);
 
   assert.match(page, /const TEXT_LIMIT = 12;/);
   assert.match(page, /type LanguageCode = "de" \| "en" \| "cs" \| "fr" \| "it";/);
@@ -226,6 +235,8 @@ test("starter preview files and dependencies are removed", async () => {
   assert.doesNotMatch(page, /viewProduct|card-action|footerSubtitle|Produkt ansehen/);
   assert.doesNotMatch(page, /Demo-Shop|Demo shop for personalised engraved gifts|Boutique démo|Demo obchod/);
   assert.doesNotMatch(styles, /shop-footer div/);
+  assert.doesNotMatch(footerBlock, /href="\/"|href="\/produkty"|href="\/kosik"/);
+  assert.match(footerBlock, /href="\/agb"/);
   assert.doesNotMatch(styles, /\.main-nav/);
   assert.match(styles, /\.view-cart \.cart-page-grid/);
   assert.match(styles, /\.view-cart \.checkout-panel/);
