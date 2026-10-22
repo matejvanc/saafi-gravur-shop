@@ -63,6 +63,11 @@ const ui = {
     checkoutSoon: "Checkout folgt",
     mainPhoto: "Hauptfoto",
     detailPhoto: "Detail",
+    compactCartEmpty: "Warenkorb leer",
+    enlargePhoto: "Foto vergrößern",
+    closePhoto: "Foto schließen",
+    previousPhoto: "Vorheriges Foto",
+    nextPhoto: "Nächstes Foto",
     selectProduct: "Auswählen",
     service: [
       ["Mit Namen graviert", "Persönliche Details machen jedes Geschenk einzigartig."],
@@ -187,6 +192,11 @@ const ui = {
     checkoutSoon: "Checkout coming soon",
     mainPhoto: "Main photo",
     detailPhoto: "Detail",
+    compactCartEmpty: "Cart is empty",
+    enlargePhoto: "Enlarge photo",
+    closePhoto: "Close photo",
+    previousPhoto: "Previous photo",
+    nextPhoto: "Next photo",
     selectProduct: "Select",
     service: [
       ["Made personal", "Add a name or short message to make a gift your own."],
@@ -311,6 +321,11 @@ const ui = {
     checkoutSoon: "Checkout doplníme",
     mainPhoto: "Hlavní foto",
     detailPhoto: "Detail",
+    compactCartEmpty: "Košík je prázdný",
+    enlargePhoto: "Zvětšit fotku",
+    closePhoto: "Zavřít fotku",
+    previousPhoto: "Předchozí fotka",
+    nextPhoto: "Další fotka",
     selectProduct: "Vybrat",
     service: [
       ["Dárek se jménem", "Jméno nebo krátké věnování promění dárek v osobní vzpomínku."],
@@ -435,6 +450,11 @@ const ui = {
     checkoutSoon: "Paiement à venir",
     mainPhoto: "Photo principale",
     detailPhoto: "Détail",
+    compactCartEmpty: "Le panier est vide",
+    enlargePhoto: "Agrandir la photo",
+    closePhoto: "Fermer la photo",
+    previousPhoto: "Photo précédente",
+    nextPhoto: "Photo suivante",
     selectProduct: "Choisir",
     service: [
       ["Un cadeau à votre image", "Ajoutez un prénom ou un petit mot pour le rendre unique."],
@@ -559,6 +579,11 @@ const ui = {
     checkoutSoon: "Checkout in arrivo",
     mainPhoto: "Foto principale",
     detailPhoto: "Dettaglio",
+    compactCartEmpty: "Il carrello è vuoto",
+    enlargePhoto: "Ingrandisci foto",
+    closePhoto: "Chiudi foto",
+    previousPhoto: "Foto precedente",
+    nextPhoto: "Foto successiva",
     selectProduct: "Scegli",
     service: [
       ["Un regalo personale", "Aggiungi un nome o un breve messaggio per renderlo unico."],
@@ -1857,6 +1882,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   const [showAccountDialog, setShowAccountDialog] = useState(false);
   const [accountRetryCount, setAccountRetryCount] = useState(0);
   const accountDialogRef = useRef<HTMLDialogElement>(null);
+  const photoDialogRef = useRef<HTMLDialogElement>(null);
   const languageMenuRef = useRef<HTMLDetailsElement>(null);
   const backEngravingMenuRef = useRef<HTMLDetailsElement>(null);
 
@@ -2278,60 +2304,44 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     );
   }
 
+  function changeSelectedPhoto(direction: -1 | 1) {
+    const photos = selectedProduct.photos;
+    const currentIndex = photos.findIndex((photo) => photo.id === selectedPhoto.id);
+    const nextIndex = (currentIndex + direction + photos.length) % photos.length;
+    setSelectedPhotoId(photos[nextIndex].id);
+  }
+
   function renderCartSummary() {
     return (
-      <aside className="cart-summary" id="warenkorb" aria-label={t.cartTitle}>
-        <div>
-          <p className="section-kicker">{t.cartTitle}</p>
+      <aside className="cart-summary cart-summary-compact" id="warenkorb" aria-label={t.cartTitle}>
+        <div className="cart-summary-compact-head">
           <h2>{t.cartHeading}</h2>
+          <div className="cart-total">
+            <span>{t.subtotal}</span>
+            <strong>{formatPrice(cartTotal)}</strong>
+          </div>
         </div>
         {cartItems.length === 0 ? (
-          <p className="empty-cart">{t.emptyCart}</p>
+          <p className="compact-cart-empty">{t.compactCartEmpty}</p>
         ) : (
-          <div className="cart-list" aria-live="polite">
+          <div className="compact-cart-items" aria-live="polite">
             {cartItems.map((item) => {
               const product = getProduct(item.productId);
-              const finish = getFinish(item.productId, item.finishId);
-              const logo = getLogo(item.logoId);
-              const baubleVariant = baubleProductIds.includes(item.productId)
-                ? getBaubleVariant(item.baubleVariantId ?? item.productId)
-                : undefined;
 
               return (
-                <article className="cart-line" key={item.id}>
-                  <div>
-                    <strong>{product.translations[language].shortName}</strong>
-                    {baubleVariant && <span>{baubleVariant.label[language]}</span>}
-                    <span>
-                      {item.customText} / {logo.label[language]}
-                    </span>
-                    {item.backEngravingText && (
-                      <span>
-                        {t.backEngravingLabel}: {item.backEngravingText}
-                      </span>
-                    )}
-                    {item.giftWrap && (
-                      <span>
-                        {t.giftWrapCartLabel}: {formatPrice(GIFT_WRAP_PRICE)}
-                      </span>
-                    )}
-                    <span>{finish.label[language]}</span>
-                  </div>
+                <article className="compact-cart-line" key={item.id}>
                   <span>
-                    {item.quantity} x {formatPrice(getCartItemUnitPrice(item))}
+                    <strong>{product.translations[language].shortName}</strong>
+                    {" · "}{item.customText} × {item.quantity}
                   </span>
+                  <strong>
+                    {formatPrice(item.quantity * getCartItemUnitPrice(item))}
+                  </strong>
                 </article>
               );
             })}
           </div>
         )}
-        <div className="cart-total">
-          <span>{t.subtotal}</span>
-          <strong>{formatPrice(cartTotal)}</strong>
-        </div>
-        <button className="secondary-button" type="button" onClick={() => navigateCart()}>
-          {flow.goToCart}
-        </button>
       </aside>
     );
   }
@@ -2669,7 +2679,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
 
         {currentView === "product" && (
           <>
-            <div className="page-toolbar">
+            <div className="page-toolbar product-toolbar">
               <a
                 href="/"
                 onClick={(event) => {
@@ -2679,19 +2689,24 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
               >
                 {flow.backHome}
               </a>
-              <button type="button" onClick={() => navigateCart()}>
-                {flow.goToCart}
-              </button>
+              {renderCartSummary()}
             </div>
 
             <section className="product-section" id="produkt" aria-labelledby="product-title">
               <div className="gallery-column">
-                <div className="product-photo-frame">
-                  <img
-                    src={selectedPhoto.src}
-                    alt={selectedPhoto.alt[language]}
-                  />
-                </div>
+                <button
+                  className="product-photo-open"
+                  type="button"
+                  aria-label={t.enlargePhoto}
+                  onClick={() => photoDialogRef.current?.showModal()}
+                >
+                  <span className="product-photo-frame">
+                    <img
+                      src={selectedPhoto.src}
+                      alt={selectedPhoto.alt[language]}
+                    />
+                  </span>
+                </button>
                 <div className="preview-row" aria-label={t.previewLabel}>
                   <div
                     className={`preview-stack ${
@@ -2744,6 +2759,65 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                     </button>
                   ))}
                 </div>
+                <dialog
+                  className="photo-dialog"
+                  ref={photoDialogRef}
+                  aria-label={selectedProductCopy.name}
+                  onClick={(event) => {
+                    if (event.target === event.currentTarget) event.currentTarget.close();
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === "ArrowLeft") {
+                      event.preventDefault();
+                      changeSelectedPhoto(-1);
+                    } else if (event.key === "ArrowRight") {
+                      event.preventDefault();
+                      changeSelectedPhoto(1);
+                    }
+                  }}
+                >
+                  <button
+                    className="photo-dialog-close"
+                    type="button"
+                    aria-label={t.closePhoto}
+                    onClick={() => photoDialogRef.current?.close()}
+                  >
+                    ×
+                  </button>
+                  <div className="photo-lightbox-view">
+                    <button
+                      className="photo-lightbox-arrow"
+                      type="button"
+                      aria-label={t.previousPhoto}
+                      onClick={() => changeSelectedPhoto(-1)}
+                    >
+                      ‹
+                    </button>
+                    <img src={selectedPhoto.src} alt={selectedPhoto.alt[language]} />
+                    <button
+                      className="photo-lightbox-arrow"
+                      type="button"
+                      aria-label={t.nextPhoto}
+                      onClick={() => changeSelectedPhoto(1)}
+                    >
+                      ›
+                    </button>
+                  </div>
+                  <div className="photo-lightbox-thumbs" aria-label={t.detailPhoto}>
+                    {selectedProduct.photos.map((photo) => (
+                      <button
+                        className={`thumb-button ${selectedPhoto.id === photo.id ? "active" : ""}`}
+                        key={photo.id}
+                        type="button"
+                        aria-label={photo.alt[language]}
+                        aria-pressed={selectedPhoto.id === photo.id}
+                        onClick={() => setSelectedPhotoId(photo.id)}
+                      >
+                        <img src={photo.src} alt="" aria-hidden="true" />
+                      </button>
+                    ))}
+                  </div>
+                </dialog>
               </div>
 
               <div className="purchase-panel">
@@ -2995,7 +3069,6 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                 </form>
               </div>
 
-              {renderCartSummary()}
             </section>
 
             <section

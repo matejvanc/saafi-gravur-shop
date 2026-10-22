@@ -215,6 +215,15 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /section-heading-left/);
   assert.match(page, /navigateTerms/);
   assert.match(page, /href="\/agb"/);
+  assert.match(page, /className="page-toolbar product-toolbar"[\s\S]*?\{renderCartSummary\(\)\}[\s\S]*?<section className="product-section"/);
+  assert.match(page, /className="cart-summary cart-summary-compact"/);
+  assert.match(page, /className="product-photo-open"[\s\S]*?photoDialogRef\.current\?\.showModal\(\)/);
+  assert.match(page, /className="photo-dialog"[\s\S]*?changeSelectedPhoto\(-1\)[\s\S]*?changeSelectedPhoto\(1\)/);
+  assert.match(page, /className="photo-lightbox-thumbs"/);
+  assert.match(page, /function changeSelectedPhoto\(direction: -1 \| 1\)/);
+  assert.match(styles, /grid-template-columns: minmax\(0, 1\.08fr\) minmax\(330px, 0\.92fr\)/);
+  assert.match(styles, /max-height: min\(54vh, 500px\)/);
+  assert.match(styles, /\.photo-dialog::backdrop/);
   assert.match(page, /const introProductIds = \[[\s\S]*?"flaschenoeffner"[\s\S]*?"kugelschreiber"[\s\S]*?\];/);
   assert.match(openerProductBlock, /src: "\/products\/wood-opener\.jpeg"/);
   assert.doesNotMatch(openerProductBlock, /wood-opener-pen-set\.jpeg/);
@@ -279,7 +288,7 @@ test("starter preview files and dependencies are removed", async () => {
   assert.doesNotMatch(page, /top-notice/);
   assert.match(page, /className="term-number"/);
   assert.match(styles, /\.product-photo-frame img[\s\S]*object-fit: contain/);
-  assert.match(styles, /\.product-photo-frame \{\s+aspect-ratio: 1\.2[\s\S]*max-height: min\(40vh, 360px\)/);
+  assert.match(styles, /\.product-photo-frame \{\s+aspect-ratio: 1\.2[\s\S]*max-height: min\(54vh, 500px\)/);
   assert.match(styles, /\.gallery-column \{\s+align-self: start;\s+max-height: calc\(100vh - 92px\)/);
   assert.match(styles, /\.engraving-menu \.language-options/);
   assert.match(styles, /\.gallery-column[\s\S]*position: sticky/);
@@ -294,7 +303,7 @@ test("starter preview files and dependencies are removed", async () => {
   assert.ok(page.includes(`"--hero-image": "url('/products/christmas-baubles-main.jpeg')"`));
   assert.match(styles, /radial-gradient\(ellipse at 4% 8%, rgba\(166, 47, 61, 0\.2\)/);
   assert.match(styles, /radial-gradient\(ellipse at 96% 22%, rgba\(30, 81, 59, 0\.21\)/);
-  assert.match(styles, /grid-template-columns: minmax\(290px, 1\.06fr\) minmax\(330px, 0\.95fr\) minmax\(260px, 0\.42fr\);/);
+  assert.match(styles, /grid-template-columns: minmax\(0, 1\.08fr\) minmax\(330px, 0\.92fr\);/);
   assert.match(styles, /grid-template-columns: repeat\(6, minmax\(0, 1fr\)\);/);
   assert.match(page, /maxLength={TEXT_LIMIT}/);
   assert.doesNotMatch(page, /kosik#agb|sortiment-title|id="sortiment"|Selected motivs|Choose a motiv|chosen motiv|custom motiv|reading motiv|Motiv series|Motiv style|motiv engraving|engraved motivs/);
