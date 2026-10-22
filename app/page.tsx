@@ -2339,38 +2339,6 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
             <small>{t.brandSubtitle}</small>
           </span>
         </a>
-        <nav className="header-nav" aria-label={t.nav.assortment}>
-          <a
-            href={productHref(selectedProduct.id)}
-            aria-current={currentView === "product" ? "page" : undefined}
-            onClick={(event) => {
-              event.preventDefault();
-              selectProduct(selectedProduct.id);
-            }}
-          >
-            {t.nav.configurator}
-          </a>
-          <a
-            href="/produkty"
-            aria-current={currentView === "products" ? "page" : undefined}
-            onClick={(event) => {
-              event.preventDefault();
-              navigateProducts();
-            }}
-          >
-            {t.nav.assortment}
-          </a>
-          <a
-            href="/agb"
-            aria-current={currentView === "terms" ? "page" : undefined}
-            onClick={(event) => {
-              event.preventDefault();
-              navigateTerms();
-            }}
-          >
-            {t.nav.terms}
-          </a>
-        </nav>
         <div className="header-actions">
           <button
             className="account-shortcut"
