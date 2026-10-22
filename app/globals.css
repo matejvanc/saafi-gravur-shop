@@ -2656,6 +2656,40 @@ main {
 }
 
 .photo-dialog {
+  height: min(92dvh, 900px);
+  max-height: none;
+  overflow: hidden;
+}
+
+.photo-dialog:not([open]) {
+  display: none;
+}
+
+.photo-dialog[open] {
+  display: grid;
+  grid-template-rows: 42px minmax(0, 1fr) auto;
+}
+
+.photo-dialog[open] .photo-lightbox-view {
+  min-height: 0;
+}
+
+.photo-dialog[open] .photo-lightbox-view > img {
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+  min-width: 0;
+  object-fit: contain;
+  width: 100%;
+}
+
+.photo-dialog[open] .photo-lightbox-thumbs {
+  flex-wrap: wrap;
+  max-height: 120px;
+  overflow: hidden;
+}
+
+.photo-dialog {
   background: rgba(12, 25, 18, 0.78);
   backdrop-filter: blur(6px);
 }
