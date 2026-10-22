@@ -2665,6 +2665,24 @@ main {
   backdrop-filter: blur(3px);
 }
 
+.photo-dialog-festive {
+  background-color: rgba(8, 34, 23, 0.9);
+  background-image:
+    radial-gradient(circle, rgba(232, 240, 244, 0.88) 0 1px, transparent 1.8px),
+    radial-gradient(circle, rgba(197, 212, 221, 0.72) 0 1.3px, transparent 2px),
+    radial-gradient(ellipse at 50% 42%, rgba(42, 94, 66, 0.56), transparent 58%),
+    linear-gradient(145deg, rgba(15, 54, 36, 0.94), rgba(5, 25, 17, 0.96) 68%, rgba(18, 59, 40, 0.94));
+  background-position: 7px 11px, 32px 27px, center, center;
+  background-size: 79px 79px, 131px 131px, 100% 100%, 100% 100%;
+  border-color: rgba(211, 222, 230, 0.52);
+  box-shadow: 0 28px 90px rgba(2, 12, 8, 0.55);
+}
+
+.photo-dialog-festive::backdrop {
+  background: rgba(4, 15, 10, 0.76);
+  backdrop-filter: blur(7px);
+}
+
 @media (max-width: 1120px) {
   .shop-header {
     align-items: center;

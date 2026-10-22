@@ -2771,7 +2771,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                   ))}
                 </div>
                 <dialog
-                  className="photo-dialog"
+                  className={`photo-dialog ${selectedProduct.id === BAUBLE_PRODUCT_ID ? "photo-dialog-festive" : ""}`}
                   ref={photoDialogRef}
                   aria-label={selectedProductCopy.name}
                   onCancel={(event) => {
