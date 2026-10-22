@@ -2668,10 +2668,15 @@ main {
 .photo-dialog[open] {
   display: grid;
   grid-template-rows: 42px minmax(0, 1fr) auto;
+  overflow: clip;
+  overscroll-behavior: none;
+  scrollbar-width: none;
 }
 
 .photo-dialog[open] .photo-lightbox-view {
   min-height: 0;
+  overflow: clip;
+  overscroll-behavior: none;
 }
 
 .photo-dialog[open] .photo-lightbox-view > img {
@@ -2686,7 +2691,14 @@ main {
 .photo-dialog[open] .photo-lightbox-thumbs {
   flex-wrap: wrap;
   max-height: 120px;
+  overflow: clip;
+  overscroll-behavior: none;
+}
+
+html:has(.photo-dialog[open]),
+body:has(.photo-dialog[open]) {
   overflow: hidden;
+  overscroll-behavior: none;
 }
 
 .photo-dialog {
