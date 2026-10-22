@@ -137,7 +137,7 @@ button:disabled {
 }
 
 .language-menu summary,
-.home-shortcut {
+.account-shortcut {
   border: 1px solid var(--line);
   border-radius: 9px;
   color: var(--forest-deep);
@@ -176,7 +176,7 @@ button:disabled {
 }
 
 .language-menu summary:hover,
-.home-shortcut:hover {
+.account-shortcut:hover {
   border-color: var(--brass);
 }
 
@@ -212,25 +212,132 @@ button:disabled {
   color: white;
 }
 
-.home-shortcut {
+.account-shortcut {
   align-items: center;
   background: var(--forest);
   border-color: var(--forest);
   color: white;
   display: inline-flex;
+  height: 44px;
   justify-content: center;
   padding: 0.55rem;
   width: 44px;
 }
 
-.home-shortcut:hover {
+.account-shortcut:hover {
   background: var(--forest-deep);
   color: white;
 }
 
-.home-shortcut svg {
-  height: 20px;
-  width: 20px;
+.account-shortcut svg {
+  height: 21px;
+  width: 21px;
+}
+
+.account-dialog {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 24px 80px rgba(16, 59, 44, 0.28);
+  color: var(--ink);
+  margin: auto;
+  max-width: min(92vw, 460px);
+  padding: clamp(1.4rem, 5vw, 2rem);
+  position: relative;
+  width: 100%;
+}
+
+.account-dialog::backdrop {
+  background: rgba(16, 37, 28, 0.64);
+  backdrop-filter: blur(3px);
+}
+
+.account-dialog h2 {
+  color: var(--forest-deep);
+  margin: 0.25rem 2rem 0.65rem 0;
+}
+
+.account-dialog-close {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--forest-deep);
+  display: inline-flex;
+  font-size: 1.4rem;
+  height: 40px;
+  justify-content: center;
+  line-height: 1;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  width: 40px;
+}
+
+.account-description,
+.account-signed-in p {
+  color: var(--muted);
+  line-height: 1.55;
+  margin: 0 0 1rem;
+}
+
+.account-form,
+.account-signed-in {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.account-form label {
+  color: var(--forest-deep);
+  font-weight: 750;
+}
+
+.account-form input {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  min-height: 48px;
+  padding: 0.65rem 0.8rem;
+  width: 100%;
+}
+
+.account-form input:focus-visible,
+.account-shortcut:focus-visible,
+.account-dialog-close:focus-visible {
+  outline: 3px solid rgba(166, 47, 61, 0.42);
+  outline-offset: 2px;
+}
+
+.account-status,
+.account-error {
+  border-radius: 8px;
+  line-height: 1.5;
+  margin: 1rem 0 0;
+  padding: 0.8rem;
+}
+
+.account-status {
+  background: #edf7f2;
+  border: 1px solid rgba(31, 77, 58, 0.18);
+}
+
+.account-error {
+  background: #fff1ed;
+  border: 1px solid rgba(166, 47, 61, 0.25);
+  color: #7c2430;
+}
+
+.account-error p {
+  margin: 0;
+}
+
+.account-signed-in strong {
+  overflow-wrap: anywhere;
+}
+
+.account-signed-in .secondary-button {
+  justify-self: start;
 }
 
 .header-cart {

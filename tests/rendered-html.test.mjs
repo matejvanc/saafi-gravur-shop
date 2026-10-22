@@ -56,6 +56,8 @@ test("server-renders the multilingual personalized shop", async () => {
   assert.match(html, /Warenkorb/);
   assert.match(html, />AGB</);
   assert.doesNotMatch(html, /class="main-nav"/);
+  assert.match(html, /class="account-shortcut"/);
+  assert.doesNotMatch(html, /home-shortcut/);
   assert.doesNotMatch(html, /<nav class="footer-links"[^>]*>[\s\S]*?href="\/"/);
   assert.doesNotMatch(html, /<nav class="footer-links"[^>]*>[\s\S]*?href="\/produkty"/);
   assert.doesNotMatch(html, /<nav class="footer-links"[^>]*>[\s\S]*?href="\/kosik"/);
@@ -135,12 +137,14 @@ test("fallback routes serve product and cart paths for client routing", async ()
 });
 
 test("starter preview files and dependencies are removed", async () => {
-  const [page, routeFallback, layout, packageJson, styles] = await Promise.all([
+  const [page, routeFallback, layout, packageJson, styles, accountAuth, worker] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/[...path]/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+    readFile(new URL("../app/account-auth.ts", import.meta.url), "utf8"),
+    readFile(new URL("../worker/index.ts", import.meta.url), "utf8"),
   ]);
 
   const openerProductStart = page.indexOf('id: "flaschenoeffner"');
@@ -162,7 +166,16 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /useState<LanguageCode>\("de"\)/);
   assert.doesNotMatch(page, /className="main-nav"/);
   assert.match(page, /className="language-menu"/);
-  assert.match(page, /className="home-shortcut"/);
+  assert.match(page, /className="account-shortcut"/);
+  assert.doesNotMatch(page, /className="home-shortcut"/);
+  assert.match(page, /signInWithOtp/);
+  assert.match(page, /auth\.signOut\(\)/);
+  assert.match(page, /<dialog/);
+  assert.match(accountAuth, /persistSession: true/);
+  assert.match(accountAuth, /detectSessionInUrl: true/);
+  assert.match(worker, /url\.pathname === "\/api\/auth-config"/);
+  assert.match(worker, /isPublishableSupabaseKey/);
+  assert.doesNotMatch(worker, /SUPABASE_SERVICE_ROLE_KEY/);
   assert.match(page, /const languageMenuRef = useRef<HTMLDetailsElement>\(null\);/);
   assert.match(page, /function closeLanguageMenu\(\)[\s\S]*?removeAttribute\("open"\)/);
   assert.match(page, /document\.documentElement\.lang = language/);

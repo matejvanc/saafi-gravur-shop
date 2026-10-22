@@ -8,6 +8,9 @@ import {
   useRef,
   useState,
 } from "react";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { accountCopy } from "./account-copy";
+import { loadAccountAuthClient } from "./account-auth";
 
 const TEXT_LIMIT = 12;
 const GIFT_WRAP_PRICE = 1;
@@ -1828,9 +1831,21 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   const [dataConsent, setDataConsent] = useState(false);
   const [termsConsent, setTermsConsent] = useState(false);
   const [cookiesConsent, setCookiesConsent] = useState(false);
+  const [accountAuthClient, setAccountAuthClient] =
+    useState<SupabaseClient | null>(null);
+  const [accountStatus, setAccountStatus] = useState<
+    "loading" | "ready" | "unconfigured" | "sending" | "sent" | "error"
+  >("loading");
+  const [accountMessage, setAccountMessage] = useState("");
+  const [accountEmail, setAccountEmail] = useState("");
+  const [signedInEmail, setSignedInEmail] = useState<string | null>(null);
+  const [showAccountDialog, setShowAccountDialog] = useState(false);
+  const [accountRetryCount, setAccountRetryCount] = useState(0);
+  const accountDialogRef = useRef<HTMLDialogElement>(null);
   const languageMenuRef = useRef<HTMLDetailsElement>(null);
 
   const t = ui[language];
+  const account = accountCopy[language];
   const home = homeCopy[language];
   const flow = flowCopy[language];
   const selectedProduct = getProduct(selectedProductId);
@@ -1910,6 +1925,59 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   }, [language]);
 
   useEffect(() => {
+    let isActive = true;
+    let unsubscribe: (() => void) | undefined;
+
+    async function initializeAccountAuth() {
+      try {
+        const client = await loadAccountAuthClient();
+        if (!isActive) return;
+        if (!client) {
+          setAccountStatus("unconfigured");
+          return;
+        }
+
+        const { data, error } = await client.auth.getSession();
+        if (error) throw error;
+        if (!isActive) return;
+
+        setAccountAuthClient(client);
+        setSignedInEmail(data.session?.user.email ?? null);
+        setAccountStatus("ready");
+
+        const { data: authState } = client.auth.onAuthStateChange((_event, session) => {
+          if (isActive) {
+            setSignedInEmail(session?.user.email ?? null);
+            setAccountStatus("ready");
+            setAccountMessage("");
+          }
+        });
+        unsubscribe = () => authState.subscription.unsubscribe();
+      } catch (error) {
+        if (!isActive) return;
+        setAccountStatus("error");
+        setAccountMessage(
+          error instanceof Error ? error.message : "Unknown authentication error.",
+        );
+      }
+    }
+
+    void initializeAccountAuth();
+
+    return () => {
+      isActive = false;
+      unsubscribe?.();
+    };
+  }, [accountRetryCount]);
+
+  useEffect(() => {
+    const dialog = accountDialogRef.current;
+    if (!dialog) return;
+    if (showAccountDialog && !dialog.open) dialog.showModal();
+    if (!showAccountDialog && dialog.open) dialog.close();
+  }, [showAccountDialog]);
+
+  useEffect(() => {
     try {
       const storedCart =
         window.localStorage.getItem(CART_STORAGE_KEY) ??
@@ -1980,6 +2048,45 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
 
   function closeLanguageMenu() {
     languageMenuRef.current?.removeAttribute("open");
+  }
+
+  async function requestAccountSignIn(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!accountAuthClient) return;
+
+    setAccountStatus("sending");
+    setAccountMessage("");
+    try {
+      const { error } = await accountAuthClient.auth.signInWithOtp({
+        email: accountEmail.trim(),
+        options: { emailRedirectTo: window.location.origin },
+      });
+      if (error) throw error;
+      setAccountStatus("sent");
+      setAccountMessage(account.success);
+    } catch (error) {
+      setAccountStatus("error");
+      setAccountMessage(
+        error instanceof Error ? error.message : "Unknown authentication error.",
+      );
+    }
+  }
+
+  async function signOutAccount() {
+    if (!accountAuthClient) return;
+
+    try {
+      const { error } = await accountAuthClient.auth.signOut();
+      if (error) throw error;
+      setSignedInEmail(null);
+      setAccountStatus("ready");
+      setAccountMessage(account.signedOut);
+    } catch (error) {
+      setAccountStatus("error");
+      setAccountMessage(
+        error instanceof Error ? error.message : "Unknown authentication error.",
+      );
+    }
   }
 
   function scrollToSection(sectionId: string) {
@@ -2195,26 +2302,28 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
           </span>
         </a>
         <div className="header-actions">
-          <a
-            className="home-shortcut"
-            href="/"
-            aria-label={home.navLabel}
-            title={home.navLabel}
-            onClick={(event) => {
-              event.preventDefault();
-              navigateHome();
+          <button
+            className="account-shortcut"
+            type="button"
+            aria-label={account.account}
+            title={account.account}
+            aria-haspopup="dialog"
+            aria-expanded={showAccountDialog}
+            onClick={() => {
+              closeLanguageMenu();
+              setShowAccountDialog(true);
             }}
           >
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
               <path
-                d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V10Z"
+                d="M20 21a8 8 0 0 0-16 0m8-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
                 stroke="currentColor"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="1.8"
               />
             </svg>
-          </a>
+          </button>
           <details className="language-menu" ref={languageMenuRef}>
             <summary aria-label={t.languageLabel}>
               <span>{language.toUpperCase()}</span>
@@ -2250,6 +2359,98 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
           )}
         </div>
       </header>
+
+      {showAccountDialog && (
+        <dialog
+          className="account-dialog"
+          ref={accountDialogRef}
+          aria-labelledby="account-dialog-title"
+          onCancel={(event) => {
+            event.preventDefault();
+            setShowAccountDialog(false);
+          }}
+          onClose={() => setShowAccountDialog(false)}
+        >
+          <button
+            className="account-dialog-close"
+            type="button"
+            aria-label={account.close}
+            onClick={() => setShowAccountDialog(false)}
+          >
+            ×
+          </button>
+          <p className="section-kicker">{account.account}</p>
+          <h2 id="account-dialog-title">{account.heading}</h2>
+          {signedInEmail ? (
+            <div className="account-signed-in">
+              <p>{account.signedInAs}</p>
+              <strong>{signedInEmail}</strong>
+              <button className="secondary-button" type="button" onClick={() => void signOutAccount()}>
+                {account.signOut}
+              </button>
+            </div>
+          ) : (
+            <>
+              <p className="account-description">{account.description}</p>
+              {accountAuthClient && (
+                <form
+                  className="account-form"
+                  onSubmit={(event) => void requestAccountSignIn(event)}
+                >
+                  <label htmlFor="account-email">{account.email}</label>
+                  <input
+                    id="account-email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={accountEmail}
+                    onChange={(event) => setAccountEmail(event.target.value)}
+                  />
+                  <button
+                    className="primary-button"
+                    type="submit"
+                    disabled={accountStatus === "sending"}
+                  >
+                    {accountStatus === "sending" ? account.sending : account.sendLink}
+                  </button>
+                </form>
+              )}
+              {accountStatus === "loading" && (
+                <p className="account-status" role="status">{account.loading}</p>
+              )}
+              {accountStatus === "unconfigured" && (
+                <p className="account-status" role="status">{account.notConfigured}</p>
+              )}
+              {accountStatus === "sent" && (
+                <p className="account-status" role="status">{accountMessage || account.emailSent}</p>
+              )}
+              {accountStatus === "error" && (
+                <div className="account-error" role="alert">
+                  <p>{account.error}: {accountMessage}</p>
+                  {!accountAuthClient && (
+                    <button
+                      className="secondary-button"
+                      type="button"
+                      onClick={() => {
+                        setAccountStatus("loading");
+                        setAccountRetryCount((count) => count + 1);
+                      }}
+                    >
+                      {account.retry}
+                    </button>
+                  )}
+                </div>
+              )}
+            </>
+          )}
+          {accountStatus === "error" && signedInEmail && (
+            <p className="account-error" role="alert">{account.error}: {accountMessage}</p>
+          )}
+          {accountStatus === "ready" && accountMessage && (
+            <p className="account-status" role="status">{accountMessage}</p>
+          )}
+        </dialog>
+      )}
 
       <main>
         {currentView === "home" && (
