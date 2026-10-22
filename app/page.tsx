@@ -2771,7 +2771,10 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                     if (event.target === event.currentTarget) event.currentTarget.close();
                   }}
                   onKeyDown={(event) => {
-                    if (event.key === "ArrowLeft") {
+                    if (event.key === "Escape") {
+                      event.preventDefault();
+                      event.currentTarget.close();
+                    } else if (event.key === "ArrowLeft") {
                       event.preventDefault();
                       changeSelectedPhoto(-1);
                     } else if (event.key === "ArrowRight") {

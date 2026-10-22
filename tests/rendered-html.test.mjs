@@ -220,6 +220,7 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /className="product-photo-open"[\s\S]*?photoDialogRef\.current\?\.showModal\(\)/);
   assert.match(page, /className="photo-dialog"[\s\S]*?changeSelectedPhoto\(-1\)[\s\S]*?changeSelectedPhoto\(1\)/);
   assert.match(page, /onCancel=\{\(event\) => \{\s+event\.preventDefault\(\);\s+event\.currentTarget\.close\(\);/);
+  assert.match(page, /if \(event\.key === "Escape"\) \{\s+event\.preventDefault\(\);\s+event\.currentTarget\.close\(\);/);
   assert.match(page, /className="photo-lightbox-thumbs"/);
   assert.match(page, /function changeSelectedPhoto\(direction: -1 \| 1\)/);
   assert.match(styles, /grid-template-columns: minmax\(0, 1\.08fr\) minmax\(330px, 0\.92fr\)/);
