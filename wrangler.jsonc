@@ -1,6 +1,10 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "saafi-gravur-shop",
+	"vars": {
+  "SUPABASE_URL": "https://uqciazcokzuzblveqsrb.supabase.co",
+  "SUPABASE_PUBLISHABLE_KEY": "sb_publishable__lnT7AFX9_n8Z4Ray_6bvA_61vOHTsZ"
+},
 	"compatibility_date": "2026-09-28",
 	"compatibility_flags": [
 		"nodejs_compat"
