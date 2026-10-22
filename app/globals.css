@@ -700,10 +700,12 @@ main {
   border-radius: 16px;
   box-shadow: 0 24px 80px rgba(16, 59, 44, 0.28);
   color: var(--surface);
+  display: grid;
+  grid-template-rows: 42px minmax(0, 1fr) auto;
+  height: min(92dvh, 900px);
   margin: auto;
-  max-height: 94dvh;
   max-width: min(96vw, 1280px);
-  overflow: auto;
+  overflow: hidden;
   padding: clamp(0.65rem, 2vw, 1.2rem);
   width: 100%;
 }
@@ -734,15 +736,16 @@ main {
   gap: clamp(0.35rem, 2vw, 1.25rem);
   grid-template-columns: auto minmax(0, 1fr) auto;
   justify-items: center;
+  min-height: 0;
 }
 
 .photo-lightbox-view > img {
   display: block;
-  height: auto;
-  max-height: min(76dvh, 760px);
+  height: 100%;
+  max-height: 100%;
   max-width: 100%;
   object-fit: contain;
-  width: 100%;
+  width: auto;
 }
 
 .photo-lightbox-arrow {
@@ -761,10 +764,12 @@ main {
 
 .photo-lightbox-thumbs {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.55rem;
   justify-content: center;
   margin-top: 0.85rem;
-  overflow-x: auto;
+  max-height: 76px;
+  overflow: hidden;
   padding: 0.2rem;
 }
 
