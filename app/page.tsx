@@ -1889,6 +1889,13 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   const t = ui[language];
   const account = accountCopy[language];
   const home = homeCopy[language];
+  const holidayMessage = {
+    de: "Mit Liebe graviert · Das persönlichste Geschenk unter dem Weihnachtsbaum",
+    en: "Engraved with care · A personal gift for under the Christmas tree",
+    cs: "S láskou gravírováno · Osobní dárek pod každý vánoční stromeček",
+    fr: "Gravé avec soin · Un cadeau personnel sous le sapin",
+    it: "Inciso con cura · Un regalo personale sotto l’albero",
+  }[language];
   const flow = flowCopy[language];
   const selectedProduct = getProduct(selectedProductId);
   const selectedProductCopy = selectedProduct.translations[language];
@@ -2348,6 +2355,9 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
 
   return (
     <div className={`shop-shell view-${currentView}`}>
+      <div className="holiday-ribbon" aria-label={holidayMessage}>
+        <span aria-hidden="true">✳</span> {holidayMessage} <span aria-hidden="true">✳</span>
+      </div>
       <header className="shop-header">
         <a
           className="brand"
@@ -2364,6 +2374,38 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
             <small>{t.brandSubtitle}</small>
           </span>
         </a>
+        <nav className="header-nav" aria-label={t.nav.assortment}>
+          <a
+            href={productHref(selectedProduct.id)}
+            aria-current={currentView === "product" ? "page" : undefined}
+            onClick={(event) => {
+              event.preventDefault();
+              selectProduct(selectedProduct.id);
+            }}
+          >
+            {t.nav.configurator}
+          </a>
+          <a
+            href="/produkty"
+            aria-current={currentView === "products" ? "page" : undefined}
+            onClick={(event) => {
+              event.preventDefault();
+              navigateProducts();
+            }}
+          >
+            {t.nav.assortment}
+          </a>
+          <a
+            href="/agb"
+            aria-current={currentView === "terms" ? "page" : undefined}
+            onClick={(event) => {
+              event.preventDefault();
+              navigateTerms();
+            }}
+          >
+            {t.nav.terms}
+          </a>
+        </nav>
         <div className="header-actions">
           <button
             className="account-shortcut"
