@@ -601,6 +601,8 @@ main {
   border-radius: 8px;
   cursor: zoom-in;
   display: block;
+  margin-inline: auto;
+  max-width: 640px;
   padding: 0;
   width: 100%;
 }
@@ -687,11 +689,11 @@ main {
 
 .photo-dialog {
   box-sizing: border-box;
-  background: var(--surface);
-  border: 1px solid var(--line);
+  background: var(--forest-deep);
+  border: 1px solid var(--brass);
   border-radius: 16px;
   box-shadow: 0 24px 80px rgba(16, 59, 44, 0.28);
-  color: var(--ink);
+  color: var(--surface);
   margin: auto;
   max-height: 94dvh;
   max-width: min(96vw, 1280px);
@@ -707,8 +709,8 @@ main {
 
 .photo-dialog-close {
   align-items: center;
-  background: var(--forest);
-  border: 1px solid var(--forest);
+  background: var(--cranberry);
+  border: 1px solid var(--brass);
   border-radius: 50%;
   color: white;
   display: flex;
@@ -740,7 +742,7 @@ main {
 .photo-lightbox-arrow {
   align-items: center;
   background: var(--forest);
-  border: 1px solid var(--forest);
+  border: 1px solid var(--brass);
   border-radius: 50%;
   color: white;
   display: flex;
@@ -767,8 +769,15 @@ main {
 }
 
 .photo-lightbox-thumbs .thumb-button img {
+  background: var(--ivory);
   height: 56px;
   width: 56px;
+}
+
+.photo-lightbox-thumbs .thumb-button {
+  background: var(--forest);
+  border-color: rgba(255, 253, 247, 0.3);
+  color: var(--surface);
 }
 
 .purchase-panel {

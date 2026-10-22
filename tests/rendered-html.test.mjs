@@ -226,6 +226,9 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(styles, /grid-template-columns: minmax\(0, 1\.08fr\) minmax\(330px, 0\.92fr\)/);
   assert.match(styles, /max-height: min\(54vh, 500px\)/);
   assert.match(styles, /\.photo-dialog::backdrop/);
+  assert.match(styles, /\.product-photo-open \{[\s\S]*margin-inline: auto;[\s\S]*max-width: 640px/);
+  assert.match(styles, /\.photo-dialog \{[\s\S]*background: var\(--forest-deep\);[\s\S]*border: 1px solid var\(--brass\)/);
+  assert.match(styles, /\.photo-lightbox-thumbs \.thumb-button \{[\s\S]*background: var\(--forest\)/);
   assert.match(page, /const introProductIds = \[[\s\S]*?"flaschenoeffner"[\s\S]*?"kugelschreiber"[\s\S]*?\];/);
   assert.match(openerProductBlock, /src: "\/products\/wood-opener\.jpeg"/);
   assert.doesNotMatch(openerProductBlock, /wood-opener-pen-set\.jpeg/);
