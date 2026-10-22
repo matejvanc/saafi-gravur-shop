@@ -686,6 +686,7 @@ main {
 }
 
 .photo-dialog {
+  box-sizing: border-box;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 16px;
@@ -696,7 +697,6 @@ main {
   max-width: min(96vw, 1280px);
   overflow: auto;
   padding: clamp(0.65rem, 2vw, 1.2rem);
-  position: relative;
   width: 100%;
 }
 
