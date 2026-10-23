@@ -862,9 +862,14 @@ const checkoutCopy = {
     card: "Kredit- oder Debitkarte", bank: "Vorauszahlung per Banküberweisung",
     paymentNotice: "Die Zahlungsart wird vorgemerkt. Eine Zahlungsabwicklung ist noch nicht angeschlossen.",
     orderSummary: "Bestellübersicht", subtotal: "Zwischensumme", shipping: "Versand",
-    shippingLater: "Wird nach Lieferadresse berechnet", total: "Zwischentotal ohne Versand", save: "Lieferdaten speichern",
+    shippingLater: "Versandkosten werden nach Angabe der Versandart bestätigt", total: "Zwischentotal ohne Versand", save: "Lieferdaten speichern",
     saved: "Die Angaben sind im Formular übernommen. Es wurde noch keine Bestellung übermittelt und keine Zahlung ausgelöst.",
     note: "Bestellnotiz", optional: "optional",
+    shippingMethod: "Versandart", economy: "Swiss Post PostPac Economy", economyDescription: "Zustellung in der Regel innerhalb von zwei Werktagen.",
+    priority: "Swiss Post PostPac Priority", priorityDescription: "Zustellung am nächsten Werktag.",
+    pickup: "Swiss Post PickPost / My Post 24", pickupDescription: "Abholung an einer PickPost-Stelle oder einem My Post 24 Automaten.",
+    pickupLocation: "Gewünschte Abholstelle oder My Post 24 Standort", pickupPlaceholder: "Name oder Adresse der Abholstelle",
+    shippingUnselected: "Bitte Versandart auswählen",
     back: "Zurück zum Warenkorb",
   },
   en: {
@@ -874,9 +879,14 @@ const checkoutCopy = {
     country: "Country", switzerland: "Switzerland", payment: "Choose a payment method", twint: "TWINT",
     card: "Credit or debit card", bank: "Bank transfer in advance",
     paymentNotice: "Your choice will be noted. Payment processing is not connected yet.", orderSummary: "Order summary",
-    subtotal: "Subtotal", shipping: "Shipping", shippingLater: "Calculated after delivery address", total: "Subtotal excluding shipping",
+    subtotal: "Subtotal", shipping: "Shipping", shippingLater: "Shipping cost will be confirmed after you choose a method", total: "Subtotal excluding shipping",
     save: "Save delivery details", saved: "Your details are in the form. No order was submitted and no payment was made.",
     note: "Order note", optional: "optional",
+    shippingMethod: "Delivery method", economy: "Swiss Post PostPac Economy", economyDescription: "Usually delivered within two working days.",
+    priority: "Swiss Post PostPac Priority", priorityDescription: "Delivered on the next working day.",
+    pickup: "Swiss Post PickPost / My Post 24", pickupDescription: "Collect from a PickPost location or My Post 24 parcel locker.",
+    pickupLocation: "Preferred PickPost or My Post 24 location", pickupPlaceholder: "Location name or address",
+    shippingUnselected: "Choose a delivery method",
     back: "Back to cart",
   },
   cs: {
@@ -886,9 +896,14 @@ const checkoutCopy = {
     country: "Země", switzerland: "Švýcarsko", payment: "Vyber způsob platby", twint: "TWINT",
     card: "Platební nebo kreditní karta", bank: "Platba předem bankovním převodem",
     paymentNotice: "Zvolený způsob platby se pouze zaznamená. Platební brána zatím není připojená.", orderSummary: "Shrnutí objednávky",
-    subtotal: "Mezisoučet", shipping: "Doprava", shippingLater: "Spočítá se podle doručovací adresy", total: "Mezisoučet bez dopravy",
+    subtotal: "Mezisoučet", shipping: "Doprava", shippingLater: "Cena dopravy se potvrdí po výběru způsobu", total: "Mezisoučet bez dopravy",
     save: "Uložit doručovací údaje", saved: "Údaje zůstaly ve formuláři. Objednávka nebyla odeslána a platba neproběhla.",
     note: "Poznámka k objednávce", optional: "nepovinné",
+    shippingMethod: "Způsob dopravy", economy: "Swiss Post PostPac Economy", economyDescription: "Doručení obvykle do dvou pracovních dnů.",
+    priority: "Swiss Post PostPac Priority", priorityDescription: "Doručení následující pracovní den.",
+    pickup: "Swiss Post PickPost / My Post 24", pickupDescription: "Vyzvednutí na pobočce PickPost nebo v samoobslužném boxu My Post 24.",
+    pickupLocation: "Vybraná pobočka PickPost nebo box My Post 24", pickupPlaceholder: "Název nebo adresa výdejního místa",
+    shippingUnselected: "Vyber způsob dopravy",
     back: "Zpět do košíku",
   },
   fr: {
@@ -898,9 +913,14 @@ const checkoutCopy = {
     country: "Pays", switzerland: "Suisse", payment: "Choisir un moyen de paiement", twint: "TWINT",
     card: "Carte de crédit ou de débit", bank: "Virement bancaire à l'avance",
     paymentNotice: "Votre choix sera noté. Le traitement des paiements n'est pas encore connecté.", orderSummary: "Récapitulatif",
-    subtotal: "Sous-total", shipping: "Livraison", shippingLater: "Calculée selon l'adresse", total: "Sous-total hors livraison",
+    subtotal: "Sous-total", shipping: "Livraison", shippingLater: "Le tarif sera confirmé après le choix du mode", total: "Sous-total hors livraison",
     save: "Enregistrer l'adresse", saved: "Les informations restent dans le formulaire. Aucune commande ni aucun paiement n'a été transmis.",
     note: "Note de commande", optional: "facultatif",
+    shippingMethod: "Mode de livraison", economy: "Swiss Post PostPac Economy", economyDescription: "Livraison généralement sous deux jours ouvrables.",
+    priority: "Swiss Post PostPac Priority", priorityDescription: "Livraison le jour ouvrable suivant.",
+    pickup: "Swiss Post PickPost / My Post 24", pickupDescription: "Retrait dans un point PickPost ou un automate My Post 24.",
+    pickupLocation: "Point PickPost ou automate My Post 24 souhaité", pickupPlaceholder: "Nom ou adresse du point de retrait",
+    shippingUnselected: "Choisissez un mode de livraison",
     back: "Retour au panier",
   },
   it: {
@@ -910,9 +930,14 @@ const checkoutCopy = {
     country: "Paese", switzerland: "Svizzera", payment: "Scegli il metodo di pagamento", twint: "TWINT",
     card: "Carta di credito o debito", bank: "Bonifico bancario anticipato",
     paymentNotice: "La scelta verrà annotata. Il sistema di pagamento non è ancora collegato.", orderSummary: "Riepilogo ordine",
-    subtotal: "Subtotale", shipping: "Spedizione", shippingLater: "Calcolata in base all'indirizzo", total: "Subtotale, spedizione esclusa",
+    subtotal: "Subtotale", shipping: "Spedizione", shippingLater: "Il costo verrà confermato dopo la scelta del metodo", total: "Subtotale, spedizione esclusa",
     save: "Salva i dati di consegna", saved: "I dati restano nel modulo. Non è stato inviato alcun ordine né effettuato alcun pagamento.",
     note: "Nota sull'ordine", optional: "facoltativo",
+    shippingMethod: "Metodo di consegna", economy: "Swiss Post PostPac Economy", economyDescription: "Consegna solitamente entro due giorni lavorativi.",
+    priority: "Swiss Post PostPac Priority", priorityDescription: "Consegna il giorno lavorativo successivo.",
+    pickup: "Swiss Post PickPost / My Post 24", pickupDescription: "Ritiro presso un punto PickPost o un armadietto My Post 24.",
+    pickupLocation: "Punto PickPost o armadietto My Post 24 preferito", pickupPlaceholder: "Nome o indirizzo del punto di ritiro",
+    shippingUnselected: "Scegli un metodo di consegna",
     back: "Torna al carrello",
   },
 } satisfies Record<LanguageCode, Record<string, string>>;
@@ -1776,6 +1801,7 @@ const baubleOptionLabels = {
 } satisfies Record<LanguageCode, { variant: string; color: string; surface: string }>;
 
 type PageView = "home" | "products" | "product" | "cart" | "checkout" | "terms";
+type SwissShippingMethod = "economy" | "priority" | "pickup";
 
 type RouteState = {
   view: PageView;
@@ -1937,6 +1963,8 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   const [checkoutMessage, setCheckoutMessage] = useState(false);
   const [checkoutWarning, setCheckoutWarning] = useState(false);
   const [checkoutSaved, setCheckoutSaved] = useState(false);
+  const [shippingMethod, setShippingMethod] = useState<SwissShippingMethod>("economy");
+  const [pickupLocation, setPickupLocation] = useState("");
   const [dataConsent, setDataConsent] = useState(false);
   const [termsConsent, setTermsConsent] = useState(false);
   const [cookiesConsent, setCookiesConsent] = useState(false);
@@ -3350,6 +3378,45 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                       <label>{checkoutCopy[language].country}<input value={checkoutCopy[language].switzerland} readOnly /></label>
                     </div>
                   </fieldset>
+                  <fieldset className="checkout-fieldset shipping-fieldset">
+                    <legend>{checkoutCopy[language].shippingMethod}<b className="required-mark" aria-hidden="true">*</b></legend>
+                    <div className="shipping-options">
+                      {(["economy", "priority", "pickup"] as const).map((method) => (
+                        <label className="shipping-option" key={method}>
+                          <input
+                            type="radio"
+                            name="shipping-method"
+                            value={method}
+                            checked={shippingMethod === method}
+                            required
+                            onChange={() => {
+                              setShippingMethod(method);
+                              setCheckoutSaved(false);
+                            }}
+                          />
+                          <span>
+                            <strong>{checkoutCopy[language][method]}</strong>
+                            <small>{checkoutCopy[language][`${method}Description`]}</small>
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                    {shippingMethod === "pickup" && (
+                      <label className="pickup-location-field">
+                        <span>{checkoutCopy[language].pickupLocation}<b className="required-mark" aria-hidden="true">*</b></span>
+                        <input
+                          name="pickup-location"
+                          value={pickupLocation}
+                          onChange={(event) => {
+                            setPickupLocation(event.target.value);
+                            setCheckoutSaved(false);
+                          }}
+                          placeholder={checkoutCopy[language].pickupPlaceholder}
+                          required
+                        />
+                      </label>
+                    )}
+                  </fieldset>
                   <fieldset className="checkout-fieldset payment-fieldset">
                     <legend>{checkoutCopy[language].payment}<b className="required-mark" aria-hidden="true">*</b></legend>
                     <div className="payment-options">
@@ -3395,7 +3462,8 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                     <span>{checkoutCopy[language].subtotal}</span><strong>{formatPrice(cartTotal)}</strong>
                   </div>
                   <div className="checkout-summary-row checkout-shipping-row">
-                    <span>{checkoutCopy[language].shipping}</span><small>{checkoutCopy[language].shippingLater}</small>
+                    <span>{checkoutCopy[language].shipping}</span>
+                    <small>{checkoutCopy[language][shippingMethod]} · {checkoutCopy[language].shippingLater}</small>
                   </div>
                   <div className="checkout-summary-row checkout-grand-total">
                     <span>{checkoutCopy[language].total}</span><strong>{formatPrice(cartTotal)}</strong>

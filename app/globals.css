@@ -2719,6 +2719,82 @@ main {
   padding-bottom: 0;
 }
 
+.shipping-fieldset {
+  padding-bottom: 1.2rem;
+}
+
+.shipping-options {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.shipping-option {
+  align-items: flex-start;
+  background: #fff;
+  border: 1px solid #d9d8d0;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  gap: 0.7rem;
+  min-height: 58px;
+  padding: 0.75rem 0.85rem;
+}
+
+.shipping-option:has(input:checked) {
+  background: rgba(30, 81, 59, 0.055);
+  border-color: var(--forest);
+}
+
+.shipping-option input {
+  accent-color: var(--forest);
+  flex: 0 0 auto;
+  height: 18px;
+  margin: 0.12rem 0 0;
+  width: 18px;
+}
+
+.shipping-option > span {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.shipping-option strong {
+  color: var(--forest-deep);
+}
+
+.shipping-option small {
+  color: var(--muted);
+  font-size: 0.83rem;
+  font-weight: 450;
+  line-height: 1.4;
+}
+
+.pickup-location-field {
+  color: #4c554f;
+  display: grid;
+  font-size: 0.86rem;
+  font-weight: 650;
+  gap: 0.4rem;
+  margin-top: 0.8rem;
+}
+
+.pickup-location-field input {
+  background: #fff;
+  border: 1px solid #d9d8d0;
+  border-radius: 4px;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 450;
+  min-height: 46px;
+  padding: 0.65rem 0.75rem;
+  width: 100%;
+}
+
+.pickup-location-field input:focus {
+  border-color: var(--forest);
+  outline: 2px solid rgba(30, 81, 59, 0.16);
+}
+
 .payment-options {
   display: grid;
   gap: 0.55rem;
