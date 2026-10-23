@@ -2795,6 +2795,71 @@ main {
   outline: 2px solid rgba(30, 81, 59, 0.16);
 }
 
+.pickup-search-results {
+  background: #fff;
+  border: 1px solid #d9d8d0;
+  border-radius: 4px;
+  box-shadow: 0 10px 25px rgba(32, 43, 37, 0.12);
+  display: grid;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.pickup-search-result {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #eeece6;
+  border-radius: 0;
+  color: var(--ink);
+  cursor: pointer;
+  display: grid;
+  gap: 0.15rem;
+  justify-items: start;
+  padding: 0.7rem 0.8rem;
+  text-align: left;
+  width: 100%;
+}
+
+.pickup-search-result:last-child {
+  border-bottom: 0;
+}
+
+.pickup-search-result:hover,
+.pickup-search-result:focus-visible {
+  background: rgba(30, 81, 59, 0.07);
+  color: var(--forest-deep);
+}
+
+.pickup-search-result strong {
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.pickup-search-result small,
+.pickup-search-status,
+.pickup-search-attribution {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 450;
+}
+
+.pickup-search-result:first-child small {
+  color: var(--forest);
+  font-weight: 700;
+}
+
+.pickup-search-error {
+  color: var(--cranberry);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.pickup-search-attribution a {
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .payment-options {
   display: grid;
   gap: 0.55rem;

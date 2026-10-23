@@ -31,6 +31,84 @@ const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
+    if (url.pathname === "/api/post-locations") {
+      if (request.method !== "GET") {
+        return Response.json(
+          { error: "Method not allowed." },
+          { status: 405, headers: { Allow: "GET" } },
+        );
+      }
+
+      const query = url.searchParams.get("q")?.trim() ?? "";
+      if (query.length < 2 || query.length > 100) {
+        return Response.json(
+          { locations: [] },
+          { headers: { "Cache-Control": "no-store" } },
+        );
+      }
+
+      const requestedLanguage = url.searchParams.get("lang") ?? "de";
+      const language = ["de", "fr", "it", "en"].includes(requestedLanguage)
+        ? requestedLanguage
+        : "de";
+      const swissPostUrl = new URL(
+        "https://places.post.ch/StandortSuche/StaoCacheServiceV2/api/v1/Geocode",
+      );
+      swissPostUrl.searchParams.set("query", query);
+      swissPostUrl.searchParams.set("pois", "T1.S248,T6.S852,T9.S248,T9.S852");
+      swissPostUrl.searchParams.set("lang", language);
+      swissPostUrl.searchParams.set("limit", "30");
+
+      try {
+        const swissPostResponse = await fetch(swissPostUrl, {
+          headers: { Accept: "application/json" },
+        });
+        if (!swissPostResponse.ok) {
+          return Response.json(
+            { error: "Swiss Post location search is temporarily unavailable." },
+            { status: 502, headers: { "Cache-Control": "no-store" } },
+          );
+        }
+
+        const result = (await swissPostResponse.json()) as {
+          locations?: Array<{
+            id?: unknown;
+            name?: unknown;
+            type?: unknown;
+            subtype?: unknown;
+            pt?: unknown;
+          }>;
+        };
+        const locations = (result.locations ?? [])
+          .filter(
+            (location) =>
+              location.type === "poi" &&
+              typeof location.id === "string" &&
+              typeof location.name === "string" &&
+              Array.isArray(location.pt) &&
+              location.pt.length === 2 &&
+              location.pt.every((coordinate) => typeof coordinate === "number"),
+          )
+          .slice(0, 8)
+          .map((location) => ({
+            id: location.id,
+            name: location.name,
+            type: typeof location.subtype === "string" ? location.subtype : "",
+            coordinates: location.pt,
+          }));
+
+        return Response.json(
+          { locations },
+          { headers: { "Cache-Control": "public, max-age=30, s-maxage=120" } },
+        );
+      } catch {
+        return Response.json(
+          { error: "Swiss Post location search is temporarily unavailable." },
+          { status: 502, headers: { "Cache-Control": "no-store" } },
+        );
+      }
+    }
+
     if (url.pathname === "/api/auth-config") {
       if (request.method !== "GET") {
         return Response.json(

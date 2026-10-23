@@ -868,8 +868,11 @@ const checkoutCopy = {
     shippingMethod: "Versandart", economy: "Swiss Post PostPac Economy", economyDescription: "Zustellung in der Regel innerhalb von zwei Werktagen.",
     priority: "Swiss Post PostPac Priority", priorityDescription: "Zustellung am nächsten Werktag.",
     pickup: "Swiss Post PickPost / My Post 24", pickupDescription: "Abholung an einer PickPost-Stelle oder einem My Post 24 Automaten.",
-    pickupLocation: "Gewünschte Abholstelle oder My Post 24 Standort", pickupPlaceholder: "Name oder Adresse der Abholstelle",
-    shippingUnselected: "Bitte Versandart auswählen",
+    pickupLocation: "Gewünschte Abholstelle oder My Post 24 Standort", pickupPlaceholder: "Ort, Postleitzahl oder Name eingeben",
+    shippingUnselected: "Bitte Versandart auswählen", pickupSearching: "Suche nach Swiss Post Standorten …",
+    pickupNoResults: "Keine passenden Abholstellen gefunden.", pickupSearchError: "Standortsuche ist gerade nicht verfügbar.",
+    pickupSelectResult: "Bitte wähle einen Standort aus den Suchergebnissen aus.", locationSource: "Standortdaten von Swiss Post",
+    bestMatch: "Beste Übereinstimmung",
     back: "Zurück zum Warenkorb",
   },
   en: {
@@ -885,8 +888,11 @@ const checkoutCopy = {
     shippingMethod: "Delivery method", economy: "Swiss Post PostPac Economy", economyDescription: "Usually delivered within two working days.",
     priority: "Swiss Post PostPac Priority", priorityDescription: "Delivered on the next working day.",
     pickup: "Swiss Post PickPost / My Post 24", pickupDescription: "Collect from a PickPost location or My Post 24 parcel locker.",
-    pickupLocation: "Preferred PickPost or My Post 24 location", pickupPlaceholder: "Location name or address",
-    shippingUnselected: "Choose a delivery method",
+    pickupLocation: "Preferred PickPost or My Post 24 location", pickupPlaceholder: "Enter a town, postcode or location name",
+    shippingUnselected: "Choose a delivery method", pickupSearching: "Searching Swiss Post locations…",
+    pickupNoResults: "No matching collection points found.", pickupSearchError: "Location search is temporarily unavailable.",
+    pickupSelectResult: "Please select a location from the search results.", locationSource: "Location data from Swiss Post",
+    bestMatch: "Best match",
     back: "Back to cart",
   },
   cs: {
@@ -902,8 +908,11 @@ const checkoutCopy = {
     shippingMethod: "Způsob dopravy", economy: "Swiss Post PostPac Economy", economyDescription: "Doručení obvykle do dvou pracovních dnů.",
     priority: "Swiss Post PostPac Priority", priorityDescription: "Doručení následující pracovní den.",
     pickup: "Swiss Post PickPost / My Post 24", pickupDescription: "Vyzvednutí na pobočce PickPost nebo v samoobslužném boxu My Post 24.",
-    pickupLocation: "Vybraná pobočka PickPost nebo box My Post 24", pickupPlaceholder: "Název nebo adresa výdejního místa",
-    shippingUnselected: "Vyber způsob dopravy",
+    pickupLocation: "Vybraná pobočka PickPost nebo box My Post 24", pickupPlaceholder: "Zadej město, PSČ nebo název místa",
+    shippingUnselected: "Vyber způsob dopravy", pickupSearching: "Hledám pobočky Swiss Post…",
+    pickupNoResults: "Nenašel jsem žádné odpovídající výdejní místo.", pickupSearchError: "Vyhledávání míst je dočasně nedostupné.",
+    pickupSelectResult: "Vyber prosím místo z nabídnutých výsledků.", locationSource: "Údaje o místech poskytuje Swiss Post",
+    bestMatch: "Nejlepší shoda",
     back: "Zpět do košíku",
   },
   fr: {
@@ -919,8 +928,11 @@ const checkoutCopy = {
     shippingMethod: "Mode de livraison", economy: "Swiss Post PostPac Economy", economyDescription: "Livraison généralement sous deux jours ouvrables.",
     priority: "Swiss Post PostPac Priority", priorityDescription: "Livraison le jour ouvrable suivant.",
     pickup: "Swiss Post PickPost / My Post 24", pickupDescription: "Retrait dans un point PickPost ou un automate My Post 24.",
-    pickupLocation: "Point PickPost ou automate My Post 24 souhaité", pickupPlaceholder: "Nom ou adresse du point de retrait",
-    shippingUnselected: "Choisissez un mode de livraison",
+    pickupLocation: "Point PickPost ou automate My Post 24 souhaité", pickupPlaceholder: "Saisissez une ville, un code postal ou un lieu",
+    shippingUnselected: "Choisissez un mode de livraison", pickupSearching: "Recherche des points Swiss Post…",
+    pickupNoResults: "Aucun point de retrait correspondant trouvé.", pickupSearchError: "La recherche est temporairement indisponible.",
+    pickupSelectResult: "Veuillez choisir un lieu parmi les résultats.", locationSource: "Données des points fournies par Swiss Post",
+    bestMatch: "Meilleure correspondance",
     back: "Retour au panier",
   },
   it: {
@@ -936,8 +948,11 @@ const checkoutCopy = {
     shippingMethod: "Metodo di consegna", economy: "Swiss Post PostPac Economy", economyDescription: "Consegna solitamente entro due giorni lavorativi.",
     priority: "Swiss Post PostPac Priority", priorityDescription: "Consegna il giorno lavorativo successivo.",
     pickup: "Swiss Post PickPost / My Post 24", pickupDescription: "Ritiro presso un punto PickPost o un armadietto My Post 24.",
-    pickupLocation: "Punto PickPost o armadietto My Post 24 preferito", pickupPlaceholder: "Nome o indirizzo del punto di ritiro",
-    shippingUnselected: "Scegli un metodo di consegna",
+    pickupLocation: "Punto PickPost o armadietto My Post 24 preferito", pickupPlaceholder: "Inserisci città, CAP o nome del punto",
+    shippingUnselected: "Scegli un metodo di consegna", pickupSearching: "Ricerca dei punti Swiss Post…",
+    pickupNoResults: "Nessun punto di ritiro corrispondente trovato.", pickupSearchError: "Ricerca temporaneamente non disponibile.",
+    pickupSelectResult: "Seleziona una sede dai risultati della ricerca.", locationSource: "Dati delle sedi forniti da Swiss Post",
+    bestMatch: "Corrispondenza migliore",
     back: "Torna al carrello",
   },
 } satisfies Record<LanguageCode, Record<string, string>>;
@@ -1802,6 +1817,12 @@ const baubleOptionLabels = {
 
 type PageView = "home" | "products" | "product" | "cart" | "checkout" | "terms";
 type SwissShippingMethod = "economy" | "priority" | "pickup";
+type SwissPostLocation = {
+  id: string;
+  name: string;
+  type: string;
+  coordinates: [number, number];
+};
 
 type RouteState = {
   view: PageView;
@@ -1965,6 +1986,10 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   const [checkoutSaved, setCheckoutSaved] = useState(false);
   const [shippingMethod, setShippingMethod] = useState<SwissShippingMethod>("economy");
   const [pickupLocation, setPickupLocation] = useState("");
+  const [selectedPickupLocation, setSelectedPickupLocation] = useState<SwissPostLocation | null>(null);
+  const [pickupSuggestions, setPickupSuggestions] = useState<SwissPostLocation[]>([]);
+  const [pickupSearchStatus, setPickupSearchStatus] = useState<"idle" | "loading" | "ready" | "empty" | "error">("idle");
+  const [pickupSelectionError, setPickupSelectionError] = useState(false);
   const [dataConsent, setDataConsent] = useState(false);
   const [termsConsent, setTermsConsent] = useState(false);
   const [cookiesConsent, setCookiesConsent] = useState(false);
@@ -2102,6 +2127,47 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   useEffect(() => {
     window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
   }, [language]);
+
+  useEffect(() => {
+    const query = pickupLocation.trim();
+    if (
+      currentView !== "checkout" ||
+      shippingMethod !== "pickup" ||
+      query.length < 2 ||
+      selectedPickupLocation?.name === pickupLocation
+    ) {
+      setPickupSuggestions([]);
+      setPickupSearchStatus("idle");
+      return;
+    }
+
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(async () => {
+      setPickupSearchStatus("loading");
+      try {
+        const searchLanguage = language === "cs" ? "de" : language;
+        const params = new URLSearchParams({ q: query, lang: searchLanguage });
+        const response = await fetch(`/api/post-locations?${params}`, {
+          signal: controller.signal,
+        });
+        if (!response.ok) throw new Error("Swiss Post lookup failed");
+        const result = (await response.json()) as { locations?: SwissPostLocation[] };
+        const locations = result.locations ?? [];
+        setPickupSuggestions(locations);
+        setPickupSearchStatus(locations.length ? "ready" : "empty");
+      } catch {
+        if (!controller.signal.aborted) {
+          setPickupSuggestions([]);
+          setPickupSearchStatus("error");
+        }
+      }
+    }, 300);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      controller.abort();
+    };
+  }, [currentView, language, pickupLocation, selectedPickupLocation?.name, shippingMethod]);
 
   useEffect(() => {
     let isActive = true;
@@ -3357,6 +3423,11 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                   className="checkout-form"
                   onSubmit={(event) => {
                     event.preventDefault();
+                    if (shippingMethod === "pickup" && !selectedPickupLocation) {
+                      setPickupSelectionError(true);
+                      return;
+                    }
+                    setPickupSelectionError(false);
                     setCheckoutSaved(true);
                   }}
                 >
@@ -3407,13 +3478,64 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                         <input
                           name="pickup-location"
                           value={pickupLocation}
+                          role="combobox"
+                          aria-autocomplete="list"
+                          aria-expanded={pickupSuggestions.length > 0}
+                          aria-controls="pickup-location-options"
+                          aria-invalid={pickupSelectionError || undefined}
                           onChange={(event) => {
                             setPickupLocation(event.target.value);
+                            setSelectedPickupLocation(null);
+                            setPickupSelectionError(false);
                             setCheckoutSaved(false);
                           }}
                           placeholder={checkoutCopy[language].pickupPlaceholder}
                           required
                         />
+                        {selectedPickupLocation && (
+                          <input type="hidden" name="pickup-location-id" value={selectedPickupLocation.id} />
+                        )}
+                        {pickupSearchStatus === "loading" && (
+                          <small className="pickup-search-status" role="status">{checkoutCopy[language].pickupSearching}</small>
+                        )}
+                        {pickupSearchStatus === "empty" && (
+                          <small className="pickup-search-status" role="status">{checkoutCopy[language].pickupNoResults}</small>
+                        )}
+                        {pickupSearchStatus === "error" && (
+                          <small className="pickup-search-status pickup-search-error" role="alert">{checkoutCopy[language].pickupSearchError}</small>
+                        )}
+                        {pickupSuggestions.length > 0 && (
+                          <div className="pickup-search-results" id="pickup-location-options" role="listbox">
+                            {pickupSuggestions.map((location, index) => (
+                              <button
+                                className="pickup-search-result"
+                                type="button"
+                                role="option"
+                                aria-selected="false"
+                                key={location.id}
+                                onClick={() => {
+                                  setSelectedPickupLocation(location);
+                                  setPickupLocation(location.name);
+                                  setPickupSuggestions([]);
+                                  setPickupSearchStatus("idle");
+                                  setPickupSelectionError(false);
+                                  setCheckoutSaved(false);
+                                }}
+                              >
+                                {index === 0 && <small>{checkoutCopy[language].bestMatch}</small>}
+                                <strong>{location.name}</strong>
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                        {pickupSelectionError && !selectedPickupLocation && (
+                          <small className="pickup-search-error" role="alert">{checkoutCopy[language].pickupSelectResult}</small>
+                        )}
+                        <small className="pickup-search-attribution">
+                          <a href="https://places.post.ch/location-search" target="_blank" rel="noreferrer">
+                            {checkoutCopy[language].locationSource}
+                          </a>
+                        </small>
                       </label>
                     )}
                   </fieldset>
