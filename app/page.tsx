@@ -853,6 +853,65 @@ const flowCopy = {
   },
 };
 
+const checkoutCopy = {
+  de: {
+    kicker: "Kasse", title: "Lieferung und Zahlung", lead: "Wohin dürfen wir deine persönliche Gravur liefern?",
+    contact: "Kontaktdaten", delivery: "Lieferadresse", firstName: "Vorname", lastName: "Nachname",
+    email: "E-Mail-Adresse", phone: "Telefon", street: "Strasse und Hausnummer", postalCode: "PLZ", city: "Ort",
+    country: "Land", switzerland: "Schweiz", payment: "Zahlungsart auswählen", twint: "TWINT",
+    card: "Kredit- oder Debitkarte", bank: "Vorauszahlung per Banküberweisung",
+    paymentNotice: "Die Zahlungsart wird vorgemerkt. Eine Zahlungsabwicklung ist noch nicht angeschlossen.",
+    orderSummary: "Bestellübersicht", subtotal: "Zwischensumme", shipping: "Versand",
+    shippingLater: "Wird nach Lieferadresse berechnet", total: "Zwischentotal ohne Versand", save: "Lieferdaten speichern",
+    saved: "Die Angaben sind im Formular übernommen. Es wurde noch keine Bestellung übermittelt und keine Zahlung ausgelöst.",
+    back: "Zurück zum Warenkorb",
+  },
+  en: {
+    kicker: "Checkout", title: "Delivery and payment", lead: "Where should we deliver your personalised engraving?",
+    contact: "Contact details", delivery: "Delivery address", firstName: "First name", lastName: "Last name",
+    email: "Email address", phone: "Phone", street: "Street and house number", postalCode: "Postcode", city: "City",
+    country: "Country", switzerland: "Switzerland", payment: "Choose a payment method", twint: "TWINT",
+    card: "Credit or debit card", bank: "Bank transfer in advance",
+    paymentNotice: "Your choice will be noted. Payment processing is not connected yet.", orderSummary: "Order summary",
+    subtotal: "Subtotal", shipping: "Shipping", shippingLater: "Calculated after delivery address", total: "Subtotal excluding shipping",
+    save: "Save delivery details", saved: "Your details are in the form. No order was submitted and no payment was made.",
+    back: "Back to cart",
+  },
+  cs: {
+    kicker: "Pokladna", title: "Doručení a platba", lead: "Kam máme doručit tvůj personalizovaný výrobek?",
+    contact: "Kontaktní údaje", delivery: "Doručovací adresa", firstName: "Jméno", lastName: "Příjmení",
+    email: "E-mailová adresa", phone: "Telefon", street: "Ulice a číslo domu", postalCode: "PSČ", city: "Město",
+    country: "Země", switzerland: "Švýcarsko", payment: "Vyber způsob platby", twint: "TWINT",
+    card: "Platební nebo kreditní karta", bank: "Platba předem bankovním převodem",
+    paymentNotice: "Zvolený způsob platby se pouze zaznamená. Platební brána zatím není připojená.", orderSummary: "Shrnutí objednávky",
+    subtotal: "Mezisoučet", shipping: "Doprava", shippingLater: "Spočítá se podle doručovací adresy", total: "Mezisoučet bez dopravy",
+    save: "Uložit doručovací údaje", saved: "Údaje zůstaly ve formuláři. Objednávka nebyla odeslána a platba neproběhla.",
+    back: "Zpět do košíku",
+  },
+  fr: {
+    kicker: "Commande", title: "Livraison et paiement", lead: "Où livrer votre article personnalisé ?",
+    contact: "Coordonnées", delivery: "Adresse de livraison", firstName: "Prénom", lastName: "Nom",
+    email: "Adresse e-mail", phone: "Téléphone", street: "Rue et numéro", postalCode: "Code postal", city: "Ville",
+    country: "Pays", switzerland: "Suisse", payment: "Choisir un moyen de paiement", twint: "TWINT",
+    card: "Carte de crédit ou de débit", bank: "Virement bancaire à l'avance",
+    paymentNotice: "Votre choix sera noté. Le traitement des paiements n'est pas encore connecté.", orderSummary: "Récapitulatif",
+    subtotal: "Sous-total", shipping: "Livraison", shippingLater: "Calculée selon l'adresse", total: "Sous-total hors livraison",
+    save: "Enregistrer l'adresse", saved: "Les informations restent dans le formulaire. Aucune commande ni aucun paiement n'a été transmis.",
+    back: "Retour au panier",
+  },
+  it: {
+    kicker: "Cassa", title: "Consegna e pagamento", lead: "Dove dobbiamo consegnare il tuo prodotto personalizzato?",
+    contact: "Dati di contatto", delivery: "Indirizzo di consegna", firstName: "Nome", lastName: "Cognome",
+    email: "Indirizzo e-mail", phone: "Telefono", street: "Via e numero civico", postalCode: "CAP", city: "Città",
+    country: "Paese", switzerland: "Svizzera", payment: "Scegli il metodo di pagamento", twint: "TWINT",
+    card: "Carta di credito o debito", bank: "Bonifico bancario anticipato",
+    paymentNotice: "La scelta verrà annotata. Il sistema di pagamento non è ancora collegato.", orderSummary: "Riepilogo ordine",
+    subtotal: "Subtotale", shipping: "Spedizione", shippingLater: "Calcolata in base all'indirizzo", total: "Subtotale, spedizione esclusa",
+    save: "Salva i dati di consegna", saved: "I dati restano nel modulo. Non è stato inviato alcun ordine né effettuato alcun pagamento.",
+    back: "Torna al carrello",
+  },
+} satisfies Record<LanguageCode, Record<string, string>>;
+
 const introProductIds = [
   "kule-jednostranna-1",
   "lesezeichen",
@@ -1711,7 +1770,7 @@ const baubleOptionLabels = {
   it: { variant: "Modello", color: "Colore", surface: "Finitura" },
 } satisfies Record<LanguageCode, { variant: string; color: string; surface: string }>;
 
-type PageView = "home" | "products" | "product" | "cart" | "terms";
+type PageView = "home" | "products" | "product" | "cart" | "checkout" | "terms";
 
 type RouteState = {
   view: PageView;
@@ -1736,6 +1795,10 @@ function parseRoute(pathname: string): RouteState {
 
   if (firstSegment === "kosik") {
     return { view: "cart" };
+  }
+
+  if (firstSegment === "pokladna") {
+    return { view: "checkout" };
   }
 
   if (firstSegment === "produkty") {
@@ -1868,6 +1931,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   const [showCartChoice, setShowCartChoice] = useState(false);
   const [checkoutMessage, setCheckoutMessage] = useState(false);
   const [checkoutWarning, setCheckoutWarning] = useState(false);
+  const [checkoutSaved, setCheckoutSaved] = useState(false);
   const [dataConsent, setDataConsent] = useState(false);
   const [termsConsent, setTermsConsent] = useState(false);
   const [cookiesConsent, setCookiesConsent] = useState(false);
@@ -2210,6 +2274,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     setCurrentView("cart");
     setShowCartChoice(false);
     setCheckoutWarning(false);
+    setCheckoutSaved(false);
     window.history.pushState(null, "", sectionId ? `/kosik#${sectionId}` : "/kosik");
 
     if (sectionId) {
@@ -2217,6 +2282,14 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     } else {
       scrollToPageTop();
     }
+  }
+
+  function navigateCheckout() {
+    closeLanguageMenu();
+    setCurrentView("checkout");
+    setCheckoutSaved(false);
+    window.history.pushState(null, "", "/pokladna");
+    scrollToPageTop();
   }
 
   function navigateTerms(sectionId?: string) {
@@ -2280,7 +2353,8 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     }
 
     setCheckoutWarning(false);
-    setCheckoutMessage(true);
+    setCheckoutMessage(false);
+    navigateCheckout();
   }
 
   function removeCartItem(itemId: number) {
@@ -3225,6 +3299,99 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
               </div>
               <div className="product-card-grid">
                 {availableProducts.map((product) => renderProductCard(product, selectedProduct.id === product.id))}
+              </div>
+            </section>
+          </>
+        )}
+
+        {currentView === "checkout" && (
+          <>
+            <div className="page-toolbar checkout-toolbar">
+              <button type="button" onClick={() => navigateCart()}>
+                {checkoutCopy[language].back}
+              </button>
+            </div>
+            <section className="checkout-page" aria-labelledby="checkout-page-title">
+              <div className="section-heading checkout-page-heading">
+                <div>
+                  <p className="section-kicker">{checkoutCopy[language].kicker}</p>
+                  <h1 id="checkout-page-title">{checkoutCopy[language].title}</h1>
+                </div>
+                <p>{checkoutCopy[language].lead}</p>
+              </div>
+              <div className="checkout-page-grid">
+                <form
+                  className="checkout-form"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    setCheckoutSaved(true);
+                  }}
+                >
+                  <fieldset className="checkout-fieldset">
+                    <legend>{checkoutCopy[language].contact}</legend>
+                    <div className="checkout-input-grid">
+                      <label>{checkoutCopy[language].firstName}<input name="given-name" autoComplete="given-name" required /></label>
+                      <label>{checkoutCopy[language].lastName}<input name="family-name" autoComplete="family-name" required /></label>
+                      <label>{checkoutCopy[language].email}<input name="email" type="email" autoComplete="email" required /></label>
+                      <label>{checkoutCopy[language].phone}<input name="tel" type="tel" autoComplete="tel" placeholder="+41 79 123 45 67" required /></label>
+                    </div>
+                  </fieldset>
+                  <fieldset className="checkout-fieldset">
+                    <legend>{checkoutCopy[language].delivery}</legend>
+                    <div className="checkout-input-grid">
+                      <label className="checkout-input-wide">{checkoutCopy[language].street}<input name="address-line1" autoComplete="address-line1" required /></label>
+                      <label>{checkoutCopy[language].postalCode}<input name="postal-code" autoComplete="postal-code" inputMode="numeric" pattern="[0-9]{4}" maxLength={4} placeholder="8001" required /></label>
+                      <label>{checkoutCopy[language].city}<input name="address-level2" autoComplete="address-level2" required /></label>
+                      <label>{checkoutCopy[language].country}<input value={checkoutCopy[language].switzerland} readOnly /></label>
+                    </div>
+                  </fieldset>
+                  <fieldset className="checkout-fieldset payment-fieldset">
+                    <legend>{checkoutCopy[language].payment}</legend>
+                    <div className="payment-options">
+                      {([
+                        ["twint", checkoutCopy[language].twint],
+                        ["card", checkoutCopy[language].card],
+                        ["bank", checkoutCopy[language].bank],
+                      ] as const).map(([value, label]) => (
+                        <label className="payment-option" key={value}>
+                          <input type="radio" name="payment-method" value={value} required />
+                          <span>{label}</span>
+                        </label>
+                      ))}
+                    </div>
+                    <p className="payment-notice">{checkoutCopy[language].paymentNotice}</p>
+                  </fieldset>
+                  <button className="primary-button" type="submit">
+                    {checkoutCopy[language].save}
+                  </button>
+                  {checkoutSaved && <p className="checkout-message" role="status">{checkoutCopy[language].saved}</p>}
+                </form>
+                <aside className="checkout-order-summary" aria-labelledby="checkout-summary-title">
+                  <h2 id="checkout-summary-title">{checkoutCopy[language].orderSummary}</h2>
+                  <ul>
+                    {cartItems.map((item) => {
+                      const product = getProduct(item.productId);
+                      const variant = baubleProductIds.includes(item.productId)
+                        ? getBaubleVariant(item.baubleVariantId ?? item.productId)
+                        : undefined;
+                      return (
+                        <li key={item.id}>
+                          <span>{item.quantity} × {variant?.label[language] ?? product.translations[language].name}</span>
+                          <strong>{formatPrice(getCartItemUnitPrice(item) * item.quantity)}</strong>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  <div className="checkout-summary-row">
+                    <span>{checkoutCopy[language].subtotal}</span><strong>{formatPrice(cartTotal)}</strong>
+                  </div>
+                  <div className="checkout-summary-row checkout-shipping-row">
+                    <span>{checkoutCopy[language].shipping}</span><small>{checkoutCopy[language].shippingLater}</small>
+                  </div>
+                  <div className="checkout-summary-row checkout-grand-total">
+                    <span>{checkoutCopy[language].total}</span><strong>{formatPrice(cartTotal)}</strong>
+                  </div>
+                </aside>
               </div>
             </section>
           </>
