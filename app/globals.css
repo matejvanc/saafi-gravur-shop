@@ -2649,6 +2649,13 @@ main {
   gap: 0.4rem;
 }
 
+.required-mark {
+  color: var(--cranberry);
+  font-size: 1rem;
+  font-weight: 800;
+  margin-left: 0.18rem;
+}
+
 .checkout-input-grid input {
   background: #fff;
   border: 1px solid #d9d8d0;
@@ -2669,6 +2676,38 @@ main {
 .checkout-input-grid input[readonly] {
   background: #f4f2ec;
   color: var(--muted);
+}
+
+.checkout-note-field {
+  color: #4c554f;
+  display: grid;
+  font-size: 0.86rem;
+  font-weight: 650;
+  gap: 0.4rem;
+}
+
+.checkout-note-field small {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 450;
+}
+
+.checkout-note-field textarea {
+  background: #fff;
+  border: 1px solid #d9d8d0;
+  border-radius: 4px;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 450;
+  min-height: 110px;
+  padding: 0.7rem 0.75rem;
+  resize: vertical;
+  width: 100%;
+}
+
+.checkout-note-field textarea:focus {
+  border-color: var(--forest);
+  outline: 2px solid rgba(30, 81, 59, 0.16);
 }
 
 .checkout-input-wide {

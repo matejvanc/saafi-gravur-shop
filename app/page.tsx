@@ -864,6 +864,7 @@ const checkoutCopy = {
     orderSummary: "Bestellübersicht", subtotal: "Zwischensumme", shipping: "Versand",
     shippingLater: "Wird nach Lieferadresse berechnet", total: "Zwischentotal ohne Versand", save: "Lieferdaten speichern",
     saved: "Die Angaben sind im Formular übernommen. Es wurde noch keine Bestellung übermittelt und keine Zahlung ausgelöst.",
+    note: "Bestellnotiz", optional: "optional",
     back: "Zurück zum Warenkorb",
   },
   en: {
@@ -875,6 +876,7 @@ const checkoutCopy = {
     paymentNotice: "Your choice will be noted. Payment processing is not connected yet.", orderSummary: "Order summary",
     subtotal: "Subtotal", shipping: "Shipping", shippingLater: "Calculated after delivery address", total: "Subtotal excluding shipping",
     save: "Save delivery details", saved: "Your details are in the form. No order was submitted and no payment was made.",
+    note: "Order note", optional: "optional",
     back: "Back to cart",
   },
   cs: {
@@ -886,6 +888,7 @@ const checkoutCopy = {
     paymentNotice: "Zvolený způsob platby se pouze zaznamená. Platební brána zatím není připojená.", orderSummary: "Shrnutí objednávky",
     subtotal: "Mezisoučet", shipping: "Doprava", shippingLater: "Spočítá se podle doručovací adresy", total: "Mezisoučet bez dopravy",
     save: "Uložit doručovací údaje", saved: "Údaje zůstaly ve formuláři. Objednávka nebyla odeslána a platba neproběhla.",
+    note: "Poznámka k objednávce", optional: "nepovinné",
     back: "Zpět do košíku",
   },
   fr: {
@@ -897,6 +900,7 @@ const checkoutCopy = {
     paymentNotice: "Votre choix sera noté. Le traitement des paiements n'est pas encore connecté.", orderSummary: "Récapitulatif",
     subtotal: "Sous-total", shipping: "Livraison", shippingLater: "Calculée selon l'adresse", total: "Sous-total hors livraison",
     save: "Enregistrer l'adresse", saved: "Les informations restent dans le formulaire. Aucune commande ni aucun paiement n'a été transmis.",
+    note: "Note de commande", optional: "facultatif",
     back: "Retour au panier",
   },
   it: {
@@ -908,6 +912,7 @@ const checkoutCopy = {
     paymentNotice: "La scelta verrà annotata. Il sistema di pagamento non è ancora collegato.", orderSummary: "Riepilogo ordine",
     subtotal: "Subtotale", shipping: "Spedizione", shippingLater: "Calcolata in base all'indirizzo", total: "Subtotale, spedizione esclusa",
     save: "Salva i dati di consegna", saved: "I dati restano nel modulo. Non è stato inviato alcun ordine né effettuato alcun pagamento.",
+    note: "Nota sull'ordine", optional: "facoltativo",
     back: "Torna al carrello",
   },
 } satisfies Record<LanguageCode, Record<string, string>>;
@@ -3330,23 +3335,23 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                   <fieldset className="checkout-fieldset">
                     <legend>{checkoutCopy[language].contact}</legend>
                     <div className="checkout-input-grid">
-                      <label>{checkoutCopy[language].firstName}<input name="given-name" autoComplete="given-name" required /></label>
-                      <label>{checkoutCopy[language].lastName}<input name="family-name" autoComplete="family-name" required /></label>
-                      <label>{checkoutCopy[language].email}<input name="email" type="email" autoComplete="email" required /></label>
-                      <label>{checkoutCopy[language].phone}<input name="tel" type="tel" autoComplete="tel" placeholder="+41 79 123 45 67" required /></label>
+                      <label><span>{checkoutCopy[language].firstName}<b className="required-mark" aria-hidden="true">*</b></span><input name="given-name" autoComplete="given-name" required /></label>
+                      <label><span>{checkoutCopy[language].lastName}<b className="required-mark" aria-hidden="true">*</b></span><input name="family-name" autoComplete="family-name" required /></label>
+                      <label><span>{checkoutCopy[language].email}<b className="required-mark" aria-hidden="true">*</b></span><input name="email" type="email" autoComplete="email" required /></label>
+                      <label><span>{checkoutCopy[language].phone}<b className="required-mark" aria-hidden="true">*</b></span><input name="tel" type="tel" autoComplete="tel" placeholder="+41 79 123 45 67" required /></label>
                     </div>
                   </fieldset>
                   <fieldset className="checkout-fieldset">
                     <legend>{checkoutCopy[language].delivery}</legend>
                     <div className="checkout-input-grid">
-                      <label className="checkout-input-wide">{checkoutCopy[language].street}<input name="address-line1" autoComplete="address-line1" required /></label>
-                      <label>{checkoutCopy[language].postalCode}<input name="postal-code" autoComplete="postal-code" inputMode="numeric" pattern="[0-9]{4}" maxLength={4} placeholder="8001" required /></label>
-                      <label>{checkoutCopy[language].city}<input name="address-level2" autoComplete="address-level2" required /></label>
+                      <label className="checkout-input-wide"><span>{checkoutCopy[language].street}<b className="required-mark" aria-hidden="true">*</b></span><input name="address-line1" autoComplete="address-line1" required /></label>
+                      <label><span>{checkoutCopy[language].postalCode}<b className="required-mark" aria-hidden="true">*</b></span><input name="postal-code" autoComplete="postal-code" inputMode="numeric" pattern="[0-9]{4}" maxLength={4} placeholder="8001" required /></label>
+                      <label><span>{checkoutCopy[language].city}<b className="required-mark" aria-hidden="true">*</b></span><input name="address-level2" autoComplete="address-level2" required /></label>
                       <label>{checkoutCopy[language].country}<input value={checkoutCopy[language].switzerland} readOnly /></label>
                     </div>
                   </fieldset>
                   <fieldset className="checkout-fieldset payment-fieldset">
-                    <legend>{checkoutCopy[language].payment}</legend>
+                    <legend>{checkoutCopy[language].payment}<b className="required-mark" aria-hidden="true">*</b></legend>
                     <div className="payment-options">
                       {([
                         ["twint", checkoutCopy[language].twint],
@@ -3361,6 +3366,10 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                     </div>
                     <p className="payment-notice">{checkoutCopy[language].paymentNotice}</p>
                   </fieldset>
+                  <label className="checkout-note-field">
+                    <span>{checkoutCopy[language].note} <small>({checkoutCopy[language].optional})</small></span>
+                    <textarea name="order-note" rows={4} />
+                  </label>
                   <button className="primary-button" type="submit">
                     {checkoutCopy[language].save}
                   </button>
