@@ -29,6 +29,16 @@ interface ExecutionContext {
 
 const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    const response = await handleWorkerRequest(request, env, ctx);
+    return addSecurityHeaders(response, new URL(request.url));
+  },
+};
+
+async function handleWorkerRequest(
+  request: Request,
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<Response> {
     const url = new URL(request.url);
 
     if (url.pathname === "/api/post-locations") {
@@ -165,8 +175,24 @@ const worker = {
     }
 
     return handler.fetch(request, env, ctx);
-  },
-};
+}
+
+function addSecurityHeaders(response: Response, requestUrl: URL): Response {
+  const headers = new Headers(response.headers);
+  headers.set("X-Content-Type-Options", "nosniff");
+  headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  headers.set("X-Frame-Options", "DENY");
+  headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  headers.set("Content-Security-Policy", "frame-ancestors 'none'; base-uri 'self'; object-src 'none'");
+  if (requestUrl.protocol === "https:") {
+    headers.set("Strict-Transport-Security", "max-age=15552000");
+  }
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
 
 export default worker;
 

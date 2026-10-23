@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
+import Link from "next/link";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { accountCopy } from "./account-copy";
 import { loadAccountAuthClient } from "./account-auth";
@@ -43,8 +44,11 @@ const ui = {
     cartTitle: "Warenkorb",
     breadcrumbs: "Startseite / Personalisierte Gravurgeschenke",
     textLimit: `Text bis ${TEXT_LIMIT} Zeichen`,
-    taxNote: "inkl. MwSt., zzgl. Versand",
+    taxNote: "Preis in CHF · Versand kommt hinzu",
+    contactPending: "Kontaktangaben werden ergänzt",
     customTextLabel: "Name oder kurzer Text",
+    baubleMaterialRequired: "Bitte wähle ein Material aus.",
+    cartMaterialMissing: "Material fehlt – bitte Artikel entfernen und mit Materialwahl erneut hinzufügen.",
     customTextPlaceholder: "z. B. Emilia",
     logoLabel: "Logo-Motiv",
     giftWrapLabel: "Geschenkverpackung",
@@ -109,7 +113,7 @@ const ui = {
       ],
       [
         "4. Preise, Versand und Zahlung",
-        "Die Preise verstehen sich inklusive gesetzlicher Umsatzsteuer, sofern nicht anders angegeben. Versandkosten werden im Checkout transparent ausgewiesen. Zahlungen erfolgen nach den im Shop angegebenen Zahlungsarten.",
+        "Preise, Steuerstatus, Versandkosten und Zahlungsmethoden müssen vor dem Start vom Betreiber bestätigt und im Checkout vollständig angezeigt werden.",
       ],
       [
         "5. Lieferzeiten",
@@ -172,8 +176,11 @@ const ui = {
     cartTitle: "Cart",
     breadcrumbs: "Home / Personalised engraved gifts",
     textLimit: `Text up to ${TEXT_LIMIT} characters`,
-    taxNote: "incl. VAT, plus shipping",
+    taxNote: "Price in CHF · shipping added separately",
+    contactPending: "Contact details to be added",
     customTextLabel: "Name or short text",
+    baubleMaterialRequired: "Please choose a material.",
+    cartMaterialMissing: "Material missing — remove this item and add it again after choosing a material.",
     customTextPlaceholder: "e.g. Emilia",
     logoLabel: "Logo design",
     giftWrapLabel: "Gift wrapping",
@@ -238,7 +245,7 @@ const ui = {
       ],
       [
         "4. Prices, shipping and payment",
-        "All prices include applicable VAT unless otherwise stated. Shipping costs are shown transparently in the checkout. Payments are processed according to the payment methods available in the shop.",
+        "The seller must confirm the tax status, shipping charges and payment methods before launch and display the complete payable price before an order is placed.",
       ],
       [
         "5. Delivery times",
@@ -301,8 +308,11 @@ const ui = {
     cartTitle: "Košík",
     breadcrumbs: "Úvod / Personalizované gravírované dárky",
     textLimit: `Text do ${TEXT_LIMIT} znaků`,
-    taxNote: "včetně DPH, bez dopravy",
+    taxNote: "Cena v CHF · doprava se připočítá",
+    contactPending: "Kontaktní údaje budou doplněny",
     customTextLabel: "Jméno nebo krátký text",
+    baubleMaterialRequired: "Vyberte prosím materiál.",
+    cartMaterialMissing: "Chybí materiál – položku odeberte a přidejte znovu s vybraným materiálem.",
     customTextPlaceholder: "např. Emilia",
     logoLabel: "Logo motiv",
     giftWrapLabel: "Dárkové balení",
@@ -367,7 +377,7 @@ const ui = {
       ],
       [
         "4. Ceny, doprava a platba",
-        "Všechny ceny jsou uvedeny včetně příslušné DPH, pokud není stanoveno jinak. Náklady na dopravu jsou v pokladně zobrazeny transparentně. Platby se provádějí podle dostupných platebních metod v e-shopu.",
+        "Daňový režim, cena dopravy a platební metody musí prodávající před spuštěním ověřit a úplnou cenu zobrazit před odesláním objednávky.",
       ],
       [
         "5. Dodací lhůty",
@@ -430,8 +440,11 @@ const ui = {
     cartTitle: "Panier",
     breadcrumbs: "Accueil / Cadeaux gravés personnalisés",
     textLimit: `Texte jusqu'à ${TEXT_LIMIT} caractères`,
-    taxNote: "TVA incluse, hors livraison",
+    taxNote: "Prix en CHF · livraison en sus",
+    contactPending: "Coordonnées à compléter",
     customTextLabel: "Nom ou texte court",
+    baubleMaterialRequired: "Veuillez choisir un matériau.",
+    cartMaterialMissing: "Matériau manquant — supprimez cet article et ajoutez-le à nouveau après avoir choisi un matériau.",
     customTextPlaceholder: "p. ex. Emilia",
     logoLabel: "Motif logo",
     giftWrapLabel: "Emballage cadeau",
@@ -559,8 +572,11 @@ const ui = {
     cartTitle: "Carrello",
     breadcrumbs: "Home / Regali incisi personalizzati",
     textLimit: `Testo fino a ${TEXT_LIMIT} caratteri`,
-    taxNote: "IVA inclusa, spedizione esclusa",
+    taxNote: "Prezzo in CHF · spedizione a parte",
+    contactPending: "Dati di contatto da completare",
     customTextLabel: "Nome o testo breve",
+    baubleMaterialRequired: "Seleziona un materiale.",
+    cartMaterialMissing: "Materiale mancante: rimuovi l’articolo e aggiungilo di nuovo dopo aver scelto il materiale.",
     customTextPlaceholder: "es. Emilia",
     logoLabel: "Motivo logo",
     giftWrapLabel: "Confezione regalo",
@@ -625,7 +641,7 @@ const ui = {
       ],
       [
         "4. Prezzi e pagamento",
-        "Tutti i prezzi includono l'IVA di legge e non includono la spedizione. I metodi di pagamento disponibili saranno mostrati nel checkout.",
+        "Il venditore deve verificare il regime fiscale, le spese di spedizione e i metodi di pagamento e mostrare il prezzo completo prima dell’ordine.",
       ],
       [
         "5. Consegna",
@@ -753,9 +769,15 @@ const flowCopy = {
     removeItem: "Entfernen",
     cartEmptyAction: "Produkte ansehen",
     checkoutTitle: "Checkout",
-    checkoutCta: "Bestellung vorbereiten",
+    checkoutCta: "Zur Kassen-Vorschau",
     checkoutNote:
-      "Der Checkout ist vorbereitet. Zahlungsarten, Versand und Pflichtangaben werden später ergänzt.",
+      "Dies ist nur eine Vorschau. Der Shop übermittelt noch keine Bestellungen und löst keine Zahlung aus.",
+    legalAcknowledgement: "Ich akzeptiere die",
+    termsLinkLabel: "Allgemeinen Geschäftsbedingungen",
+    privacyPrefix: "und bestätige, dass ich die",
+    privacyLinkLabel: "Datenschutzhinweise",
+    privacyAcknowledgement: "gelesen habe.",
+    cookiesLinkLabel: "Informationen zu Cookies",
     checkoutMessage:
       "Danke. Der nächste Schritt wird die echte Bestell- und Zahlungsabwicklung.",
   },
@@ -776,9 +798,15 @@ const flowCopy = {
     removeItem: "Remove",
     cartEmptyAction: "View products",
     checkoutTitle: "Checkout",
-    checkoutCta: "Prepare order",
+    checkoutCta: "Open checkout preview",
     checkoutNote:
-      "Checkout is prepared. Payment methods, shipping and legal details will be added later.",
+      "This is a preview only. The shop does not submit orders or process payments yet.",
+    legalAcknowledgement: "I accept the",
+    termsLinkLabel: "Terms and conditions",
+    privacyPrefix: "and confirm that I have read the",
+    privacyLinkLabel: "Privacy notice",
+    privacyAcknowledgement: ".",
+    cookiesLinkLabel: "Cookie information",
     checkoutMessage:
       "Thank you. The next step will be the real order and payment flow.",
   },
@@ -799,9 +827,15 @@ const flowCopy = {
     removeItem: "Odebrat",
     cartEmptyAction: "Zobrazit produkty",
     checkoutTitle: "Checkout",
-    checkoutCta: "Připravit objednávku",
+    checkoutCta: "Otevřít náhled pokladny",
     checkoutNote:
-      "Checkout je připravený. Platební metody, doprava a povinné údaje se doplní později.",
+      "Jde pouze o náhled. Obchod zatím nepřijímá objednávky ani nezpracovává platby.",
+    legalAcknowledgement: "Souhlasím s",
+    termsLinkLabel: "obchodními podmínkami",
+    privacyPrefix: "a potvrzuji, že jsem se seznámil/a s",
+    privacyLinkLabel: "informacemi o ochraně osobních údajů",
+    privacyAcknowledgement: ".",
+    cookiesLinkLabel: "Informace o cookies",
     checkoutMessage:
       "Děkujeme. Další krok bude skutečné odeslání objednávky a platba.",
   },
@@ -822,9 +856,15 @@ const flowCopy = {
     removeItem: "Retirer",
     cartEmptyAction: "Voir les produits",
     checkoutTitle: "Paiement",
-    checkoutCta: "Préparer la commande",
+    checkoutCta: "Voir l’aperçu du paiement",
     checkoutNote:
       "Le paiement est préparé. Les moyens de paiement, la livraison et les mentions légales seront ajoutés plus tard.",
+    legalAcknowledgement: "J’accepte les",
+    termsLinkLabel: "conditions générales",
+    privacyPrefix: "et confirme avoir lu les",
+    privacyLinkLabel: "informations sur la confidentialité",
+    privacyAcknowledgement: ".",
+    cookiesLinkLabel: "Informations sur les cookies",
     checkoutMessage:
       "Merci. La prochaine étape sera le vrai parcours de commande et de paiement.",
   },
@@ -845,9 +885,15 @@ const flowCopy = {
     removeItem: "Rimuovi",
     cartEmptyAction: "Vedi prodotti",
     checkoutTitle: "Checkout",
-    checkoutCta: "Prepara ordine",
+    checkoutCta: "Apri anteprima checkout",
     checkoutNote:
-      "Il checkout è preparato. Metodi di pagamento, spedizione e dati legali saranno aggiunti più avanti.",
+      "Questa è solo un’anteprima. Il negozio non invia ancora ordini né elabora pagamenti.",
+    legalAcknowledgement: "Accetto le",
+    termsLinkLabel: "condizioni generali",
+    privacyPrefix: "e confermo di aver letto l’",
+    privacyLinkLabel: "informativa sulla privacy",
+    privacyAcknowledgement: ".",
+    cookiesLinkLabel: "Informazioni sui cookie",
     checkoutMessage:
       "Grazie. Il prossimo passo sarà il vero flusso di ordine e pagamento.",
   },
@@ -862,11 +908,11 @@ const checkoutCopy = {
     card: "Kredit- oder Debitkarte", bank: "Vorauszahlung per Banküberweisung",
     paymentNotice: "Die Zahlungsart wird vorgemerkt. Eine Zahlungsabwicklung ist noch nicht angeschlossen.",
     orderSummary: "Bestellübersicht", subtotal: "Zwischensumme", shipping: "Versand",
-    shippingLater: "Versandkosten werden nach Angabe der Versandart bestätigt", total: "Zwischentotal ohne Versand", save: "Lieferdaten speichern",
+    shippingLater: "Der Versandtarif ist noch nicht konfiguriert; daher wird keine Endsumme berechnet", total: "Zwischentotal ohne Versand", save: "Lieferdaten speichern", notActive: "Noch nicht verfügbar: Es werden keine Bestellungen übermittelt und keine Zahlungen ausgelöst.",
     saved: "Die Angaben sind im Formular übernommen. Es wurde noch keine Bestellung übermittelt und keine Zahlung ausgelöst.",
     note: "Bestellnotiz", optional: "optional",
-    shippingMethod: "Versandart", economy: "Swiss Post PostPac Economy", economyDescription: "Zustellung in der Regel innerhalb von zwei Werktagen.",
-    priority: "Swiss Post PostPac Priority", priorityDescription: "Zustellung am nächsten Werktag.",
+    shippingMethod: "Versandart", economy: "Swiss Post PostPac Economy", economyDescription: "Lieferzeit ab Versand; konkrete Laufzeit vor Bestellung zu bestätigen.",
+    priority: "Swiss Post PostPac Priority", priorityDescription: "Priorisierte Zustellung ab Versand; konkrete Laufzeit vor Bestellung zu bestätigen.",
     pickup: "Swiss Post PickPost / My Post 24", pickupDescription: "Abholung an einer PickPost-Stelle oder einem My Post 24 Automaten.",
     pickupLocation: "Gewünschte Abholstelle oder My Post 24 Standort", pickupPlaceholder: "Ort, Postleitzahl oder Name eingeben",
     shippingUnselected: "Bitte Versandart auswählen", pickupSearching: "Suche nach Swiss Post Standorten …",
@@ -882,11 +928,11 @@ const checkoutCopy = {
     country: "Country", switzerland: "Switzerland", payment: "Choose a payment method", twint: "TWINT",
     card: "Credit or debit card", bank: "Bank transfer in advance",
     paymentNotice: "Your choice will be noted. Payment processing is not connected yet.", orderSummary: "Order summary",
-    subtotal: "Subtotal", shipping: "Shipping", shippingLater: "Shipping cost will be confirmed after you choose a method", total: "Subtotal excluding shipping",
-    save: "Save delivery details", saved: "Your details are in the form. No order was submitted and no payment was made.",
+    subtotal: "Subtotal", shipping: "Shipping", shippingLater: "Shipping rates are not configured; no final total is available", total: "Subtotal excluding shipping",
+    save: "Save delivery details", notActive: "Not available yet: no order is submitted and no payment is processed.", saved: "Your details are in the form. No order was submitted and no payment was made.",
     note: "Order note", optional: "optional",
-    shippingMethod: "Delivery method", economy: "Swiss Post PostPac Economy", economyDescription: "Usually delivered within two working days.",
-    priority: "Swiss Post PostPac Priority", priorityDescription: "Delivered on the next working day.",
+    shippingMethod: "Delivery method", economy: "Swiss Post PostPac Economy", economyDescription: "Transit time starts after dispatch; confirm the current estimate before ordering.",
+    priority: "Swiss Post PostPac Priority", priorityDescription: "Priority transit starts after dispatch; confirm the current estimate before ordering.",
     pickup: "Swiss Post PickPost / My Post 24", pickupDescription: "Collect from a PickPost location or My Post 24 parcel locker.",
     pickupLocation: "Preferred PickPost or My Post 24 location", pickupPlaceholder: "Enter a town, postcode or location name",
     shippingUnselected: "Choose a delivery method", pickupSearching: "Searching Swiss Post locations…",
@@ -902,11 +948,11 @@ const checkoutCopy = {
     country: "Země", switzerland: "Švýcarsko", payment: "Vyber způsob platby", twint: "TWINT",
     card: "Platební nebo kreditní karta", bank: "Platba předem bankovním převodem",
     paymentNotice: "Zvolený způsob platby se pouze zaznamená. Platební brána zatím není připojená.", orderSummary: "Shrnutí objednávky",
-    subtotal: "Mezisoučet", shipping: "Doprava", shippingLater: "Cena dopravy se potvrdí po výběru způsobu", total: "Mezisoučet bez dopravy",
-    save: "Uložit doručovací údaje", saved: "Údaje zůstaly ve formuláři. Objednávka nebyla odeslána a platba neproběhla.",
+    subtotal: "Mezisoučet", shipping: "Doprava", shippingLater: "Sazby dopravy nejsou nastavené; konečná částka není dostupná", total: "Mezisoučet bez dopravy",
+    save: "Uložit doručovací údaje", notActive: "Zatím není dostupné: objednávka se neodesílá a platba se nezpracuje.", saved: "Údaje zůstaly ve formuláři. Objednávka nebyla odeslána a platba neproběhla.",
     note: "Poznámka k objednávce", optional: "nepovinné",
-    shippingMethod: "Způsob dopravy", economy: "Swiss Post PostPac Economy", economyDescription: "Doručení obvykle do dvou pracovních dnů.",
-    priority: "Swiss Post PostPac Priority", priorityDescription: "Doručení následující pracovní den.",
+    shippingMethod: "Způsob dopravy", economy: "Swiss Post PostPac Economy", economyDescription: "Doba přepravy začíná po odeslání; aktuální odhad ověřte před objednávkou.",
+    priority: "Swiss Post PostPac Priority", priorityDescription: "Prioritní přeprava začíná po odeslání; aktuální odhad ověřte před objednávkou.",
     pickup: "Swiss Post PickPost / My Post 24", pickupDescription: "Vyzvednutí na pobočce PickPost nebo v samoobslužném boxu My Post 24.",
     pickupLocation: "Vybraná pobočka PickPost nebo box My Post 24", pickupPlaceholder: "Zadej město, PSČ nebo název místa",
     shippingUnselected: "Vyber způsob dopravy", pickupSearching: "Hledám pobočky Swiss Post…",
@@ -922,11 +968,11 @@ const checkoutCopy = {
     country: "Pays", switzerland: "Suisse", payment: "Choisir un moyen de paiement", twint: "TWINT",
     card: "Carte de crédit ou de débit", bank: "Virement bancaire à l'avance",
     paymentNotice: "Votre choix sera noté. Le traitement des paiements n'est pas encore connecté.", orderSummary: "Récapitulatif",
-    subtotal: "Sous-total", shipping: "Livraison", shippingLater: "Le tarif sera confirmé après le choix du mode", total: "Sous-total hors livraison",
+    subtotal: "Sous-total", shipping: "Livraison", shippingLater: "Les tarifs ne sont pas configurés ; le total final est indisponible", total: "Sous-total hors livraison",
     save: "Enregistrer l'adresse", saved: "Les informations restent dans le formulaire. Aucune commande ni aucun paiement n'a été transmis.",
     note: "Note de commande", optional: "facultatif",
-    shippingMethod: "Mode de livraison", economy: "Swiss Post PostPac Economy", economyDescription: "Livraison généralement sous deux jours ouvrables.",
-    priority: "Swiss Post PostPac Priority", priorityDescription: "Livraison le jour ouvrable suivant.",
+    shippingMethod: "Mode de livraison", economy: "Swiss Post PostPac Economy", economyDescription: "Le délai commence après expédition ; confirmer l’estimation actuelle avant la commande.",
+    priority: "Swiss Post PostPac Priority", priorityDescription: "Le délai prioritaire commence après expédition ; confirmer l’estimation actuelle avant la commande.",
     pickup: "Swiss Post PickPost / My Post 24", pickupDescription: "Retrait dans un point PickPost ou un automate My Post 24.",
     pickupLocation: "Point PickPost ou automate My Post 24 souhaité", pickupPlaceholder: "Saisissez une ville, un code postal ou un lieu",
     shippingUnselected: "Choisissez un mode de livraison", pickupSearching: "Recherche des points Swiss Post…",
@@ -942,11 +988,11 @@ const checkoutCopy = {
     country: "Paese", switzerland: "Svizzera", payment: "Scegli il metodo di pagamento", twint: "TWINT",
     card: "Carta di credito o debito", bank: "Bonifico bancario anticipato",
     paymentNotice: "La scelta verrà annotata. Il sistema di pagamento non è ancora collegato.", orderSummary: "Riepilogo ordine",
-    subtotal: "Subtotale", shipping: "Spedizione", shippingLater: "Il costo verrà confermato dopo la scelta del metodo", total: "Subtotale, spedizione esclusa",
-    save: "Salva i dati di consegna", saved: "I dati restano nel modulo. Non è stato inviato alcun ordine né effettuato alcun pagamento.",
+    subtotal: "Subtotale", shipping: "Spedizione", shippingLater: "Le tariffe non sono configurate; il totale finale non è disponibile", total: "Subtotale, spedizione esclusa",
+    save: "Salva i dati di consegna", notActive: "Non ancora disponibile: l’ordine non viene inviato e il pagamento non viene elaborato.", saved: "I dati restano nel modulo. Non è stato inviato alcun ordine né effettuato alcun pagamento.",
     note: "Nota sull'ordine", optional: "facoltativo",
-    shippingMethod: "Metodo di consegna", economy: "Swiss Post PostPac Economy", economyDescription: "Consegna solitamente entro due giorni lavorativi.",
-    priority: "Swiss Post PostPac Priority", priorityDescription: "Consegna il giorno lavorativo successivo.",
+    shippingMethod: "Metodo di consegna", economy: "Swiss Post PostPac Economy", economyDescription: "Il tempo di transito inizia dopo la spedizione; verificare la stima attuale prima dell’ordine.",
+    priority: "Swiss Post PostPac Priority", priorityDescription: "Il transito prioritario inizia dopo la spedizione; verificare la stima attuale prima dell’ordine.",
     pickup: "Swiss Post PickPost / My Post 24", pickupDescription: "Ritiro presso un punto PickPost o un armadietto My Post 24.",
     pickupLocation: "Punto PickPost o armadietto My Post 24 preferito", pickupPlaceholder: "Inserisci città, CAP o nome del punto",
     shippingUnselected: "Scegli un metodo di consegna", pickupSearching: "Ricerca dei punti Swiss Post…",
@@ -954,6 +1000,59 @@ const checkoutCopy = {
     pickupSelectResult: "Seleziona una sede dai risultati della ricerca.", locationSource: "Dati delle sedi forniti da Swiss Post",
     bestMatch: "Corrispondenza migliore",
     back: "Torna al carrello",
+  },
+} satisfies Record<LanguageCode, Record<string, string>>;
+
+const legalCopy = {
+  de: {
+    impressumTitle: "Impressum",
+    incomplete: "Diese Pflichtangaben sind noch nicht vollständig. Der Shop darf nicht live Bestellungen annehmen, bevor die verantwortliche Person bzw. das Unternehmen, eine ladungsfähige Postanschrift und eine funktionierende E-Mail-Adresse ergänzt und geprüft wurden. UID nur angeben, falls vorhanden bzw. vorgeschrieben.",
+    agbTitle: "Allgemeine Geschäftsbedingungen",
+    agb: "Entwurf für den Schweizer Markt. Verkäuferidentität, Vertragsannahme, verbindlicher Bestellschritt, Liefergebiet, tatsächliche Versandtarife, Produktions- und Transportzeiten, Steuerstatus, Zahlungsanbieter, Reklamationskontakt und freiwillige Rückgaberegeln müssen vor Veröffentlichung bestätigt werden. Der aktuelle Shop übermittelt noch keine Bestellung und versendet keine Bestätigungs-E-Mail. Nach Schweizer Recht besteht grundsätzlich kein allgemeines Widerrufsrecht bei Onlinekäufen. Anwendbares Recht und eine etwaige freiwillige Rückgaberegelung müssen für den Verkäufer konkret bestätigt werden. Eine freiwillige Rückgabefrist wird nicht zugesagt.",
+    privacyTitle: "Datenschutzerklärung",
+    privacy: "Verantwortliche Person und Kontaktadresse fehlen und müssen vor Veröffentlichung ergänzt werden. Cloudflare Workers stellt die Website bereit. Der Browser speichert Warenkorb, Konfiguration und Sprache in localStorage. Eine Suche nach Abholorten wird über den Worker an Swiss Post übermittelt. Bei optionaler Anmeldung erhält Supabase Auth die eingegebene E-Mail-Adresse; die Sitzung bleibt im Browser. Checkout-Felder, Notizen, Zahlungswahl, Bestellungen und Zahlungen werden derzeit nicht an den Shop gesendet oder dort gespeichert. Nach Schweizer DSG können Betroffene Auskunft und Berichtigung verlangen sowie – soweit gesetzlich zulässig – Löschung oder Einschränkung beantragen; GDPR-Rechte gelten nur, sofern die GDPR anwendbar ist. Betreiber müssen Zwecke und Rechtsgrundlagen, Speicher-/Löschfristen, technische Protokolle, tatsächliche Auftragsbearbeiter, Länder und Transfergarantien ergänzen. Anfragen benötigen eine verifizierte Kontaktadresse.",
+    cookiesTitle: "Cookies und ähnliche Technologien",
+    cookies: "Im Anwendungscode sind keine Analyse- oder Marketing-Tags eingebunden. Der Shop nutzt localStorage für Sprache, Warenkorb und die optionale Authentifizierungssitzung; das sind Browserspeicher und nicht automatisch Cookies. Swiss-Post-Suche und Supabase Auth sind externe Dienste und erhalten die dafür notwendigen Anfragen. Das tatsächliche Cookie-Verhalten der Hosting- und Authentifizierungsdienste ist vor Veröffentlichung im Browser und in deren Einstellungen zu prüfen. Eine Cookie-Einwilligungs-Checkbox ist deshalb nicht Teil der Bestellvoraussetzungen.",
+  },
+  en: {
+    impressumTitle: "Seller information",
+    incomplete: "These required details are incomplete. Do not accept live orders until the responsible person or company, a valid postal address and a working email address have been added and checked. Add a UID only if one exists or is required.",
+    agbTitle: "Terms and conditions",
+    agb: "Draft for the Swiss market. Confirm the seller identity, contract acceptance, binding order step, delivery area, actual shipping rates, production and transit times, tax status, payment provider, complaints contact and any voluntary returns policy before publication. The current shop does not submit orders or send confirmation emails. Swiss law generally does not provide a right of withdrawal for online purchases. The applicable law and any voluntary returns policy must be confirmed for this seller. No voluntary return period is promised.",
+    privacyTitle: "Privacy notice",
+    privacy: "The controller and contact address are missing and must be added before publication. Cloudflare Workers serves the site. The browser stores the cart, product configuration and language in localStorage. A pickup-location search is sent through the Worker to Swiss Post. Optional sign-in sends the entered email address to Supabase Auth; the session stays in browser storage. Checkout fields, notes, payment choice, orders and payments are not currently sent to or stored by the shop. Under the Swiss FADP, people may request information and correction and, where legally available, deletion or restriction. GDPR rights apply only where the GDPR covers this shop. The operator must add purposes and legal bases, storage/deletion periods, technical logs, actual processors, processing countries and transfer safeguards. Requests need a verified contact address.",
+    cookiesTitle: "Cookies and similar technologies",
+    cookies: "No analytics or marketing tags are included in the application code. The shop uses localStorage for language, cart and the optional authentication session; browser storage is not automatically a cookie. Swiss Post search and Supabase Auth are external services and receive the requests needed for those features. Check the actual cookie behaviour of the hosting and authentication services in a browser and in their settings before publication. A cookie-consent checkbox is therefore not a condition for preparing an order.",
+  },
+  cs: {
+    impressumTitle: "Identifikace prodávajícího",
+    incomplete: "Tyto povinné údaje zatím nejsou úplné. Před spuštěním objednávek je nutné doplnit a ověřit odpovědnou osobu nebo firmu, platnou poštovní adresu a funkční e-mail. UID doplňte jen tehdy, pokud existuje nebo je vyžadováno.",
+    agbTitle: "Obchodní podmínky",
+    agb: "Návrh pro švýcarský trh. Před zveřejněním je nutné potvrdit totožnost prodávajícího, okamžik přijetí smlouvy, závazný krok objednávky, oblast doručení, skutečné sazby dopravy, dobu výroby a přepravy, daňový režim, platební službu, kontakt pro reklamace a případná dobrovolná pravidla vrácení. Současný web objednávky neodesílá ani neposílá potvrzovací e-maily. Švýcarské právo obecně nestanoví právo odstoupit od online nákupu. Rozhodné právo a případná dobrovolná pravidla vrácení je nutné potvrdit pro konkrétního prodávajícího. Dobrovolná lhůta pro vrácení se neslibuje.",
+    privacyTitle: "Zásady ochrany osobních údajů",
+    privacy: "Správce a kontaktní adresa chybí a před zveřejněním se musí doplnit. Web zajišťuje Cloudflare Workers. Prohlížeč ukládá košík, konfiguraci produktu a jazyk do localStorage. Při hledání výdejního místa se dotaz přes Worker odešle Swiss Post. Při volitelném přihlášení obdrží Supabase Auth zadaný e-mail; relace zůstává v úložišti prohlížeče. Údaje formuláře pokladny, poznámky, volba platby, objednávky ani platby se nyní obchodu neodesílají ani se zde neukládají. Podle švýcarského DSG lze žádat o informace a opravu a tam, kde to zákon umožňuje, o výmaz nebo omezení zpracování. Práva GDPR platí pouze tehdy, pokud se na obchod vztahuje. Provozovatel musí doplnit účely a právní základy, dobu uložení a výmazu, technické záznamy, skutečné zpracovatele, země zpracování a záruky přeshraničního přenosu. Žádosti vyžadují ověřený kontaktní údaj.",
+    cookiesTitle: "Cookies a podobné technologie",
+    cookies: "V aplikačním kódu nejsou zapojeny analytické ani marketingové měřicí skripty. Web používá localStorage pro jazyk, košík a volitelnou přihlašovací relaci; úložiště prohlížeče není automaticky cookie. Swiss Post a Supabase Auth jsou externí služby a dostávají požadavky potřebné pro své funkce. Před zveřejněním ověřte skutečné cookies hostingu a přihlašovací služby v prohlížeči i jejich nastaveních. Potvrzení cookies proto není podmínkou přípravy objednávky.",
+  },
+  fr: {
+    impressumTitle: "Informations sur le vendeur",
+    incomplete: "Ces informations obligatoires sont incomplètes. Avant toute commande réelle, ajoutez et vérifiez la personne ou l’entreprise responsable, une adresse postale valable et une adresse e-mail fonctionnelle. N’indiquez un UID que s’il existe ou est requis.",
+    agbTitle: "Conditions générales",
+    agb: "Projet pour le marché suisse. Avant publication, confirmez l’identité du vendeur, l’acceptation du contrat, l’étape de commande engageante, la zone de livraison, les tarifs réels, les délais de fabrication et de transport, le statut fiscal, le prestataire de paiement, le contact pour les réclamations et toute politique de retour volontaire. La boutique actuelle ne transmet pas de commandes et n’envoie pas d’e-mails de confirmation. Le droit suisse ne prévoit généralement pas de droit de révocation pour les achats en ligne. Le droit applicable et toute politique de retour volontaire doivent être confirmés pour ce vendeur. Aucun délai de retour volontaire n’est promis.",
+    privacyTitle: "Politique de confidentialité",
+    privacy: "Le responsable et son adresse de contact manquent et doivent être ajoutés avant publication. Le site est fourni par Cloudflare Workers. Le navigateur stocke le panier, la configuration du produit et la langue dans localStorage. Une recherche de point de retrait est transmise à Swiss Post par le Worker. Pour la connexion facultative, Supabase Auth reçoit l’adresse e-mail saisie; la session reste dans le navigateur. Les champs de commande, notes, choix de paiement, commandes et paiements ne sont actuellement ni transmis ni enregistrés par la boutique. Selon la LPD suisse, les personnes peuvent demander des renseignements et une rectification et, lorsque la loi le permet, l’effacement ou la limitation du traitement. Les droits RGPD ne s’appliquent que si le RGPD couvre cette boutique. L’exploitant doit préciser les finalités et bases légales, durées de conservation et d’effacement, journaux techniques, sous-traitants réels, pays de traitement et garanties de transfert. Les demandes nécessitent une adresse de contact vérifiée.",
+    cookiesTitle: "Cookies et technologies similaires",
+    cookies: "Aucun outil d’analyse ou de marketing n’est intégré au code de l’application. La boutique utilise localStorage pour la langue, le panier et la session facultative; ce stockage du navigateur n’est pas automatiquement un cookie. Swiss Post et Supabase Auth sont des services externes qui reçoivent les requêtes nécessaires à leurs fonctions. Vérifiez le comportement réel des cookies de l’hébergement et de l’authentification dans un navigateur et dans leurs paramètres avant publication. Une case d’acceptation des cookies n’est donc pas une condition pour préparer une commande.",
+  },
+  it: {
+    impressumTitle: "Informazioni sul venditore",
+    incomplete: "Questi dati obbligatori sono incompleti. Prima di accettare ordini reali, inserire e verificare la persona o l’azienda responsabile, un indirizzo postale valido e un’e-mail funzionante. Inserire l’UID solo se esistente o richiesto.",
+    agbTitle: "Condizioni generali",
+    agb: "Bozza per il mercato svizzero. Prima della pubblicazione confermare l’identità del venditore, l’accettazione del contratto, il passaggio che vincola l’ordine, l’area di consegna, i costi di spedizione effettivi, i tempi di produzione e trasporto, il regime fiscale, il gestore dei pagamenti, il contatto reclami e ogni politica volontaria di reso. Il negozio attuale non invia ordini né e-mail di conferma. Il diritto svizzero generalmente non prevede un diritto di recesso per gli acquisti online. La legge applicabile e ogni politica volontaria di reso devono essere confermate per questo venditore. Non viene promesso un periodo volontario di reso.",
+    privacyTitle: "Informativa sulla privacy",
+    privacy: "Il titolare e l’indirizzo di contatto mancano e devono essere aggiunti prima della pubblicazione. Il sito è fornito da Cloudflare Workers. Il browser salva carrello, configurazione del prodotto e lingua in localStorage. Una ricerca di un punto di ritiro viene inoltrata a Swiss Post tramite il Worker. Per l’accesso facoltativo, Supabase Auth riceve l’indirizzo e-mail inserito; la sessione resta nel browser. I campi checkout, le note, la scelta di pagamento, gli ordini e i pagamenti non vengono attualmente inviati né conservati dal negozio. Secondo la LPD svizzera è possibile chiedere informazioni e rettifica e, ove previsto dalla legge, cancellazione o limitazione del trattamento. I diritti GDPR valgono solo se il GDPR si applica a questo negozio. Il gestore deve indicare finalità e basi giuridiche, periodi di conservazione e cancellazione, registri tecnici, responsabili del trattamento effettivi, Paesi e garanzie per i trasferimenti. Le richieste richiedono un recapito verificato.",
+    cookiesTitle: "Cookie e tecnologie simili",
+    cookies: "Nel codice dell’applicazione non sono inclusi tag di analisi o marketing. Il negozio usa localStorage per lingua, carrello e sessione facoltativa; l’archiviazione del browser non è automaticamente un cookie. Swiss Post e Supabase Auth sono servizi esterni e ricevono le richieste necessarie alle loro funzioni. Prima della pubblicazione verificare nel browser e nelle relative impostazioni l’uso effettivo dei cookie da parte di hosting e autenticazione. La casella cookie non è quindi una condizione per preparare un ordine.",
   },
 } satisfies Record<LanguageCode, Record<string, string>>;
 
@@ -989,12 +1088,12 @@ const logoOptions = [
   {
     id: "srdicko",
     mark: "❤",
-    label: { de: "Srdicko", en: "Heart", cs: "Srdíčko", fr: "Cœur", it: "Cuore" },
+    label: { de: "Herz", en: "Heart", cs: "Srdíčko", fr: "Cœur", it: "Cuore" },
   },
   {
     id: "tlapka",
     mark: "✦",
-    label: { de: "Tlapka", en: "Paw", cs: "Tlapka", fr: "Patte", it: "Zampa" },
+    label: { de: "Pfote", en: "Paw", cs: "Tlapka", fr: "Patte", it: "Zampa" },
   },
 ];
 
@@ -1808,14 +1907,15 @@ const baubleSurfaces = [
   },
 ];
 const baubleOptionLabels = {
-  de: { variant: "Ausführung", color: "Farbe", surface: "Oberfläche" },
-  en: { variant: "Style", color: "Colour", surface: "Finish" },
-  cs: { variant: "Provedení", color: "Barva", surface: "Povrch" },
-  fr: { variant: "Modèle", color: "Couleur", surface: "Finition" },
-  it: { variant: "Modello", color: "Colore", surface: "Finitura" },
-} satisfies Record<LanguageCode, { variant: string; color: string; surface: string }>;
+  de: { variant: "Ausführung", material: "Material", glass: "Glas", wood: "Holz", color: "Farbe", surface: "Oberfläche" },
+  en: { variant: "Style", material: "Material", glass: "Glass", wood: "Wood", color: "Colour", surface: "Finish" },
+  cs: { variant: "Provedení", material: "Materiál", glass: "Sklo", wood: "Dřevo", color: "Barva", surface: "Povrch" },
+  fr: { variant: "Modèle", material: "Matériau", glass: "Verre", wood: "Bois", color: "Couleur", surface: "Finition" },
+  it: { variant: "Modello", material: "Materiale", glass: "Vetro", wood: "Legno", color: "Colore", surface: "Finitura" },
+} satisfies Record<LanguageCode, { variant: string; material: string; glass: string; wood: string; color: string; surface: string }>;
 
 type PageView = "home" | "products" | "product" | "cart" | "checkout" | "terms";
+type LegalPage = "agb" | "datenschutz" | "cookies" | "impressum";
 type SwissShippingMethod = "economy" | "priority" | "pickup";
 type SwissPostLocation = {
   id: string;
@@ -1828,6 +1928,7 @@ type RouteState = {
   view: PageView;
   productId?: string;
   baubleVariantId?: string;
+  legalPage?: LegalPage;
 };
 
 function productHref(productId: string) {
@@ -1857,8 +1958,8 @@ function parseRoute(pathname: string): RouteState {
     return { view: "products" };
   }
 
-  if (firstSegment === "agb") {
-    return { view: "terms" };
+  if (["agb", "datenschutz", "cookies", "impressum"].includes(firstSegment ?? "")) {
+    return { view: "terms", legalPage: firstSegment as LegalPage };
   }
 
   return { view: "home" };
@@ -1877,16 +1978,21 @@ function getInitialLanguage(): LanguageCode {
     return "de";
   }
 
-  const storedLanguage = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
-  return storedLanguage && languages.some((option) => option.code === storedLanguage)
-    ? (storedLanguage as LanguageCode)
-    : "de";
+  try {
+    const storedLanguage = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
+    return storedLanguage && languages.some((option) => option.code === storedLanguage)
+      ? (storedLanguage as LanguageCode)
+      : "de";
+  } catch {
+    return "de";
+  }
 }
 
 type CartItem = {
   id: number;
   productId: string;
   baubleVariantId?: string;
+  baubleMaterial?: "glass" | "wood";
   customText: string;
   finishId: string;
   logoId: string;
@@ -1945,7 +2051,33 @@ function getDefaultBackEngravingId(
 }
 
 function getCartItemUnitPrice(item: CartItem) {
-  return item.price + (item.giftWrap ? GIFT_WRAP_PRICE : 0);
+  const product = getProduct(item.productId);
+  const basePrice = baubleProductIds.includes(item.productId)
+    ? getBaubleVariant(item.baubleVariantId ?? item.productId).price
+    : product.price;
+  return basePrice + (item.giftWrap && product.supportsGiftWrap ? GIFT_WRAP_PRICE : 0);
+}
+
+function isValidCartItem(value: unknown): value is CartItem {
+  if (typeof value !== "object" || value === null) return false;
+  const item = value as Partial<CartItem>;
+  const product = products.find((candidate) => candidate.id === item.productId);
+  if (!product || !Number.isSafeInteger(item.id) || (item.id ?? 0) < 1) return false;
+  if (typeof item.customText !== "string" || Array.from(item.customText.normalize("NFC")).length > TEXT_LIMIT) return false;
+  if (!Number.isInteger(item.quantity) || (item.quantity ?? 0) < 1 || (item.quantity ?? 0) > 12) return false;
+  if (!product.finishes.some((finish) => finish.id === item.finishId)) return false;
+  if (!logoOptions.some((logo) => logo.id === item.logoId)) return false;
+  if (item.giftWrap !== undefined && typeof item.giftWrap !== "boolean") return false;
+  if (item.giftWrap && !product.supportsGiftWrap) return false;
+  if (baubleProductIds.includes(product.id)) {
+    const variant = baubleVariants.find((candidate) => candidate.id === item.baubleVariantId);
+    if (!variant) return false;
+    if (item.baubleMaterial !== undefined && item.baubleMaterial !== "glass" && item.baubleMaterial !== "wood") return false;
+    if (item.backEngravingText && !variant.backEngravingOptions?.some((option) => option.text === item.backEngravingText)) return false;
+  } else if (item.baubleVariantId || item.baubleMaterial || (item.backEngravingText && !product.backEngravingOptions?.some((option) => option.text === item.backEngravingText))) {
+    return false;
+  }
+  return true;
 }
 
 type HomeProps = {
@@ -1957,6 +2089,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   const initialProductId = initialRoute.productId ?? products[0].id;
   const [language, setLanguage] = useState<LanguageCode>("de");
   const [currentView, setCurrentView] = useState<PageView>(() => initialRoute.view);
+  const [legalPage, setLegalPage] = useState<LegalPage>(() => initialRoute.legalPage ?? "agb");
   const [selectedProductId, setSelectedProductId] = useState(() => initialProductId);
   const [selectedBaubleVariantId, setSelectedBaubleVariantId] = useState(
     () => initialRoute.baubleVariantId ?? BAUBLE_PRODUCT_ID,
@@ -1967,6 +2100,8 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   const [selectedFinishId, setSelectedFinishId] = useState(
     () => getProduct(initialProductId).finishes[0].id,
   );
+  const [selectedBaubleMaterial, setSelectedBaubleMaterial] = useState<"glass" | "wood" | "">("");
+  const [baubleMaterialError, setBaubleMaterialError] = useState(false);
   const [customText, setCustomText] = useState("Mila");
   const [selectedLogoId, setSelectedLogoId] = useState(logoOptions[0].id);
   const [selectedBackEngravingId, setSelectedBackEngravingId] = useState(() =>
@@ -1980,19 +2115,14 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   const [quantity, setQuantity] = useState(1);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [cartHydrated, setCartHydrated] = useState(false);
+  const [legalAcknowledged, setLegalAcknowledged] = useState(false);
   const [showCartChoice, setShowCartChoice] = useState(false);
-  const [checkoutMessage, setCheckoutMessage] = useState(false);
-  const [checkoutWarning, setCheckoutWarning] = useState(false);
-  const [checkoutSaved, setCheckoutSaved] = useState(false);
   const [shippingMethod, setShippingMethod] = useState<SwissShippingMethod>("economy");
   const [pickupLocation, setPickupLocation] = useState("");
   const [selectedPickupLocation, setSelectedPickupLocation] = useState<SwissPostLocation | null>(null);
   const [pickupSuggestions, setPickupSuggestions] = useState<SwissPostLocation[]>([]);
   const [pickupSearchStatus, setPickupSearchStatus] = useState<"idle" | "loading" | "ready" | "empty" | "error">("idle");
   const [pickupSelectionError, setPickupSelectionError] = useState(false);
-  const [dataConsent, setDataConsent] = useState(false);
-  const [termsConsent, setTermsConsent] = useState(false);
-  const [cookiesConsent, setCookiesConsent] = useState(false);
   const [accountAuthClient, setAccountAuthClient] =
     useState<SupabaseClient | null>(null);
   const [accountStatus, setAccountStatus] = useState<
@@ -2019,6 +2149,16 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     it: "Inciso con cura · Un regalo personale sotto l’albero",
   }[language];
   const flow = flowCopy[language];
+  const legalTitle = legalPage === "agb"
+    ? legalCopy[language].agbTitle
+    : legalPage === "datenschutz"
+      ? legalCopy[language].privacyTitle
+      : legalCopy[language][`${legalPage}Title`];
+  const legalBody = legalPage === "datenschutz"
+    ? legalCopy[language].privacy
+    : legalPage === "impressum"
+      ? legalCopy[language].incomplete
+    : legalCopy[language][legalPage];
   const selectedProduct = getProduct(selectedProductId);
   const selectedProductCopy = selectedProduct.translations[language];
   const isBaubleProduct = selectedProduct.id === BAUBLE_PRODUCT_ID;
@@ -2112,20 +2252,26 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
         : currentView === "cart"
           ? `${t.cartTitle} | ${BRAND_NAME}`
           : currentView === "terms"
-            ? `${t.termsTitle} | ${BRAND_NAME}`
+            ? `${legalTitle} | ${BRAND_NAME}`
             : t.pageTitle;
   }, [
     currentView,
+    legalPage,
     language,
     selectedProductCopy.name,
     t.assortmentTitle,
     t.cartTitle,
     t.pageTitle,
     t.termsTitle,
+    legalTitle,
   ]);
 
   useEffect(() => {
-    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+    try {
+      window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+    } catch {
+      // Language selection remains active for the current page view.
+    }
   }, [language]);
 
   useEffect(() => {
@@ -2230,12 +2376,16 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
       if (storedCart) {
         const parsedCart = JSON.parse(storedCart) as CartItem[];
         if (Array.isArray(parsedCart)) {
-          setCartItems(parsedCart);
+          setCartItems(parsedCart.filter(isValidCartItem));
         }
       }
     } catch {
-      window.localStorage.removeItem(CART_STORAGE_KEY);
-      window.localStorage.removeItem(LEGACY_CART_STORAGE_KEY);
+      try {
+        window.localStorage.removeItem(CART_STORAGE_KEY);
+        window.localStorage.removeItem(LEGACY_CART_STORAGE_KEY);
+      } catch {
+        // Keep the in-memory cart usable when browser storage is unavailable.
+      }
     } finally {
       setCartHydrated(true);
     }
@@ -2246,8 +2396,12 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
       return;
     }
 
-    window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
-    window.localStorage.removeItem(LEGACY_CART_STORAGE_KEY);
+    try {
+      window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+      window.localStorage.removeItem(LEGACY_CART_STORAGE_KEY);
+    } catch {
+      // The current session still works if persistent browser storage is blocked.
+    }
   }, [cartHydrated, cartItems]);
 
   useEffect(() => {
@@ -2255,6 +2409,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
       const route = parseRoute(window.location.pathname);
       closeLanguageMenu();
       setCurrentView(route.view);
+      setLegalPage(route.legalPage ?? "agb");
       setShowCartChoice(false);
 
       if (route.productId) {
@@ -2277,6 +2432,8 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
       ? getBaubleVariant(baubleVariantId ?? BAUBLE_PRODUCT_ID).id
       : BAUBLE_PRODUCT_ID;
     setSelectedBaubleVariantId(nextBaubleVariantId);
+    setSelectedBaubleMaterial("");
+    setBaubleMaterialError(false);
     const nextBackEngravingOptions = nextProduct.id === BAUBLE_PRODUCT_ID
       ? getBaubleVariant(nextBaubleVariantId).backEngravingOptions ?? []
       : getBackEngravingOptions(nextProduct);
@@ -2349,7 +2506,6 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     closeLanguageMenu();
     setCurrentView("home");
     setShowCartChoice(false);
-    setCheckoutMessage(false);
     window.history.pushState(null, "", sectionId ? `/#${sectionId}` : "/");
 
     if (sectionId) {
@@ -2363,7 +2519,6 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     closeLanguageMenu();
     setCurrentView("products");
     setShowCartChoice(false);
-    setCheckoutMessage(false);
     window.history.pushState(null, "", "/produkty");
     scrollToPageTop();
   }
@@ -2372,8 +2527,6 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     closeLanguageMenu();
     setCurrentView("cart");
     setShowCartChoice(false);
-    setCheckoutWarning(false);
-    setCheckoutSaved(false);
     window.history.pushState(null, "", sectionId ? `/kosik#${sectionId}` : "/kosik");
 
     if (sectionId) {
@@ -2386,24 +2539,17 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   function navigateCheckout() {
     closeLanguageMenu();
     setCurrentView("checkout");
-    setCheckoutSaved(false);
     window.history.pushState(null, "", "/pokladna");
     scrollToPageTop();
   }
 
-  function navigateTerms(sectionId?: string) {
+  function navigateTerms(page: LegalPage = "agb") {
     closeLanguageMenu();
     setCurrentView("terms");
+    setLegalPage(page);
     setShowCartChoice(false);
-    setCheckoutMessage(false);
-    setCheckoutWarning(false);
-    window.history.pushState(null, "", sectionId ? `/agb#${sectionId}` : "/agb");
-
-    if (sectionId) {
-      scrollToSection(sectionId);
-    } else {
-      scrollToPageTop();
-    }
+    window.history.pushState(null, "", `/${page}`);
+    scrollToPageTop();
   }
 
   function selectProduct(productId: string) {
@@ -2411,7 +2557,6 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     applyProductSelection(productId);
     setCurrentView("product");
     setShowCartChoice(false);
-    setCheckoutMessage(false);
     window.history.pushState(null, "", productHref(productId));
     scrollToPageTop();
   }
@@ -2426,13 +2571,24 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
 
   function addToCart(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!customText.trim()) {
+      setCustomText("");
+      document.getElementById("custom-text")?.focus();
+      return;
+    }
+    if (isBaubleProduct && !selectedBaubleMaterial) {
+      setBaubleMaterialError(true);
+      document.getElementById("bauble-material-label")?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
     setCartItems((items) => [
       ...items,
       {
-        id: Date.now(),
+        id: Math.max(Date.now(), ...items.map((item) => item.id + 1)),
         productId: selectedProduct.id,
         baubleVariantId: isBaubleProduct ? selectedBaubleVariant.id : undefined,
-        customText: previewText,
+        baubleMaterial: isBaubleProduct ? selectedBaubleMaterial : undefined,
+        customText: customText.trim().normalize("NFC"),
         finishId: selectedFinish.id,
         logoId: selectedLogo.id,
         backEngravingText: selectedBackEngraving?.text,
@@ -2445,14 +2601,6 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
   }
 
   function prepareCheckout() {
-    if (!dataConsent || !termsConsent || !cookiesConsent) {
-      setCheckoutMessage(false);
-      setCheckoutWarning(true);
-      return;
-    }
-
-    setCheckoutWarning(false);
-    setCheckoutMessage(false);
     navigateCheckout();
   }
 
@@ -2497,7 +2645,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
         <span aria-hidden="true">✳</span> {holidayMessage} <span aria-hidden="true">✳</span>
       </div>
       <header className="shop-header">
-        <a
+        <Link
           className="brand"
           href="/"
           aria-label={BRAND_NAME}
@@ -2511,7 +2659,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
             <strong>{BRAND_NAME}</strong>
             <small>{t.brandSubtitle}</small>
           </span>
-        </a>
+        </Link>
         <div className="header-actions">
           <button
             className="account-shortcut"
@@ -2559,7 +2707,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
               ))}
             </div>
           </details>
-          <a
+          <Link
             className="header-cart"
             href="/kosik"
             aria-label={cartQuantity > 0 ? `${t.cartTitle} (${cartQuantity})` : t.cartTitle}
@@ -2575,7 +2723,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
               <circle cx="18" cy="20" r="1.2" fill="currentColor" />
             </svg>
             {cartQuantity > 0 && <span className="header-cart-count">{cartQuantity}</span>}
-          </a>
+          </Link>
         </div>
       </header>
 
@@ -2689,7 +2837,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                 <h1 id="home-title">{home.title}</h1>
                 <p>{home.lead}</p>
                 <div className="hero-actions">
-                  <a
+                  <Link
                     className="hero-primary"
                     href={productHref(products[0].id)}
                     onClick={(event) => {
@@ -2698,8 +2846,8 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                     }}
                   >
                     {home.primaryCta}
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     className="hero-secondary"
                     href="/produkty"
                     onClick={(event) => {
@@ -2708,7 +2856,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                     }}
                   >
                     {home.secondaryCta}
-                  </a>
+                  </Link>
                 </div>
                 <div className="hero-highlights" aria-label={home.galleryLabel}>
                   {home.highlights.map((highlight) => (
@@ -2743,7 +2891,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
         {currentView === "products" && (
           <>
             <div className="page-toolbar catalog-toolbar">
-              <a
+              <Link
                 href="/"
                 onClick={(event) => {
                   event.preventDefault();
@@ -2751,7 +2899,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                 }}
               >
                 {flow.backHome}
-              </a>
+              </Link>
               <button type="button" onClick={() => navigateCart()}>
                 {flow.goToCart}
               </button>
@@ -2833,7 +2981,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
         {currentView === "product" && (
           <>
             <div className="page-toolbar product-toolbar">
-              <a
+              <Link
                 href="/"
                 onClick={(event) => {
                   event.preventDefault();
@@ -2841,7 +2989,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                 }}
               >
                 {flow.backHome}
-              </a>
+              </Link>
             </div>
 
             <section className="product-section" id="produkt" aria-labelledby="product-title">
@@ -3023,6 +3171,24 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                         </div>
                       </div>
                       <div className="field-group">
+                        <span id="bauble-material-label">{baubleOptionLabels[language].material} <b className="required-mark" aria-hidden="true">*</b></span>
+                        <div className="phrase-grid" role="radiogroup" aria-labelledby="bauble-material-label" aria-describedby={baubleMaterialError ? "bauble-material-error" : undefined} aria-invalid={baubleMaterialError || undefined}>
+                          {(["glass", "wood"] as const).map((material) => (
+                            <button
+                              className={`phrase-option ${selectedBaubleMaterial === material ? "selected" : ""}`}
+                              key={material}
+                              type="button"
+                              role="radio"
+                              aria-checked={selectedBaubleMaterial === material}
+                              onClick={() => { setSelectedBaubleMaterial(material); setBaubleMaterialError(false); }}
+                            >
+                              {baubleOptionLabels[language][material]}
+                            </button>
+                          ))}
+                        </div>
+                        {baubleMaterialError && <small className="field-error" id="bauble-material-error" role="alert">{t.baubleMaterialRequired}</small>}
+                      </div>
+                      <div className="field-group">
                         <span>{baubleOptionLabels[language].color}</span>
                         <div
                           className="color-grid"
@@ -3093,8 +3259,9 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                     <input
                       id="custom-text"
                       maxLength={TEXT_LIMIT}
+                      required
                       value={customText}
-                      onChange={(event) => setCustomText(event.target.value.slice(0, TEXT_LIMIT))}
+                      onChange={(event) => setCustomText(Array.from(event.target.value.normalize("NFC")).slice(0, TEXT_LIMIT).join(""))}
                       placeholder={t.customTextPlaceholder}
                     />
                   </label>
@@ -3250,7 +3417,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
         {currentView === "cart" && (
           <>
             <div className="page-toolbar cart-toolbar">
-              <a
+              <Link
                 href="/"
                 onClick={(event) => {
                   event.preventDefault();
@@ -3258,7 +3425,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                 }}
               >
                 {flow.backHome}
-              </a>
+              </Link>
               <button type="button" onClick={() => navigateProducts()}>
                 {t.nav.assortment}
               </button>
@@ -3306,6 +3473,10 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                             {baubleVariant && (
                               <span>{baubleVariant.label[language]}</span>
                             )}
+                            {baubleVariant && item.baubleMaterial && (
+                              <span>{baubleOptionLabels[language].material}: {baubleOptionLabels[language][item.baubleMaterial]}</span>
+                            )}
+                            {baubleVariant && !item.baubleMaterial && <span className="field-error">{t.cartMaterialMissing}</span>}
                             <span>
                               {item.customText} / {logo.label[language]} /{" "}
                               {finish.label[language]}
@@ -3321,9 +3492,24 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                               </span>
                             )}
                           </div>
-                          <strong>
-                            {item.quantity} x {formatPrice(getCartItemUnitPrice(item))}
-                          </strong>
+                          <div className="cart-line-quantity">
+                            <div className="stepper" aria-label={t.quantity}>
+                              <button
+                                type="button"
+                                aria-label={t.decreaseQuantity}
+                                disabled={item.quantity <= 1}
+                                onClick={() => setCartItems((items) => items.map((entry) => entry.id === item.id ? { ...entry, quantity: entry.quantity - 1 } : entry))}
+                              >−</button>
+                              <output aria-live="polite">{item.quantity}</output>
+                              <button
+                                type="button"
+                                aria-label={t.increaseQuantity}
+                                disabled={item.quantity >= 12}
+                                onClick={() => setCartItems((items) => items.map((entry) => entry.id === item.id ? { ...entry, quantity: entry.quantity + 1 } : entry))}
+                              >+</button>
+                            </div>
+                            <strong>{formatPrice(item.quantity * getCartItemUnitPrice(item))}</strong>
+                          </div>
                           <button
                             className="remove-button"
                             type="button"
@@ -3342,51 +3528,36 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                   <h2 id="checkout-title">{t.subtotal}</h2>
                   <strong className="checkout-total">{formatPrice(cartTotal)}</strong>
                   <p>{flow.checkoutNote}</p>
-                  <div className="consent-list">
-                    <label className="consent-check">
-                      <input
-                        type="checkbox"
-                        checked={dataConsent}
-                        onChange={(event) => {
-                          setDataConsent(event.target.checked);
-                          setCheckoutWarning(false);
-                        }}
-                      />
-                      <span>{t.dataConsentLabel}</span>
-                    </label>
-                    <label className="consent-check">
-                      <input
-                        type="checkbox"
-                        checked={termsConsent}
-                        onChange={(event) => {
-                          setTermsConsent(event.target.checked);
-                          setCheckoutWarning(false);
-                        }}
-                      />
-                      <span>{t.termsConsentLabel}</span>
-                    </label>
-                    <label className="consent-check">
-                      <input
-                        type="checkbox"
-                        checked={cookiesConsent}
-                        onChange={(event) => {
-                          setCookiesConsent(event.target.checked);
-                          setCheckoutWarning(false);
-                        }}
-                      />
-                      <span>{t.cookiesConsentLabel}</span>
-                    </label>
-                  </div>
+                  <label className="legal-acknowledgement">
+                    <input
+                      type="checkbox"
+                      checked={legalAcknowledged}
+                      onChange={(event) => setLegalAcknowledged(event.target.checked)}
+                      disabled={cartItems.length === 0}
+                    />
+                    <span>
+                      {flow.legalAcknowledgement}{"\u00a0"}
+                      <Link href="/agb" onClick={(event) => { event.preventDefault(); event.stopPropagation(); navigateTerms("agb"); }}>
+                        {flow.termsLinkLabel}
+                      </Link>{"\u00a0"}{flow.privacyPrefix}{"\u00a0"}
+                      <Link href="/datenschutz" onClick={(event) => { event.preventDefault(); event.stopPropagation(); navigateTerms("datenschutz"); }}>
+                        {flow.privacyLinkLabel}
+                      </Link>{"\u00a0"}{flow.privacyAcknowledgement}
+                    </span>
+                  </label>
+                  <p className="cart-legal-links">
+                    <Link href="/cookies" onClick={(event) => { event.preventDefault(); navigateTerms("cookies"); }}>
+                      {flow.cookiesLinkLabel}
+                    </Link>
+                  </p>
                   <button
                     className="primary-button"
                     type="button"
-                    disabled={cartItems.length === 0}
+                    disabled={cartItems.length === 0 || !legalAcknowledged}
                     onClick={prepareCheckout}
                   >
                     {flow.checkoutCta}
                   </button>
-                  {checkoutWarning && <p className="checkout-warning">{t.consentWarning}</p>}
-                  {checkoutMessage && <p className="checkout-message">{flow.checkoutMessage}</p>}
                 </aside>
               </div>
             </section>
@@ -3421,15 +3592,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
               <div className="checkout-page-grid">
                 <form
                   className="checkout-form"
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    if (shippingMethod === "pickup" && !selectedPickupLocation) {
-                      setPickupSelectionError(true);
-                      return;
-                    }
-                    setPickupSelectionError(false);
-                    setCheckoutSaved(true);
-                  }}
+                  onSubmit={(event) => event.preventDefault()}
                 >
                   <fieldset className="checkout-fieldset">
                     <legend>{checkoutCopy[language].contact}</legend>
@@ -3437,24 +3600,25 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                       <label><span>{checkoutCopy[language].firstName}<b className="required-mark" aria-hidden="true">*</b></span><input name="given-name" autoComplete="given-name" required /></label>
                       <label><span>{checkoutCopy[language].lastName}<b className="required-mark" aria-hidden="true">*</b></span><input name="family-name" autoComplete="family-name" required /></label>
                       <label><span>{checkoutCopy[language].email}<b className="required-mark" aria-hidden="true">*</b></span><input name="email" type="email" autoComplete="email" required /></label>
-                      <label><span>{checkoutCopy[language].phone}<b className="required-mark" aria-hidden="true">*</b></span><input name="tel" type="tel" autoComplete="tel" placeholder="+41 79 123 45 67" required /></label>
+                      <label><span>{checkoutCopy[language].phone}<b className="required-mark" aria-hidden="true">*</b></span><input name="tel" type="tel" autoComplete="tel" inputMode="tel" pattern="(?:\\+41|0041|0)[ .()-]?[1-9](?:[ .()-]?[0-9]){8}" title="Use a Swiss number, for example +41 79 123 45 67" placeholder="+41 79 123 45 67" required /></label>
                     </div>
                   </fieldset>
                   <fieldset className="checkout-fieldset">
                     <legend>{checkoutCopy[language].delivery}</legend>
                     <div className="checkout-input-grid">
                       <label className="checkout-input-wide"><span>{checkoutCopy[language].street}<b className="required-mark" aria-hidden="true">*</b></span><input name="address-line1" autoComplete="address-line1" required /></label>
-                      <label><span>{checkoutCopy[language].postalCode}<b className="required-mark" aria-hidden="true">*</b></span><input name="postal-code" autoComplete="postal-code" inputMode="numeric" pattern="[0-9]{4}" maxLength={4} placeholder="8001" required /></label>
+                      <label><span>{checkoutCopy[language].postalCode}<b className="required-mark" aria-hidden="true">*</b></span><input name="postal-code" autoComplete="postal-code" inputMode="numeric" pattern="[1-9][0-9]{3}" minLength={4} maxLength={4} placeholder="8001" required /></label>
                       <label><span>{checkoutCopy[language].city}<b className="required-mark" aria-hidden="true">*</b></span><input name="address-level2" autoComplete="address-level2" required /></label>
-                      <label>{checkoutCopy[language].country}<input value={checkoutCopy[language].switzerland} readOnly /></label>
+                      <label><span>{checkoutCopy[language].country}<b className="required-mark" aria-hidden="true">*</b></span><input value={checkoutCopy[language].switzerland} readOnly /></label>
                     </div>
                   </fieldset>
                   <fieldset className="checkout-fieldset shipping-fieldset">
                     <legend>{checkoutCopy[language].shippingMethod}<b className="required-mark" aria-hidden="true">*</b></legend>
                     <div className="shipping-options">
                       {(["economy", "priority", "pickup"] as const).map((method) => (
-                        <label className="shipping-option" key={method}>
+                        <label className="shipping-option" aria-label={`${checkoutCopy[language][method]} ${checkoutCopy[language][`${method}Description`]}`} htmlFor={`shipping-${method}`} key={method}>
                           <input
+                            id={`shipping-${method}`}
                             type="radio"
                             name="shipping-method"
                             value={method}
@@ -3462,7 +3626,6 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                             required
                             onChange={() => {
                               setShippingMethod(method);
-                              setCheckoutSaved(false);
                             }}
                           />
                           <span>
@@ -3473,9 +3636,10 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                       ))}
                     </div>
                     {shippingMethod === "pickup" && (
-                      <label className="pickup-location-field">
-                        <span>{checkoutCopy[language].pickupLocation}<b className="required-mark" aria-hidden="true">*</b></span>
+                      <div className="pickup-location-field">
+                        <label htmlFor="pickup-location">{checkoutCopy[language].pickupLocation}<b className="required-mark" aria-hidden="true">*</b></label>
                         <input
+                          id="pickup-location"
                           name="pickup-location"
                           value={pickupLocation}
                           role="combobox"
@@ -3487,7 +3651,6 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                             setPickupLocation(event.target.value);
                             setSelectedPickupLocation(null);
                             setPickupSelectionError(false);
-                            setCheckoutSaved(false);
                           }}
                           placeholder={checkoutCopy[language].pickupPlaceholder}
                           required
@@ -3519,8 +3682,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                                   setPickupSuggestions([]);
                                   setPickupSearchStatus("idle");
                                   setPickupSelectionError(false);
-                                  setCheckoutSaved(false);
-                                }}
+                                                              }}
                               >
                                 {index === 0 && <small>{checkoutCopy[language].bestMatch}</small>}
                                 <strong>{location.name}</strong>
@@ -3536,7 +3698,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                             {checkoutCopy[language].locationSource}
                           </a>
                         </small>
-                      </label>
+                      </div>
                     )}
                   </fieldset>
                   <fieldset className="checkout-fieldset payment-fieldset">
@@ -3559,10 +3721,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                     <span>{checkoutCopy[language].note} <small>({checkoutCopy[language].optional})</small></span>
                     <textarea name="order-note" rows={4} />
                   </label>
-                  <button className="primary-button" type="submit">
-                    {checkoutCopy[language].save}
-                  </button>
-                  {checkoutSaved && <p className="checkout-message" role="status">{checkoutCopy[language].saved}</p>}
+                  <p className="checkout-warning" role="status">{checkoutCopy[language].notActive}</p>
                 </form>
                 <aside className="checkout-order-summary" aria-labelledby="checkout-summary-title">
                   <h2 id="checkout-summary-title">{checkoutCopy[language].orderSummary}</h2>
@@ -3574,7 +3733,12 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                         : undefined;
                       return (
                         <li key={item.id}>
-                          <span>{item.quantity} × {variant?.label[language] ?? product.translations[language].name}</span>
+                          <span>
+                            {item.quantity} × {variant?.label[language] ?? product.translations[language].name}
+                            {variant && item.baubleMaterial && ` · ${baubleOptionLabels[language][item.baubleMaterial]}`}
+                            {variant && !item.baubleMaterial && ` · ${t.cartMaterialMissing}`}
+                            {` · ${item.customText}`}
+                          </span>
                           <strong>{formatPrice(getCartItemUnitPrice(item) * item.quantity)}</strong>
                         </li>
                       );
@@ -3587,9 +3751,6 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                     <span>{checkoutCopy[language].shipping}</span>
                     <small>{checkoutCopy[language][shippingMethod]} · {checkoutCopy[language].shippingLater}</small>
                   </div>
-                  <div className="checkout-summary-row checkout-grand-total">
-                    <span>{checkoutCopy[language].total}</span><strong>{formatPrice(cartTotal)}</strong>
-                  </div>
                 </aside>
               </div>
             </section>
@@ -3599,80 +3760,23 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
         {currentView === "terms" && (
           <>
             <div className="page-toolbar">
-              <a
-                href="/"
-                onClick={(event) => {
-                  event.preventDefault();
-                  navigateHome();
-                }}
-              >
+              <Link href="/" onClick={(event) => { event.preventDefault(); navigateHome(); }}>
                 {flow.backHome}
-              </a>
-              <button type="button" onClick={() => navigateCart()}>
-                {flow.goToCart}
-              </button>
+              </Link>
+              <button type="button" onClick={() => navigateCart()}>{flow.goToCart}</button>
             </div>
-
-            <section className="terms-section terms-page" id="agb" aria-labelledby="agb-title">
+            <section className="terms-section terms-page" id={legalPage} aria-labelledby="legal-page-title">
               <div className="section-heading cart-page-heading">
                 <div>
-                  <p className="section-kicker">{t.termsKicker}</p>
-                  <h1 id="agb-title">{t.termsTitle}</h1>
-                </div>
-                <p>{t.termsNote}</p>
-              </div>
-              <div className="terms-grid">
-                {t.terms.map(([title, body], index) => (
-                  <article key={title}>
-                    <h3>
-                      <span className="term-number">{index + 1}</span>
-                      {title.replace(/^\d+\.\s*/, "")}
-                    </h3>
-                    <p>{body}</p>
-                  </article>
-                ))}
-              </div>
-            </section>
-
-            <section
-              className="terms-section terms-page legal-section"
-              id="datenschutz"
-              aria-labelledby="datenschutz-title"
-            >
-              <div className="section-heading cart-page-heading">
-                <div>
-                  <p className="section-kicker">{t.privacyKicker}</p>
-                  <h2 id="datenschutz-title">{t.privacyTitle}</h2>
+                  <p className="section-kicker">{legalPage === "agb" ? t.termsKicker : legalPage === "datenschutz" ? t.privacyKicker : legalPage === "cookies" ? t.cookiesKicker : legalCopy[language].impressumTitle}</p>
+                  <h1 id="legal-page-title">{legalTitle}</h1>
                 </div>
               </div>
               <div className="terms-grid">
-                {t.privacyCards.map(([title, body]) => (
-                  <article key={title}>
-                    <h3>{title}</h3>
-                    <p>{body}</p>
-                  </article>
-                ))}
-              </div>
-            </section>
-
-            <section
-              className="terms-section terms-page legal-section"
-              id="cookies"
-              aria-labelledby="cookies-title"
-            >
-              <div className="section-heading cart-page-heading">
-                <div>
-                  <p className="section-kicker">{t.cookiesKicker}</p>
-                  <h2 id="cookies-title">{t.cookiesTitle}</h2>
-                </div>
-              </div>
-              <div className="terms-grid">
-                {t.cookiesCards.map(([title, body]) => (
-                  <article key={title}>
-                    <h3>{title}</h3>
-                    <p>{body}</p>
-                  </article>
-                ))}
+                <article>
+                  <h3>{legalTitle}</h3>
+                  <p>{legalBody}</p>
+                </article>
               </div>
             </section>
           </>
@@ -3703,7 +3807,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
 
       <footer className="shop-footer" id="kontakt">
         <nav className="footer-links" aria-label={t.nav.assortment}>
-          <a
+          <Link
             href="/agb"
             onClick={(event) => {
               event.preventDefault();
@@ -3711,26 +3815,27 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
             }}
           >
             {t.nav.terms}
-          </a>
-          <a
-            href="/agb#datenschutz"
+          </Link>
+          <Link
+            href="/datenschutz"
             onClick={(event) => {
               event.preventDefault();
               navigateTerms("datenschutz");
             }}
           >
             {t.privacyKicker}
-          </a>
-          <a
-            href="/agb#cookies"
+          </Link>
+          <Link
+            href="/cookies"
             onClick={(event) => {
               event.preventDefault();
               navigateTerms("cookies");
             }}
           >
             {t.cookiesKicker}
-          </a>
-          <a href="mailto:hallo@example.de">hallo@example.de</a>
+          </Link>
+          <Link href="/impressum" onClick={(event) => { event.preventDefault(); navigateTerms("impressum"); }}>{legalCopy[language].impressumTitle}</Link>
+          <span>{t.contactPending}</span>
         </nav>
       </footer>
     </div>

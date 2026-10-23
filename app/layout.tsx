@@ -49,6 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
         "Konfigurierbare Gravurgeschenke mit eigener Namensgravur, Logo-Motiv und Sprachumschaltung.",
       images: [`${origin}/og.png`],
     },
+    alternates: { canonical: origin },
   };
 }
 

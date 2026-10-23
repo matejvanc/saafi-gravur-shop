@@ -1,28 +1,48 @@
 import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
-import test from "node:test";
+import { spawn, spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import test, { after, before } from "node:test";
 
 const templateRoot = new URL("../", import.meta.url);
 
-async function render(path = "/") {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
+const testBaseUrl = "http://127.0.0.1:8791";
+let localWorker;
 
-  return worker.fetch(
-    new Request(`http://localhost${path}`, {
-      headers: { accept: "text/html" },
-    }),
-    {
-      ASSETS: {
-        fetch: async () => new Response("Not found", { status: 404 }),
-      },
-    },
-    {
-      waitUntil() {},
-      passThroughOnException() {},
-    },
+before(async () => {
+  localWorker = spawn(
+    process.execPath,
+    ["node_modules/wrangler/bin/wrangler.js", "dev", "--config", "dist/server/wrangler.json", "--port", "8791", "--local", "--compatibility-date", "2026-05-22"],
+    { cwd: fileURLToPath(new URL("../", import.meta.url)), stdio: "ignore" },
   );
+
+  for (let attempt = 0; attempt < 60; attempt += 1) {
+    if (localWorker.exitCode !== null) throw new Error("Local Wrangler test server exited before becoming ready.");
+    try {
+      const response = await fetch(`${testBaseUrl}/robots.txt`);
+      if (response.ok) return;
+    } catch {
+      // Wrangler is still starting.
+    }
+    await new Promise((resolve) => setTimeout(resolve, 500));
+  }
+  localWorker.kill();
+  throw new Error("Timed out waiting for the local Wrangler test server.");
+});
+
+after(() => {
+  if (!localWorker?.pid) return;
+  if (process.platform === "win32") {
+    spawnSync("taskkill", ["/pid", String(localWorker.pid), "/t", "/f"], { stdio: "ignore" });
+  } else {
+    localWorker.kill("SIGTERM");
+  }
+});
+
+async function render(path = "/") {
+  return fetch(`${testBaseUrl}${path}`, {
+    headers: { accept: "text/html" },
+  });
 }
 
 test("server-renders the multilingual personalized shop", async () => {
@@ -39,6 +59,7 @@ test("server-renders the multilingual personalized shop", async () => {
   assert.match(html, /Weihnachtskugel/);
   assert.match(html, /Holz-Lesezeichen/);
   assert.match(html, /Holz-Anhänger/);
+  assert.doesNotMatch(html, /hallo@example\.de/i);
   assert.match(html, /Holz-Flaschenöffner/);
   assert.match(html, /Holz-Kugelschreiber/);
   assert.doesNotMatch(html, /Produkt ansehen/);
@@ -51,8 +72,6 @@ test("server-renders the multilingual personalized shop", async () => {
   assert.match(html, />CS</);
   assert.match(html, />FR</);
   assert.match(html, />IT</);
-  assert.match(html, />Start</);
-  assert.match(html, />Produkte</);
   assert.match(html, /Warenkorb/);
   assert.match(html, />AGB</);
   assert.doesNotMatch(html, /class="main-nav"/);
@@ -62,6 +81,11 @@ test("server-renders the multilingual personalized shop", async () => {
   assert.doesNotMatch(html, /<nav class="footer-links"[^>]*>[\s\S]*?href="\/produkty"/);
   assert.doesNotMatch(html, /<nav class="footer-links"[^>]*>[\s\S]*?href="\/kosik"/);
   assert.match(html, /<nav class="footer-links"[^>]*>[\s\S]*?href="\/agb"/);
+  assert.match(html, /href="\/datenschutz"/);
+  assert.match(html, /href="\/cookies"/);
+  assert.match(html, /href="\/impressum"/);
+  assert.doesNotMatch(html, /hallo@example\.de/);
+  assert.doesNotMatch(html, /inkl\. MwSt\.|incl\. VAT|včetně DPH|TVA incluse|IVA inclusa/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 });
 
@@ -126,19 +150,48 @@ test("fallback routes serve product and cart paths for client routing", async ()
   assert.match(cartHtml, /view-cart/);
   assert.match(cartHtml, /cart-toolbar/);
   assert.match(cartHtml, /Checkout/);
-  assert.match(cartHtml, /Ich stimme der Verarbeitung meiner Angaben/);
-  assert.match(cartHtml, /Ich akzeptiere die Allgemeinen Geschäftsbedingungen/);
-  assert.match(cartHtml, /Ich habe die Cookie-Hinweise gelesen/);
+  assert.match(cartHtml, /Zur Kassen-Vorschau/);
+  assert.doesNotMatch(cartHtml, /Ich stimme der Verarbeitung meiner Angaben/);
+  assert.doesNotMatch(cartHtml, /Cookie-Hinweise gelesen/);
   assert.doesNotMatch(cartHtml, /Geltungsbereich/);
 
   const termsResponse = await render("/agb");
   assert.equal(termsResponse.status, 200);
   const termsHtml = await termsResponse.text();
   assert.match(termsHtml, /Allgemeine Geschäftsbedingungen/);
-  assert.match(termsHtml, /Geltungsbereich/);
-  assert.match(termsHtml, /Zustimmung zur Datenverarbeitung/);
-  assert.match(termsHtml, /Cookie-Hinweise/);
+  assert.match(termsHtml, /Entwurf für den Schweizer Markt/);
   assert.match(termsHtml, /Zur Startseite/);
+
+  for (const [path, heading] of [["/datenschutz", "Datenschutzerklärung"], ["/cookies", "Cookies und ähnliche Technologien"], ["/impressum", "Impressum"]]) {
+    const response = await render(path);
+    assert.equal(response.status, 200, `${path} should render`);
+    const html = await response.text();
+    assert.match(html, new RegExp(`<h1[^>]*>${heading}</h1>`));
+    assert.match(html, /<link rel="canonical" href="https:\/\/127\.0\.0\.1:8791/);
+    if (path === "/impressum") assert.match(html, /Diese Pflichtangaben sind noch nicht vollständig/);
+    if (path === "/datenschutz") {
+      assert.match(html, /Cloudflare Workers/);
+      assert.match(html, /Swiss Post/);
+      assert.match(html, /Supabase Auth/);
+      assert.match(html, /Löschung oder Einschränkung/);
+    }
+  }
+
+  const checkoutResponse = await render("/pokladna");
+  const checkoutHtml = await checkoutResponse.text();
+  assert.match(checkoutHtml, /Noch nicht verfügbar/);
+  assert.doesNotMatch(checkoutHtml, /Bestellung wurde erfolgreich|Zahlung erfolgreich/);
+  assert.match(checkoutHtml, /pattern="\[1-9\]\[0-9\]\{3\}"/);
+
+  const robotsResponse = await fetch(`${testBaseUrl}/robots.txt`);
+  assert.equal(robotsResponse.status, 200);
+  assert.match(await robotsResponse.text(), /sitemap\.xml/);
+  const sitemapResponse = await fetch(`${testBaseUrl}/sitemap.xml`);
+  assert.equal(sitemapResponse.status, 200);
+  const sitemapText = await sitemapResponse.text();
+  assert.match(sitemapText, /saafi-gravur-shop\.vancmatej\.workers\.dev\/produkt\/anhaenger/);
+  assert.doesNotMatch(sitemapText, /\/(agb|datenschutz|cookies|impressum)/);
+  assert.equal(robotsResponse.headers.get("x-content-type-options"), "nosniff");
 });
 
 test("starter preview files and dependencies are removed", async () => {
@@ -207,7 +260,11 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /parseRoute/);
   assert.match(page, /return `CHF \$\{value\.toFixed\(2\)\}`;/);
   assert.doesNotMatch(page, /style: "currency"/);
-  assert.match(page, /type PageView = "home" \| "products" \| "product" \| "cart" \| "terms";/);
+  assert.match(page, /type PageView = "home" \| "products" \| "product" \| "cart" \| "checkout" \| "terms";/);
+  assert.match(page, /type LegalPage = "agb" \| "datenschutz" \| "cookies" \| "impressum";/);
+  assert.match(page, /function isValidCartItem/);
+  assert.match(page, /function getCartItemUnitPrice\(item: CartItem\)[\s\S]*?return basePrice/);
+  assert.doesNotMatch(page, /return item\.price/);
   assert.match(page, /navigateProducts/);
   assert.match(page, /href="\/produkty"/);
   assert.match(page, /catalog-product-card/);
@@ -215,10 +272,10 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /section-heading-left/);
   assert.match(page, /navigateTerms/);
   assert.match(page, /href="\/agb"/);
-  assert.match(page, /className="page-toolbar product-toolbar"[\s\S]*?\{renderCartSummary\(\)\}[\s\S]*?<section className="product-section"/);
-  assert.match(page, /className="cart-summary cart-summary-compact"/);
+  assert.match(page, /className="page-toolbar product-toolbar"[\s\S]*?<section className="product-section"/);
+  assert.match(page, /className="header-cart"/);
   assert.match(page, /className="product-photo-open"[\s\S]*?photoDialogRef\.current\?\.showModal\(\)/);
-  assert.match(page, /className="photo-dialog"[\s\S]*?changeSelectedPhoto\(-1\)[\s\S]*?changeSelectedPhoto\(1\)/);
+  assert.match(page, /photo-dialog[\s\S]*?changeSelectedPhoto\(-1\)[\s\S]*?changeSelectedPhoto\(1\)/);
   assert.match(page, /onCancel=\{\(event\) => \{\s+event\.preventDefault\(\);\s+event\.currentTarget\.close\(\);/);
   assert.match(page, /if \(event\.key === "Escape"\) \{\s+event\.preventDefault\(\);\s+event\.currentTarget\.close\(\);/);
   assert.match(page, /className="photo-lightbox-thumbs"/);
@@ -259,8 +316,12 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /Buon Natale/);
   assert.match(page, /supportsGiftWrap: true/);
   assert.match(page, /GIFT_WRAP_PRICE = 1/);
-  assert.match(page, /dataConsentLabel/);
-  assert.match(page, /cookiesCards/);
+  assert.match(page, /baubleMaterial\?: "glass" \| "wood"/);
+  assert.match(page, /id="bauble-material-label"/);
+  assert.match(page, /id="custom-text"[\s\S]*?required/);
+  assert.match(page, /notActive: "Noch nicht verfügbar/);
+  assert.match(page, /contactPending/);
+  assert.doesNotMatch(page, /hallo@example\.de/);
   assert.doesNotMatch(page, /Holz natur|Natural wood|Přírodní dřevo|Bois naturel|Legno naturale/);
   assert.match(page, /name: "Christmas bauble"/);
   assert.match(page, /name: "Boule de Noël"/);
@@ -286,14 +347,17 @@ test("starter preview files and dependencies are removed", async () => {
   assert.doesNotMatch(styles, /\.main-nav/);
   assert.match(styles, /\.view-cart \.cart-page-grid/);
   assert.match(styles, /\.view-cart \.checkout-panel/);
-  assert.match(styles, /\.consent-list/);
+  assert.match(styles, /\.cart-line-quantity/);
   assert.match(styles, /\.option-check/);
   assert.match(styles, /\.legal-section/);
   assert.match(styles, /--cranberry: #a62f3d/);
   assert.match(styles, /--brass: #bd9146/);
   assert.match(styles, /radial-gradient\(circle, rgba\(189, 145, 70/);
   assert.doesNotMatch(page, /top-notice/);
-  assert.match(page, /className="term-number"/);
+  assert.match(page, /legalCopy\[language\]\[legalPage\]/);
+  assert.match(page, /href="\/datenschutz"/);
+  assert.match(page, /href="\/cookies"/);
+  assert.match(page, /href="\/impressum"/);
   assert.match(styles, /\.product-photo-frame img[\s\S]*object-fit: contain/);
   assert.match(styles, /\.product-photo-frame \{\s+aspect-ratio: 1\.2[\s\S]*max-height: min\(54vh, 500px\)/);
   assert.match(styles, /\.gallery-column \{\s+align-self: start;\s+max-height: none;\s+overflow: visible;\s+position: sticky/);
@@ -307,7 +371,7 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(styles, /\.product-card img[\s\S]*object-fit: contain/);
   assert.match(styles, /\.intro-photo img[\s\S]*object-fit: contain/);
   assert.match(styles, /\.home-hero[\s\S]*var\(--hero-image\)/);
-  assert.ok(page.includes(`"--hero-image": "url('/products/christmas-baubles-main.jpeg')"`));
+  assert.ok(page.includes(`"--hero-image": "url('/products/christmas-baubles-wrapped.jpeg')"`));
   assert.match(styles, /radial-gradient\(ellipse at 4% 8%, rgba\(166, 47, 61, 0\.2\)/);
   assert.match(styles, /radial-gradient\(ellipse at 96% 22%, rgba\(30, 81, 59, 0\.21\)/);
   assert.match(styles, /grid-template-columns: minmax\(0, 1\.08fr\) minmax\(330px, 0\.92fr\);/);
@@ -322,7 +386,7 @@ test("starter preview files and dependencies are removed", async () => {
   assert.doesNotMatch(layout, /Starter Project|codex-preview/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
 
-  await access(new URL("../public/products/christmas-baubles-main.jpeg", import.meta.url));
+  await access(new URL("../public/products/christmas-baubles-wrapped.jpeg", import.meta.url));
   await access(new URL("../app/[...path]/page.tsx", import.meta.url));
   await assert.rejects(access(new URL("app/_sites-preview", templateRoot)));
 });

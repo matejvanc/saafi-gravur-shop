@@ -904,6 +904,14 @@ h3 {
   font-weight: 800;
 }
 
+.field-error {
+  display: block;
+  color: #a11f2b;
+  font-size: 0.85rem;
+  font-weight: 650;
+  margin-top: 0.45rem;
+}
+
 input:not([type="checkbox"]) {
   background: white;
   border: 1px solid var(--line);
@@ -1527,6 +1535,42 @@ a:focus-visible {
 
 .checkout-panel h2 {
   font-size: 1.25rem;
+}
+
+.legal-acknowledgement {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  margin: 1.25rem 0 0.35rem;
+  color: var(--ink, #26332d);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.legal-acknowledgement input {
+  flex: 0 0 auto;
+  width: 1.05rem;
+  height: 1.05rem;
+  margin: 0.2rem 0 0;
+  accent-color: var(--forest, #174b35);
+}
+
+.legal-acknowledgement a,
+.cart-legal-links a {
+  color: var(--forest, #174b35);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.cart-legal-links {
+  margin: 0 0 1rem 1.75rem;
+  font-size: 0.88rem;
+}
+
+.checkout-panel .primary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 
 .checkout-total {
@@ -2572,6 +2616,24 @@ main {
 
 .cart-page-line {
   border-radius: 4px;
+}
+
+.cart-line-quantity {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.cart-line-quantity strong {
+  color: var(--forest);
+  min-width: 6.5rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.cart-line-quantity .stepper button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
 }
 
 .checkout-panel {
