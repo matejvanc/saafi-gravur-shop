@@ -1694,6 +1694,47 @@ a:focus-visible {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.legal-document-grid {
+  grid-template-columns: minmax(0, 1fr);
+  margin-inline: auto;
+  max-width: 980px;
+}
+
+.legal-document-grid article {
+  min-height: 0;
+  padding: clamp(1.1rem, 3vw, 1.7rem);
+}
+
+.legal-document-grid h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+  margin: 0 0 0.85rem;
+}
+
+.legal-document-grid ul {
+  display: grid;
+  gap: 0.8rem;
+  line-height: 1.65;
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.legal-document-grid li::marker {
+  color: var(--brass);
+}
+
+.legal-draft-notice {
+  background: #fff8e9;
+  border: 1px solid color-mix(in srgb, var(--brass) 60%, transparent);
+  border-left: 4px solid var(--brass);
+  border-radius: 0.6rem;
+  color: #594b38;
+  line-height: 1.6;
+  margin: 0 auto 1rem;
+  max-width: 980px;
+  padding: 1rem 1.2rem;
+}
+
 .details-section article,
 .terms-section article {
   box-shadow: none;

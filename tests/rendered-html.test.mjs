@@ -159,7 +159,10 @@ test("fallback routes serve product and cart paths for client routing", async ()
   assert.equal(termsResponse.status, 200);
   const termsHtml = await termsResponse.text();
   assert.match(termsHtml, /Allgemeine Geschäftsbedingungen/);
-  assert.match(termsHtml, /Entwurf für den Schweizer Markt/);
+  assert.match(termsHtml, /Der Shop zeigt derzeit nur eine Bestellvorschau/);
+  assert.match(termsHtml, /<h2>1\. Verkäufer und Geltungsbereich/);
+  assert.match(termsHtml, /<ul>[\s\S]*?<li>/);
+  assert.match(termsHtml, /CHF 1\.00/);
   assert.match(termsHtml, /Zur Startseite/);
 
   for (const [path, heading] of [["/datenschutz", "Datenschutzerklärung"], ["/cookies", "Cookies und ähnliche Technologien"], ["/impressum", "Impressum"]]) {
@@ -170,10 +173,15 @@ test("fallback routes serve product and cart paths for client routing", async ()
     assert.match(html, /<link rel="canonical" href="https:\/\/127\.0\.0\.1:8791/);
     if (path === "/impressum") assert.match(html, /Diese Pflichtangaben sind noch nicht vollständig/);
     if (path === "/datenschutz") {
-      assert.match(html, /Cloudflare Workers/);
+      assert.match(html, /Cloudflare (Workers|Worker)/);
       assert.match(html, /Swiss Post/);
       assert.match(html, /Supabase Auth/);
-      assert.match(html, /Löschung oder Einschränkung/);
+      assert.match(html, /<h2>6\. Rechte und Anfragen/);
+      assert.match(html, /Auskunft/);
+    }
+    if (path === "/cookies") {
+      assert.match(html, /localStorage/);
+      assert.match(html, /<h2>4\. Speicher beschränken und widersprechen/);
     }
   }
 
@@ -354,7 +362,8 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(styles, /--brass: #bd9146/);
   assert.match(styles, /radial-gradient\(circle, rgba\(189, 145, 70/);
   assert.doesNotMatch(page, /top-notice/);
-  assert.match(page, /legalCopy\[language\]\[legalPage\]/);
+  assert.match(page, /detailedLegalCopy\[language\]\[legalPage\]/);
+  assert.match(page, /legalSections\.map/);
   assert.match(page, /href="\/datenschutz"/);
   assert.match(page, /href="\/cookies"/);
   assert.match(page, /href="\/impressum"/);

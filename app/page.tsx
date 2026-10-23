@@ -12,6 +12,7 @@ import Link from "next/link";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { accountCopy } from "./account-copy";
 import { loadAccountAuthClient } from "./account-auth";
+import { detailedLegalCopy } from "./legal-copy";
 
 const TEXT_LIMIT = 12;
 const GIFT_WRAP_PRICE = 1;
@@ -2154,11 +2155,10 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     : legalPage === "datenschutz"
       ? legalCopy[language].privacyTitle
       : legalCopy[language][`${legalPage}Title`];
-  const legalBody = legalPage === "datenschutz"
-    ? legalCopy[language].privacy
-    : legalPage === "impressum"
-      ? legalCopy[language].incomplete
-    : legalCopy[language][legalPage];
+  const legalSections = legalPage === "impressum"
+    ? [{ heading: legalTitle, points: [legalCopy[language].incomplete] }]
+    : detailedLegalCopy[language][legalPage];
+  const legalNotice = legalPage === "impressum" ? "" : detailedLegalCopy[language].notice;
   const selectedProduct = getProduct(selectedProductId);
   const selectedProductCopy = selectedProduct.translations[language];
   const isBaubleProduct = selectedProduct.id === BAUBLE_PRODUCT_ID;
@@ -3772,11 +3772,14 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                   <h1 id="legal-page-title">{legalTitle}</h1>
                 </div>
               </div>
-              <div className="terms-grid">
-                <article>
-                  <h3>{legalTitle}</h3>
-                  <p>{legalBody}</p>
-                </article>
+              {legalNotice && <p className="legal-draft-notice">{legalNotice}</p>}
+              <div className="terms-grid legal-document-grid">
+                {legalSections.map((section) => (
+                  <article key={section.heading}>
+                    <h2>{section.heading}</h2>
+                    <ul>{section.points.map((point, index) => <li key={index}>{point}</li>)}</ul>
+                  </article>
+                ))}
               </div>
             </section>
           </>
