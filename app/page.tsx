@@ -2159,8 +2159,11 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     ? [{ heading: legalTitle, points: [legalCopy[language].incomplete] }]
     : detailedLegalCopy[language][legalPage];
   const legalNotice = legalPage === "impressum" ? "" : detailedLegalCopy[language].notice;
-  const legalMeta =
-    legalPage === "agb" ? detailedLegalCopy[language].agbMeta : undefined;
+  const legalMeta = legalPage === "agb"
+    ? detailedLegalCopy[language].agbMeta
+    : legalPage === "datenschutz"
+      ? detailedLegalCopy[language].privacyMeta
+      : undefined;
   const legalSignature =
     legalPage === "agb" ? detailedLegalCopy[language].agbSignature : undefined;
   const selectedProduct = getProduct(selectedProductId);

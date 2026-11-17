@@ -177,10 +177,10 @@ test("fallback routes serve product and cart paths for client routing", async ()
     assert.match(html, /<link rel="canonical" href="https:\/\/127\.0\.0\.1:8791/);
     if (path === "/impressum") assert.match(html, /Diese Pflichtangaben sind noch nicht vollständig/);
     if (path === "/datenschutz") {
-      assert.match(html, /Cloudflare (Workers|Worker)/);
-      assert.match(html, /Swiss Post/);
-      assert.match(html, /Supabase Auth/);
-      assert.match(html, /<h2>6\. Rechte und Anfragen/);
+      assert.match(html, /Cloudflare/);
+      assert.match(html, /Schweizerische Post/);
+      assert.match(html, /Supabase/);
+      assert.match(html, /<h2>15\. Änderungen dieser Datenschutzerklärung<\/h2>/);
       assert.match(html, /Auskunft/);
     }
     if (path === "/cookies") {
@@ -207,7 +207,7 @@ test("fallback routes serve product and cart paths for client routing", async ()
 });
 
 test("starter preview files and dependencies are removed", async () => {
-  const [page, routeFallback, layout, packageJson, styles, accountAuth, worker, favicon, legalCopy] = await Promise.all([
+  const [page, routeFallback, layout, packageJson, styles, accountAuth, worker, favicon, legalCopy, privacyCopy] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/[...path]/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
@@ -217,6 +217,7 @@ test("starter preview files and dependencies are removed", async () => {
     readFile(new URL("../worker/index.ts", import.meta.url), "utf8"),
     readFile(new URL("../public/favicon.svg", import.meta.url), "utf8"),
     readFile(new URL("../app/legal-copy.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/privacy-copy.ts", import.meta.url), "utf8"),
   ]);
 
   const openerProductStart = page.indexOf('id: "flaschenoeffner"');
@@ -268,6 +269,19 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /legalSignature && \([\s\S]*?className="legal-document-signature"/);
   assert.match(legalCopy, /agbMeta: "Saafi Gravur · Stand: \[Datum der letzten Aktualisierung\]"/);
   assert.match(legalCopy, /agbSignature: \[[\s\S]*?"\[Webseitenadresse\]"/);
+  assert.match(page, /legalPage === "datenschutz"[\s\S]*?privacyMeta/);
+  for (const language of ["cs", "de", "en", "fr", "it"]) {
+    const localeStart = privacyCopy.indexOf(`  ${language}: [`);
+    const remainingCopy = privacyCopy.slice(localeStart);
+    const nextLocale = remainingCopy.slice(1).search(/\n {2}(?:cs|de|en|fr|it): \[/);
+    const localeCopy = nextLocale < 0 ? remainingCopy : remainingCopy.slice(0, nextLocale + 1);
+    assert.equal((localeCopy.match(/heading: "\d+\./g) ?? []).length, 15, `${language} privacy section count`);
+  }
+  assert.match(privacyCopy, /https:\/\/saafi-gravur-shop\.vancmatej\.workers\.dev\//);
+  assert.match(privacyCopy, /https:\/\/supabase\.com\/privacy/);
+  assert.match(privacyCopy, /https:\/\/www\.cloudflare\.com\/privacypolicy\//);
+  assert.match(privacyCopy, /https:\/\/www\.edoeb\.admin\.ch\//);
+  assert.match(privacyCopy, /Letzte Aktualisierung: \[Datum\]/);
   const legalCopyStart = legalCopy.indexOf("export const detailedLegalCopy");
   for (const language of ["cs", "de", "en", "fr", "it"]) {
     const languageStart = legalCopy.indexOf(`  ${language}: {`, legalCopyStart);
