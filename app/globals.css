@@ -1723,6 +1723,25 @@ a:focus-visible {
   color: var(--brass);
 }
 
+.legal-document-meta,
+.legal-document-signature {
+  color: var(--forest-deep);
+  margin: 0 auto 1rem;
+  max-width: 980px;
+}
+
+.legal-document-meta {
+  font-weight: 750;
+}
+
+.legal-document-signature {
+  display: grid;
+  gap: 0.25rem;
+  justify-items: end;
+  line-height: 1.5;
+  margin-top: 1.25rem;
+}
+
 .legal-draft-notice {
   background: #fff8e9;
   border: 1px solid color-mix(in srgb, var(--brass) 60%, transparent);

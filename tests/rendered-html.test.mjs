@@ -158,11 +158,15 @@ test("fallback routes serve product and cart paths for client routing", async ()
   const termsResponse = await render("/agb");
   assert.equal(termsResponse.status, 200);
   const termsHtml = await termsResponse.text();
-  assert.match(termsHtml, /Allgemeine Geschäftsbedingungen/);
+  assert.match(termsHtml, /Allgemeine Geschäftsbedingungen \(AGB\)/);
   assert.match(termsHtml, /Der Shop zeigt derzeit nur eine Bestellvorschau/);
-  assert.match(termsHtml, /<h2>1\. Verkäufer und Geltungsbereich/);
+  assert.match(termsHtml, /<h2>1\. Geltungsbereich/);
+  assert.match(termsHtml, /<h2>14\. Schlussbestimmungen/);
+  assert.match(termsHtml, /Kostenpflichtig bestellen/);
+  assert.match(termsHtml, /\[Datum der letzten Aktualisierung\]/);
+  assert.match(termsHtml, /\[Hier sämtliche tatsächlich angebotenen Zahlungsmethoden eintragen\.\]/);
+  assert.match(termsHtml, /\[Unternehmensname \/ vollständiger Name\]/);
   assert.match(termsHtml, /<ul>[\s\S]*?<li>/);
-  assert.match(termsHtml, /CHF 1\.00/);
   assert.match(termsHtml, /Zur Startseite/);
 
   for (const [path, heading] of [["/datenschutz", "Datenschutzerklärung"], ["/cookies", "Cookies und ähnliche Technologien"], ["/impressum", "Impressum"]]) {
@@ -203,7 +207,7 @@ test("fallback routes serve product and cart paths for client routing", async ()
 });
 
 test("starter preview files and dependencies are removed", async () => {
-  const [page, routeFallback, layout, packageJson, styles, accountAuth, worker, favicon] = await Promise.all([
+  const [page, routeFallback, layout, packageJson, styles, accountAuth, worker, favicon, legalCopy] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/[...path]/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
@@ -212,6 +216,7 @@ test("starter preview files and dependencies are removed", async () => {
     readFile(new URL("../app/account-auth.ts", import.meta.url), "utf8"),
     readFile(new URL("../worker/index.ts", import.meta.url), "utf8"),
     readFile(new URL("../public/favicon.svg", import.meta.url), "utf8"),
+    readFile(new URL("../app/legal-copy.ts", import.meta.url), "utf8"),
   ]);
 
   const openerProductStart = page.indexOf('id: "flaschenoeffner"');
@@ -259,6 +264,17 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /intro-gallery/);
   assert.match(page, /const introProductIds = \[[\s\S]*?"lesezeichen"[\s\S]*?"anhaenger"[\s\S]*?\];[\s\S]*?const mainPhoto = product\.photos\[0\];[\s\S]*?<img src=\{mainPhoto\.src\} alt=\{productCopy\.name\}/);
   assert.match(page, /id="produkte"/);
+  assert.match(page, /legalMeta && <p className="legal-document-meta">/);
+  assert.match(page, /legalSignature && \([\s\S]*?className="legal-document-signature"/);
+  assert.match(legalCopy, /agbMeta: "Saafi Gravur · Stand: \[Datum der letzten Aktualisierung\]"/);
+  assert.match(legalCopy, /agbSignature: \[[\s\S]*?"\[Webseitenadresse\]"/);
+  const germanLegalCopyStart = legalCopy.indexOf('  de: {', legalCopy.indexOf("export const detailedLegalCopy"));
+  const germanPrivacyStart = legalCopy.indexOf("    datenschutz:", germanLegalCopyStart);
+  const germanAgb = legalCopy.slice(germanLegalCopyStart, germanPrivacyStart);
+  assert.equal((germanAgb.match(/heading: "\d+\./g) ?? []).length, 14);
+  assert.match(germanAgb, /heading: "14\. Schlussbestimmungen"/);
+  assert.match(germanAgb, /Die Lieferung erfolgt an die vom Kunden im Bestellprozess angegebene Lieferadresse/);
+  assert.match(germanAgb, /Die Bearbeitung personenbezogener Daten erfolgt gemäss den geltenden schweizerischen Datenschutzbestimmungen/);
   assert.match(favicon, /<text[^>]*>S<\/text>/);
   assert.match(favicon, /<text[^>]*>G<\/text>/);
   assert.match(layout, /icon: "\/favicon\.svg\?v=2"/);

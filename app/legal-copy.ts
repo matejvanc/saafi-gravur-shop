@@ -3,6 +3,8 @@ export type LegalPage = "agb" | "datenschutz" | "cookies";
 export type LegalSection = { heading: string; points: string[] };
 type LegalDocumentCopy = {
   notice: string;
+  agbMeta?: string;
+  agbSignature?: string[];
   agb: LegalSection[];
   datenschutz: LegalSection[];
   cookies: LegalSection[];
@@ -39,13 +41,162 @@ export const detailedLegalCopy = {
   },
   de: {
     notice: "Vorläufiger Stand vor dem Verkaufsstart: Der Shop zeigt derzeit nur eine Bestellvorschau. Er sendet keine Bestellung, verschickt keine Bestätigung und verarbeitet keine Zahlung. Händleridentität und weitere Betriebsangaben müssen vor echten Bestellungen ergänzt und geprüft werden.",
+    agbMeta: "Saafi Gravur · Stand: [Datum der letzten Aktualisierung]",
+    agbSignature: [
+      "Saafi Gravur",
+      "[Unternehmensname / vollständiger Name]",
+      "[Anschrift]",
+      "[E-Mail-Adresse]",
+      "[Webseitenadresse]",
+    ],
     agb: [
-      { heading: "1. Verkäufer und Geltungsbereich", points: ["Der Shop wird unter der Marke Saafi Gravur betrieben. Der rechtliche Name bzw. Firmenname, die Postanschrift, eine gültige E-Mail-Adresse und allfällige Register- oder UID-Angaben sind in der geprüften Konfiguration nicht vorhanden. Der Betreiber muss diese Angaben vor dem Verkaufsstart auf der separaten Verkäuferinformationsseite ergänzen.", "Diese Bedingungen beschreiben den vorgesehenen Verkauf personalisierter Gravurprodukte für den Schweizer Markt. Sie erfinden keine Angaben zum Verkäufer, Steuerstatus oder zu nicht angeschlossenen Diensten."] },
-      { heading: "2. Produkte und Personalisierung", points: ["Das Angebot zeigt verfügbare Produkte, Varianten, Material, Farbe, Oberfläche und Preis. Bei der Weihnachtskugel ist Glas oder Holz auszuwählen; Name oder kurzer Text sind innerhalb der beim Produkt angezeigten Zeichenbegrenzung möglich.", "Kunden sind für Schreibweise und Text sowie für die Kontrolle von Variante, Material, Menge und Personalisierung verantwortlich. Produktbilder dienen der Illustration; Bildschirmdarstellung und Produktionscharge können Farbabweichungen verursachen."] },
-      { heading: "3. Preise, Zuschläge und Versand", points: ["Die Preise werden in Schweizer Franken (CHF) angezeigt. Vor dem Verkaufsstart muss der Betreiber bestätigen, ob es sich um Endpreise handelt, welcher Steuerstatus gilt und ob weitere obligatorische Kosten anfallen.", "Geschenkverpackung ist, sofern verfügbar, ein freiwilliger Zuschlag von CHF 1.00 pro Stück. Versandtarife und Bedingungen von Swiss Post sind im Checkout noch nicht eingerichtet; bis zur Ergänzung kann der Shop keinen verbindlichen Gesamtbetrag anzeigen."] },
-      { heading: "4. Bestellung und Vertragsschluss", points: ["Im regulären Bestellprozess prüft der Kunde den Warenkorb, kann Eingaben korrigieren und kontrolliert Produkte, Personalisierung, Menge, Versand, Zahlung und Gesamtpreis vor einer verbindlichen Bestellung. Die Checkbox zu diesen Bedingungen schliesst derzeit allein noch keinen Vertrag.", "Der aktuelle Checkout ist nur eine Vorschau: Das Formular wird nicht übermittelt, die Schaltfläche erzeugt keine Bestellung und es wird keine Bestätigung per E-Mail gesendet. Solange kein verbindlicher Bestellschritt, keine klare Bestellbestätigung und keine Verkäuferkontaktangaben vorhanden sind, nimmt der Shop keine echten Bestellungen an."] },
-      { heading: "5. Herstellung, Lieferung und Zahlung", points: ["Bei Produkten angezeigte Herstellungszeiten sind Richtwerte und keine bestätigten Liefertermine. Vor dem Verkaufsstart muss der Betreiber tatsächliche Produktions- und Transportzeiten, Liefergebiete und Versandkosten festlegen.", "Der Checkout zeigt Swiss Post PostPac Economy, PostPac Priority sowie PickPost / My Post 24. TWINT, Karte und Banküberweisung sind nur vorgesehene Auswahlmöglichkeiten; kein Zahlungsanbieter ist angeschlossen und es wird keine Zahlung verarbeitet."] },
-      { heading: "6. Rücktritt, Mängel und Schlussbestimmungen", points: ["Das Schweizer Recht sieht grundsätzlich kein allgemeines Recht vor, einen Onlinekauf nachträglich wegen eines Sinneswandels zu widerrufen. Der Betreiber sagt hier keine freiwillige Rückgabefrist zu. Künftige Rückgaberegeln oder Ausnahmen müssen vor dem Kauf klar aufgeführt werden.", "Diese Information schränkt zwingende gesetzliche Rechte bei mangelhaften oder nicht vertragsgemässen Waren nicht ein. Kontaktperson und Reklamationsablauf sind noch nicht bestätigt. Anwendbares Recht, Gerichtsstand, Inkrafttreten und Änderungsverfahren muss der Verkäufer vor dem Start festlegen."] },
+      {
+        heading: "1. Geltungsbereich",
+        points: [
+          "Diese Allgemeinen Geschäftsbedingungen (nachfolgend „AGB“) gelten für sämtliche Bestellungen, die über den Onlineshop Saafi Gravur unter [Webseitenadresse] aufgegeben werden.",
+          "Das Angebot richtet sich an Kundinnen und Kunden, die Produkte für private oder geschäftliche Zwecke erwerben.",
+          "Mit dem Absenden einer Bestellung bestätigt der Kunde, dass er diese AGB zur Kenntnis genommen hat und ihnen zustimmt.",
+          "Abweichende Bedingungen des Kunden gelten nur, wenn sie vom Verkäufer ausdrücklich schriftlich bestätigt wurden.",
+        ],
+      },
+      {
+        heading: "2. Anbieter und Kontakt",
+        points: [
+          "Der Onlineshop wird betrieben von:",
+          "[Vollständiger Name oder Firmenname]",
+          "[Strasse und Hausnummer]",
+          "[Postleitzahl und Ort]",
+          "Schweiz",
+          "E-Mail: [Tatsächliche Kontakt-E-Mail-Adresse]",
+          "Telefon: [Telefonnummer, sofern vorhanden]",
+          "UID: [Unternehmens-Identifikationsnummer, sofern vorhanden]",
+          "Nachfolgend wird der Betreiber als „Verkäufer“ bezeichnet.",
+        ],
+      },
+      {
+        heading: "3. Angebot und Produktinformationen",
+        points: [
+          "Die im Onlineshop dargestellten Produkte stellen eine Aufforderung zur Abgabe einer Bestellung dar.",
+          "Saafi Gravur bietet insbesondere personalisierte und gravierte Produkte an. Dazu gehören unter anderem Holz- und Glasprodukte mit individuellen Gravuren.",
+          "Produktabbildungen dienen der Veranschaulichung. Geringfügige Abweichungen in Farbe, Maserung, Materialstruktur oder Ausführung können aufgrund natürlicher Materialeigenschaften und technischer Produktionsverfahren auftreten.",
+          "Bei personalisierten Produkten richtet sich die Ausführung nach den vom Kunden im Bestellprozess ausgewählten Optionen und den übermittelten Personalisierungsangaben.",
+          "Der Verkäufer bemüht sich, sämtliche Produktbeschreibungen, Preise und Verfügbarkeitsangaben korrekt und aktuell zu halten.",
+        ],
+      },
+      {
+        heading: "4. Bestellung und Vertragsabschluss",
+        points: [
+          "Der Kunde kann die gewünschten Produkte auswählen, konfigurieren und in den Warenkorb legen.",
+          "Vor dem verbindlichen Absenden der Bestellung erhält der Kunde eine Übersicht über:",
+          "die ausgewählten Produkte und Produktvarianten,",
+          "die gewählten Personalisierungen und Gravurtexte,",
+          "die bestellte Menge,",
+          "den Gesamtpreis,",
+          "die Versandkosten,",
+          "die Rechnungs- und Lieferadresse,",
+          "die gewählte Zahlungsmethode.",
+          "Der Kunde hat vor dem Absenden der Bestellung die Möglichkeit, Eingabefehler zu erkennen und zu korrigieren.",
+          "Durch das Anklicken der Schaltfläche „Kostenpflichtig bestellen“ gibt der Kunde ein verbindliches Angebot zum Abschluss eines Kaufvertrages ab.",
+          "Der Vertrag kommt zustande, sobald der Verkäufer die Bestellung annimmt. Die Annahme erfolgt durch eine elektronische Bestellbestätigung oder durch eine ausdrückliche Auftragsbestätigung des Verkäufers.",
+          "Der Kunde erhält nach Abgabe seiner Bestellung unverzüglich eine elektronische Bestätigung an die angegebene E-Mail-Adresse.",
+          "Der Verkäufer behält sich vor, Bestellungen bei offensichtlichen technischen Fehlern, nicht verfügbarer Ware oder begründeten Zweifeln an der Richtigkeit der Bestellung abzulehnen. Bereits geleistete Zahlungen werden in diesem Fall zurückerstattet.",
+        ],
+      },
+      {
+        heading: "5. Personalisierte Produkte und Gravuren",
+        points: [
+          "Bei personalisierten Produkten ist der Kunde dafür verantwortlich, die gewünschten Texte, Namen, Daten und sonstigen Angaben korrekt und vollständig zu übermitteln.",
+          "Der Kunde sollte insbesondere die Schreibweise, Rechtschreibung und die Auswahl der Produktvarianten vor dem Absenden der Bestellung sorgfältig überprüfen.",
+          "Die Gravur erfolgt grundsätzlich entsprechend den vom Kunden übermittelten Angaben.",
+          "Der Kunde bestätigt mit seiner Bestellung, dass er zur Verwendung der übermittelten Texte, Namen, Logos, Bilder und sonstigen Inhalte berechtigt ist und dadurch keine Rechte Dritter verletzt.",
+          "Der Verkäufer behält sich vor, Aufträge mit rechtswidrigen, beleidigenden oder anderweitig unzulässigen Inhalten abzulehnen.",
+          "Bei personalisierten Produkten können geringfügige Abweichungen in Position, Ausrichtung, Gravurtiefe oder Erscheinungsbild technisch bedingt sein, sofern dadurch die vereinbarte Produktbeschaffenheit nicht wesentlich beeinträchtigt wird.",
+        ],
+      },
+      {
+        heading: "6. Preise und Zahlungsbedingungen",
+        points: [
+          "Alle Preise im Onlineshop werden in Schweizer Franken (CHF) angegeben.",
+          "Es gelten die zum Zeitpunkt der Bestellung angezeigten Preise.",
+          "Sofern Mehrwertsteuer anfällt, wird diese entsprechend den gesetzlichen Vorschriften berücksichtigt und ausgewiesen.",
+          "Die Versandkosten werden dem Kunden vor Abschluss der Bestellung gesondert und transparent angezeigt.",
+          "Zusätzliche Kosten, die nicht bereits im Produktpreis enthalten sind, werden vor Abschluss der Bestellung ausgewiesen, soweit sie im Voraus bestimmbar sind.",
+          "Die Zahlung erfolgt über die im Onlineshop angebotenen Zahlungsmethoden:",
+          "[Hier sämtliche tatsächlich angebotenen Zahlungsmethoden eintragen.]",
+          "Die Belastung des Zahlungsmittels erfolgt entsprechend den Bedingungen des jeweiligen Zahlungsdienstleisters.",
+          "Der Verkäufer beginnt mit der Bearbeitung der Bestellung nach erfolgreicher Zahlungsbestätigung, sofern im Bestellprozess nichts anderes angegeben ist.",
+        ],
+      },
+      {
+        heading: "7. Lieferung und Versand",
+        points: [
+          "Die Lieferung erfolgt an die vom Kunden im Bestellprozess angegebene Lieferadresse.",
+          "Derzeit werden Bestellungen in folgende Länder geliefert:",
+          "[Lieferländer eintragen, beispielsweise Schweiz und Liechtenstein, sofern tatsächlich angeboten.]",
+          "Die voraussichtliche Liefer- und Bearbeitungszeit wird auf der jeweiligen Produktseite angegeben.",
+          "Angegebene Lieferzeiten sind Richtwerte und können insbesondere bei personalisierten Produkten, erhöhtem Bestellaufkommen oder unvorhersehbaren Ereignissen variieren.",
+          "Sollte sich eine Lieferung erheblich verzögern, wird der Kunde darüber informiert.",
+          "Die Versandkosten werden vor Abschluss der Bestellung angezeigt.",
+          "Etwaige Zollgebühren, Einfuhrabgaben oder sonstige Kosten bei Lieferungen ins Ausland werden entsprechend den anwendbaren gesetzlichen Vorschriften und den im Bestellprozess angezeigten Informationen behandelt.",
+        ],
+      },
+      {
+        heading: "8. Eigentumsvorbehalt",
+        points: [
+          "Die gelieferten Produkte bleiben bis zur vollständigen Bezahlung des Kaufpreises Eigentum des Verkäufers, soweit ein solcher Eigentumsvorbehalt nach anwendbarem Recht wirksam vereinbart und umgesetzt werden kann.",
+        ],
+      },
+      {
+        heading: "9. Gewährleistung und Mängel",
+        points: [
+          "Der Verkäufer gewährleistet, dass die gelieferten Produkte den vereinbarten Eigenschaften und der jeweiligen Produktbeschreibung entsprechen.",
+          "Sollte ein Produkt beschädigt sein, einen Herstellungsfehler aufweisen oder erheblich von der vereinbarten Ausführung abweichen, kann der Kunde den Verkäufer kontaktieren.",
+          "Der Kunde wird gebeten, erkennbare Mängel möglichst zeitnah nach Erhalt der Ware per E-Mail mitzuteilen und gegebenenfalls aussagekräftige Fotos beizufügen.",
+          "Die gesetzlichen Gewährleistungsrechte nach schweizerischem Recht bleiben vorbehalten.",
+          "Soweit gesetzlich vorgesehen, beträgt die Verjährungsfrist für Ansprüche wegen Sachmängeln bei beweglichen Sachen grundsätzlich zwei Jahre ab Ablieferung der Ware.",
+          "Die konkrete gesetzliche Rechtsfolge bei einem Mangel richtet sich nach den anwendbaren gesetzlichen Bestimmungen.",
+          "Der Verkäufer wird eine gemeldete Beanstandung prüfen und mit dem Kunden eine gesetzeskonforme Lösung abstimmen.",
+        ],
+      },
+      {
+        heading: "10. Rückgabe und Widerruf",
+        points: [
+          "Nach schweizerischem Recht besteht bei gewöhnlichen Online-Kaufverträgen grundsätzlich kein allgemeines gesetzliches Widerrufs- oder Rückgaberecht.",
+          "Eine Rückgabe oder ein Umtausch allein aufgrund einer nachträglichen Meinungsänderung des Kunden ist daher grundsätzlich ausgeschlossen, sofern der Verkäufer nicht ausdrücklich etwas anderes anbietet.",
+          "Dies gilt insbesondere für personalisierte Produkte, die nach den individuellen Vorgaben des Kunden hergestellt wurden.",
+          "Die gesetzlichen Rechte des Kunden bei mangelhaften, beschädigten oder falsch gelieferten Produkten bleiben hiervon unberührt.",
+        ],
+      },
+      {
+        heading: "11. Haftung",
+        points: [
+          "Der Verkäufer haftet im Rahmen der anwendbaren gesetzlichen Bestimmungen für Schäden, die durch eine schuldhafte Verletzung seiner vertraglichen Pflichten verursacht werden.",
+          "Eine Haftung für Schäden, die auf unsachgemässe Verwendung, eigenmächtige Veränderungen oder normale Abnutzung der Produkte zurückzuführen sind, besteht im gesetzlich zulässigen Umfang nicht.",
+          "Die Haftung für Vorsatz und grobe Fahrlässigkeit sowie zwingende gesetzliche Haftungsansprüche bleibt in jedem Fall vorbehalten.",
+        ],
+      },
+      {
+        heading: "12. Datenschutz",
+        points: [
+          "Die Bearbeitung personenbezogener Daten erfolgt gemäss den geltenden schweizerischen Datenschutzbestimmungen.",
+          "Weitere Informationen zur Erhebung, Verarbeitung und Speicherung personenbezogener Daten sind in der separaten Datenschutzerklärung auf der Webseite zu finden.",
+        ],
+      },
+      {
+        heading: "13. Anwendbares Recht und Gerichtsstand",
+        points: [
+          "Es gilt schweizerisches Recht unter Ausschluss kollisionsrechtlicher Bestimmungen, soweit dies gesetzlich zulässig ist.",
+          "Zwingende gesetzliche Gerichtsstände und zwingende Verbraucherschutzbestimmungen bleiben vorbehalten.",
+        ],
+      },
+      {
+        heading: "14. Schlussbestimmungen",
+        points: [
+          "Sollten einzelne Bestimmungen dieser AGB ganz oder teilweise unwirksam sein oder werden, bleiben die übrigen Bestimmungen davon unberührt.",
+          "Anstelle der unwirksamen Bestimmung gelten die einschlägigen gesetzlichen Vorschriften.",
+          "Der Verkäufer behält sich vor, diese AGB bei Bedarf anzupassen. Für eine Bestellung gelten grundsätzlich die AGB in der zum Zeitpunkt der Bestellung gültigen Fassung.",
+        ],
+      },
     ],
     datenschutz: [
       { heading: "1. Verantwortlicher und Kontakt – noch zu ergänzen", points: ["Verantwortlicher ist der Betreiber des Shops Saafi Gravur. Sein rechtlicher Name oder Firmenname und seine Postanschrift sind in der Konfiguration nicht bestätigt. Vor dem Echtbetrieb müssen sie zusammen mit einer gültigen E-Mail-Adresse veröffentlicht werden.", "Ohne bestätigte Kontaktangaben können Auskunfts-, Berichtigungs- oder Löschungsanfragen nicht ordnungsgemäss gestellt werden. Der Betreiber muss eine echte Kontaktadresse ergänzen; es wird keine erfunden."] },

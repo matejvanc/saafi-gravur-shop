@@ -1008,7 +1008,7 @@ const legalCopy = {
   de: {
     impressumTitle: "Impressum",
     incomplete: "Diese Pflichtangaben sind noch nicht vollständig. Der Shop darf nicht live Bestellungen annehmen, bevor die verantwortliche Person bzw. das Unternehmen, eine ladungsfähige Postanschrift und eine funktionierende E-Mail-Adresse ergänzt und geprüft wurden. UID nur angeben, falls vorhanden bzw. vorgeschrieben.",
-    agbTitle: "Allgemeine Geschäftsbedingungen",
+    agbTitle: "Allgemeine Geschäftsbedingungen (AGB)",
     agb: "Entwurf für den Schweizer Markt. Verkäuferidentität, Vertragsannahme, verbindlicher Bestellschritt, Liefergebiet, tatsächliche Versandtarife, Produktions- und Transportzeiten, Steuerstatus, Zahlungsanbieter, Reklamationskontakt und freiwillige Rückgaberegeln müssen vor Veröffentlichung bestätigt werden. Der aktuelle Shop übermittelt noch keine Bestellung und versendet keine Bestätigungs-E-Mail. Nach Schweizer Recht besteht grundsätzlich kein allgemeines Widerrufsrecht bei Onlinekäufen. Anwendbares Recht und eine etwaige freiwillige Rückgaberegelung müssen für den Verkäufer konkret bestätigt werden. Eine freiwillige Rückgabefrist wird nicht zugesagt.",
     privacyTitle: "Datenschutzerklärung",
     privacy: "Verantwortliche Person und Kontaktadresse fehlen und müssen vor Veröffentlichung ergänzt werden. Cloudflare Workers stellt die Website bereit. Der Browser speichert Warenkorb, Konfiguration und Sprache in localStorage. Eine Suche nach Abholorten wird über den Worker an Swiss Post übermittelt. Bei optionaler Anmeldung erhält Supabase Auth die eingegebene E-Mail-Adresse; die Sitzung bleibt im Browser. Checkout-Felder, Notizen, Zahlungswahl, Bestellungen und Zahlungen werden derzeit nicht an den Shop gesendet oder dort gespeichert. Nach Schweizer DSG können Betroffene Auskunft und Berichtigung verlangen sowie – soweit gesetzlich zulässig – Löschung oder Einschränkung beantragen; GDPR-Rechte gelten nur, sofern die GDPR anwendbar ist. Betreiber müssen Zwecke und Rechtsgrundlagen, Speicher-/Löschfristen, technische Protokolle, tatsächliche Auftragsbearbeiter, Länder und Transfergarantien ergänzen. Anfragen benötigen eine verifizierte Kontaktadresse.",
@@ -2159,6 +2159,10 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
     ? [{ heading: legalTitle, points: [legalCopy[language].incomplete] }]
     : detailedLegalCopy[language][legalPage];
   const legalNotice = legalPage === "impressum" ? "" : detailedLegalCopy[language].notice;
+  const legalMeta =
+    legalPage === "agb" ? detailedLegalCopy[language].agbMeta : undefined;
+  const legalSignature =
+    legalPage === "agb" ? detailedLegalCopy[language].agbSignature : undefined;
   const selectedProduct = getProduct(selectedProductId);
   const selectedProductCopy = selectedProduct.translations[language];
   const isBaubleProduct = selectedProduct.id === BAUBLE_PRODUCT_ID;
@@ -3772,6 +3776,7 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                   <h1 id="legal-page-title">{legalTitle}</h1>
                 </div>
               </div>
+              {legalMeta && <p className="legal-document-meta">{legalMeta}</p>}
               {legalNotice && <p className="legal-draft-notice">{legalNotice}</p>}
               <div className="terms-grid legal-document-grid">
                 {legalSections.map((section) => (
@@ -3781,6 +3786,12 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
                   </article>
                 ))}
               </div>
+              {legalSignature && (
+                <div className="legal-document-signature">
+                  <strong>{legalSignature[0]}</strong>
+                  {legalSignature.slice(1).map((line) => <span key={line}>{line}</span>)}
+                </div>
+              )}
             </section>
           </>
         )}
