@@ -184,8 +184,11 @@ test("fallback routes serve product and cart paths for client routing", async ()
       assert.match(html, /Auskunft/);
     }
     if (path === "/cookies") {
-      assert.match(html, /localStorage/);
-      assert.match(html, /<h2>4\. Speicher beschränken und widersprechen/);
+      assert.match(html, /Local Storage/);
+      assert.match(html, /<h2>9\. Kontakt<\/h2>/);
+      assert.match(html, /Supabase Auth/);
+      assert.match(html, /https:\/\/www\.cloudflare\.com\/privacypolicy\//);
+      assert.match(html, /Stand: \[Datum der letzten Aktualisierung\]/);
     }
   }
 
@@ -207,7 +210,7 @@ test("fallback routes serve product and cart paths for client routing", async ()
 });
 
 test("starter preview files and dependencies are removed", async () => {
-  const [page, routeFallback, layout, packageJson, styles, accountAuth, worker, favicon, legalCopy, privacyCopy] = await Promise.all([
+  const [page, routeFallback, layout, packageJson, styles, accountAuth, worker, favicon, legalCopy, privacyCopy, cookieCopy] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/[...path]/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
@@ -218,6 +221,7 @@ test("starter preview files and dependencies are removed", async () => {
     readFile(new URL("../public/favicon.svg", import.meta.url), "utf8"),
     readFile(new URL("../app/legal-copy.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/privacy-copy.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/cookie-copy.ts", import.meta.url), "utf8"),
   ]);
 
   const openerProductStart = page.indexOf('id: "flaschenoeffner"');
@@ -282,6 +286,18 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(privacyCopy, /https:\/\/www\.cloudflare\.com\/privacypolicy\//);
   assert.match(privacyCopy, /https:\/\/www\.edoeb\.admin\.ch\//);
   assert.match(privacyCopy, /Letzte Aktualisierung: \[Datum\]/);
+  assert.match(page, /legalPage === "cookies"[\s\S]*?detailedCookieCopy\[language\]/);
+  assert.match(page, /legalPage === "cookies"[\s\S]*?cookiesSignature/);
+  for (const language of ["cs", "de", "en", "fr", "it"]) {
+    const localeStart = cookieCopy.indexOf(`  ${language}: [`);
+    const remainingCopy = cookieCopy.slice(localeStart);
+    const nextLocale = remainingCopy.slice(1).search(/\n {2}(?:cs|de|en|fr|it): \[/);
+    const localeCopy = nextLocale < 0 ? remainingCopy : remainingCopy.slice(0, nextLocale + 1);
+    assert.equal((localeCopy.match(/heading: "\d+\./g) ?? []).length, 9, `${language} cookie section count`);
+  }
+  assert.match(cookieCopy, /Art\. 45c/);
+  assert.match(cookieCopy, /https:\/\/www\.cloudflare\.com\/privacypolicy\//);
+  assert.match(cookieCopy, /https:\/\/supabase\.com\/privacy/);
   const legalCopyStart = legalCopy.indexOf("export const detailedLegalCopy");
   for (const language of ["cs", "de", "en", "fr", "it"]) {
     const languageStart = legalCopy.indexOf(`  ${language}: {`, legalCopyStart);

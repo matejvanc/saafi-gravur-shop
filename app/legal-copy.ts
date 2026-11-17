@@ -8,6 +8,8 @@ type LegalDocumentCopy = {
   agbMeta?: string;
   agbSignature?: string[];
   privacyMeta?: string;
+  cookiesMeta?: string;
+  cookiesSignature?: string[];
   agb: LegalSection[];
   datenschutz: LegalSection[];
   cookies: LegalSection[];
@@ -21,6 +23,8 @@ export const detailedLegalCopy = {
     notice: "Předprovozní verze: web nyní pouze zobrazuje náhled objednávky. Objednávku neodesílá, nepotvrzuje e-mailem ani nezpracovává platbu. Totožnost prodávajícího a některé provozní údaje je nutné doplnit a ověřit před spuštěním skutečného prodeje.",
     agbMeta: "Saafi Gravur · Aktualizováno: [datum poslední aktualizace]",
     privacyMeta: "Saafi Gravur · Zveřejněno: [datum zveřejnění] · Poslední aktualizace: [datum]",
+    cookiesMeta: "Saafi Gravur · Poslední aktualizace: [datum poslední aktualizace]",
+    cookiesSignature: ["Saafi Gravur", "[Adresa webových stránek]", "Poslední aktualizace: [Datum]"],
     agbSignature: [
       "Saafi Gravur",
       "[Název společnosti / celé jméno]",
@@ -147,6 +151,8 @@ export const detailedLegalCopy = {
     notice: "Vorläufiger Stand vor dem Verkaufsstart: Der Shop zeigt derzeit nur eine Bestellvorschau. Er sendet keine Bestellung, verschickt keine Bestätigung und verarbeitet keine Zahlung. Händleridentität und weitere Betriebsangaben müssen vor echten Bestellungen ergänzt und geprüft werden.",
     agbMeta: "Saafi Gravur · Stand: [Datum der letzten Aktualisierung]",
     privacyMeta: "Saafi Gravur · Stand: [Datum der Veröffentlichung] · Letzte Aktualisierung: [Datum]",
+    cookiesMeta: "Saafi Gravur · Stand: [Datum der letzten Aktualisierung]",
+    cookiesSignature: ["Saafi Gravur", "[Webseitenadresse]", "Letzte Aktualisierung: [Datum]"],
     agbSignature: [
       "Saafi Gravur",
       "[Unternehmensname / vollständiger Name]",
@@ -315,6 +321,8 @@ export const detailedLegalCopy = {
     notice: "Pre-launch version: the shop currently displays an order preview only. It does not submit orders, send confirmations or process payments. The seller identity and some operational details must be completed and checked before real sales begin.",
     agbMeta: "Saafi Gravur · Last updated: [date of last update]",
     privacyMeta: "Saafi Gravur · Published: [publication date] · Last updated: [date]",
+    cookiesMeta: "Saafi Gravur · Last updated: [date of last update]",
+    cookiesSignature: ["Saafi Gravur", "[Website address]", "Last updated: [Date]"],
     agbSignature: [
       "Saafi Gravur",
       "[Company name / full name]",
@@ -441,6 +449,8 @@ export const detailedLegalCopy = {
     notice: "Version préalable au lancement : la boutique affiche actuellement uniquement un aperçu de commande. Elle ne transmet pas de commande, n’envoie pas de confirmation et ne traite aucun paiement. L’identité du vendeur et certains détails opérationnels doivent être complétés et vérifiés avant toute vente réelle.",
     agbMeta: "Saafi Gravur · Mise à jour : [date de la dernière mise à jour]",
     privacyMeta: "Saafi Gravur · Publié le : [date de publication] · Dernière mise à jour : [date]",
+    cookiesMeta: "Saafi Gravur · Dernière mise à jour : [date de la dernière mise à jour]",
+    cookiesSignature: ["Saafi Gravur", "[Adresse du site web]", "Dernière mise à jour : [Date]"],
     agbSignature: [
       "Saafi Gravur",
       "[Nom de l’entreprise / nom complet]",
@@ -567,6 +577,8 @@ export const detailedLegalCopy = {
     notice: "Versione pre-lancio: il negozio mostra attualmente solo un’anteprima dell’ordine. Non invia ordini, non manda conferme e non elabora pagamenti. L’identità del venditore e alcuni dettagli operativi devono essere completati e verificati prima delle vendite reali.",
     agbMeta: "Saafi Gravur · Ultimo aggiornamento: [data dell’ultimo aggiornamento]",
     privacyMeta: "Saafi Gravur · Pubblicato: [data di pubblicazione] · Ultimo aggiornamento: [data]",
+    cookiesMeta: "Saafi Gravur · Ultimo aggiornamento: [data dell’ultimo aggiornamento]",
+    cookiesSignature: ["Saafi Gravur", "[Indirizzo del sito web]", "Ultimo aggiornamento: [Data]"],
     agbSignature: [
       "Saafi Gravur",
       "[Nome dell’azienda / nome completo]",

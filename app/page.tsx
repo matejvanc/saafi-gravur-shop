@@ -13,6 +13,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { accountCopy } from "./account-copy";
 import { loadAccountAuthClient } from "./account-auth";
 import { detailedLegalCopy } from "./legal-copy";
+import { detailedCookieCopy } from "./cookie-copy";
 
 const TEXT_LIMIT = 12;
 const GIFT_WRAP_PRICE = 1;
@@ -1022,7 +1023,7 @@ const legalCopy = {
     agb: "Draft for the Swiss market. Confirm the seller identity, contract acceptance, binding order step, delivery area, actual shipping rates, production and transit times, tax status, payment provider, complaints contact and any voluntary returns policy before publication. The current shop does not submit orders or send confirmation emails. Swiss law generally does not provide a right of withdrawal for online purchases. The applicable law and any voluntary returns policy must be confirmed for this seller. No voluntary return period is promised.",
     privacyTitle: "Privacy notice",
     privacy: "The controller and contact address are missing and must be added before publication. Cloudflare Workers serves the site. The browser stores the cart, product configuration and language in localStorage. A pickup-location search is sent through the Worker to Swiss Post. Optional sign-in sends the entered email address to Supabase Auth; the session stays in browser storage. Checkout fields, notes, payment choice, orders and payments are not currently sent to or stored by the shop. Under the Swiss FADP, people may request information and correction and, where legally available, deletion or restriction. GDPR rights apply only where the GDPR covers this shop. The operator must add purposes and legal bases, storage/deletion periods, technical logs, actual processors, processing countries and transfer safeguards. Requests need a verified contact address.",
-    cookiesTitle: "Cookies and similar technologies",
+    cookiesTitle: "Cookie Policy",
     cookies: "No analytics or marketing tags are included in the application code. The shop uses localStorage for language, cart and the optional authentication session; browser storage is not automatically a cookie. Swiss Post search and Supabase Auth are external services and receive the requests needed for those features. Check the actual cookie behaviour of the hosting and authentication services in a browser and in their settings before publication. A cookie-consent checkbox is therefore not a condition for preparing an order.",
   },
   cs: {
@@ -1032,7 +1033,7 @@ const legalCopy = {
     agb: "Návrh pro švýcarský trh. Před zveřejněním je nutné potvrdit totožnost prodávajícího, okamžik přijetí smlouvy, závazný krok objednávky, oblast doručení, skutečné sazby dopravy, dobu výroby a přepravy, daňový režim, platební službu, kontakt pro reklamace a případná dobrovolná pravidla vrácení. Současný web objednávky neodesílá ani neposílá potvrzovací e-maily. Švýcarské právo obecně nestanoví právo odstoupit od online nákupu. Rozhodné právo a případná dobrovolná pravidla vrácení je nutné potvrdit pro konkrétního prodávajícího. Dobrovolná lhůta pro vrácení se neslibuje.",
     privacyTitle: "Zásady ochrany osobních údajů",
     privacy: "Správce a kontaktní adresa chybí a před zveřejněním se musí doplnit. Web zajišťuje Cloudflare Workers. Prohlížeč ukládá košík, konfiguraci produktu a jazyk do localStorage. Při hledání výdejního místa se dotaz přes Worker odešle Swiss Post. Při volitelném přihlášení obdrží Supabase Auth zadaný e-mail; relace zůstává v úložišti prohlížeče. Údaje formuláře pokladny, poznámky, volba platby, objednávky ani platby se nyní obchodu neodesílají ani se zde neukládají. Podle švýcarského DSG lze žádat o informace a opravu a tam, kde to zákon umožňuje, o výmaz nebo omezení zpracování. Práva GDPR platí pouze tehdy, pokud se na obchod vztahuje. Provozovatel musí doplnit účely a právní základy, dobu uložení a výmazu, technické záznamy, skutečné zpracovatele, země zpracování a záruky přeshraničního přenosu. Žádosti vyžadují ověřený kontaktní údaj.",
-    cookiesTitle: "Cookies a podobné technologie",
+    cookiesTitle: "Zásady používání cookies",
     cookies: "V aplikačním kódu nejsou zapojeny analytické ani marketingové měřicí skripty. Web používá localStorage pro jazyk, košík a volitelnou přihlašovací relaci; úložiště prohlížeče není automaticky cookie. Swiss Post a Supabase Auth jsou externí služby a dostávají požadavky potřebné pro své funkce. Před zveřejněním ověřte skutečné cookies hostingu a přihlašovací služby v prohlížeči i jejich nastaveních. Potvrzení cookies proto není podmínkou přípravy objednávky.",
   },
   fr: {
@@ -1042,7 +1043,7 @@ const legalCopy = {
     agb: "Projet pour le marché suisse. Avant publication, confirmez l’identité du vendeur, l’acceptation du contrat, l’étape de commande engageante, la zone de livraison, les tarifs réels, les délais de fabrication et de transport, le statut fiscal, le prestataire de paiement, le contact pour les réclamations et toute politique de retour volontaire. La boutique actuelle ne transmet pas de commandes et n’envoie pas d’e-mails de confirmation. Le droit suisse ne prévoit généralement pas de droit de révocation pour les achats en ligne. Le droit applicable et toute politique de retour volontaire doivent être confirmés pour ce vendeur. Aucun délai de retour volontaire n’est promis.",
     privacyTitle: "Politique de confidentialité",
     privacy: "Le responsable et son adresse de contact manquent et doivent être ajoutés avant publication. Le site est fourni par Cloudflare Workers. Le navigateur stocke le panier, la configuration du produit et la langue dans localStorage. Une recherche de point de retrait est transmise à Swiss Post par le Worker. Pour la connexion facultative, Supabase Auth reçoit l’adresse e-mail saisie; la session reste dans le navigateur. Les champs de commande, notes, choix de paiement, commandes et paiements ne sont actuellement ni transmis ni enregistrés par la boutique. Selon la LPD suisse, les personnes peuvent demander des renseignements et une rectification et, lorsque la loi le permet, l’effacement ou la limitation du traitement. Les droits RGPD ne s’appliquent que si le RGPD couvre cette boutique. L’exploitant doit préciser les finalités et bases légales, durées de conservation et d’effacement, journaux techniques, sous-traitants réels, pays de traitement et garanties de transfert. Les demandes nécessitent une adresse de contact vérifiée.",
-    cookiesTitle: "Cookies et technologies similaires",
+    cookiesTitle: "Politique relative aux cookies",
     cookies: "Aucun outil d’analyse ou de marketing n’est intégré au code de l’application. La boutique utilise localStorage pour la langue, le panier et la session facultative; ce stockage du navigateur n’est pas automatiquement un cookie. Swiss Post et Supabase Auth sont des services externes qui reçoivent les requêtes nécessaires à leurs fonctions. Vérifiez le comportement réel des cookies de l’hébergement et de l’authentification dans un navigateur et dans leurs paramètres avant publication. Une case d’acceptation des cookies n’est donc pas une condition pour préparer une commande.",
   },
   it: {
@@ -1052,7 +1053,7 @@ const legalCopy = {
     agb: "Bozza per il mercato svizzero. Prima della pubblicazione confermare l’identità del venditore, l’accettazione del contratto, il passaggio che vincola l’ordine, l’area di consegna, i costi di spedizione effettivi, i tempi di produzione e trasporto, il regime fiscale, il gestore dei pagamenti, il contatto reclami e ogni politica volontaria di reso. Il negozio attuale non invia ordini né e-mail di conferma. Il diritto svizzero generalmente non prevede un diritto di recesso per gli acquisti online. La legge applicabile e ogni politica volontaria di reso devono essere confermate per questo venditore. Non viene promesso un periodo volontario di reso.",
     privacyTitle: "Informativa sulla privacy",
     privacy: "Il titolare e l’indirizzo di contatto mancano e devono essere aggiunti prima della pubblicazione. Il sito è fornito da Cloudflare Workers. Il browser salva carrello, configurazione del prodotto e lingua in localStorage. Una ricerca di un punto di ritiro viene inoltrata a Swiss Post tramite il Worker. Per l’accesso facoltativo, Supabase Auth riceve l’indirizzo e-mail inserito; la sessione resta nel browser. I campi checkout, le note, la scelta di pagamento, gli ordini e i pagamenti non vengono attualmente inviati né conservati dal negozio. Secondo la LPD svizzera è possibile chiedere informazioni e rettifica e, ove previsto dalla legge, cancellazione o limitazione del trattamento. I diritti GDPR valgono solo se il GDPR si applica a questo negozio. Il gestore deve indicare finalità e basi giuridiche, periodi di conservazione e cancellazione, registri tecnici, responsabili del trattamento effettivi, Paesi e garanzie per i trasferimenti. Le richieste richiedono un recapito verificato.",
-    cookiesTitle: "Cookie e tecnologie simili",
+    cookiesTitle: "Informativa sui cookie",
     cookies: "Nel codice dell’applicazione non sono inclusi tag di analisi o marketing. Il negozio usa localStorage per lingua, carrello e sessione facoltativa; l’archiviazione del browser non è automaticamente un cookie. Swiss Post e Supabase Auth sono servizi esterni e ricevono le richieste necessarie alle loro funzioni. Prima della pubblicazione verificare nel browser e nelle relative impostazioni l’uso effettivo dei cookie da parte di hosting e autenticazione. La casella cookie non è quindi una condizione per preparare un ordine.",
   },
 } satisfies Record<LanguageCode, Record<string, string>>;
@@ -2157,15 +2158,22 @@ export default function Home({ initialPath = "/" }: HomeProps = {}) {
       : legalCopy[language][`${legalPage}Title`];
   const legalSections = legalPage === "impressum"
     ? [{ heading: legalTitle, points: [legalCopy[language].incomplete] }]
-    : detailedLegalCopy[language][legalPage];
+    : legalPage === "cookies"
+      ? detailedCookieCopy[language]
+      : detailedLegalCopy[language][legalPage];
   const legalNotice = legalPage === "impressum" ? "" : detailedLegalCopy[language].notice;
   const legalMeta = legalPage === "agb"
     ? detailedLegalCopy[language].agbMeta
     : legalPage === "datenschutz"
       ? detailedLegalCopy[language].privacyMeta
+      : legalPage === "cookies"
+        ? detailedLegalCopy[language].cookiesMeta
       : undefined;
-  const legalSignature =
-    legalPage === "agb" ? detailedLegalCopy[language].agbSignature : undefined;
+  const legalSignature = legalPage === "agb"
+    ? detailedLegalCopy[language].agbSignature
+    : legalPage === "cookies"
+      ? detailedLegalCopy[language].cookiesSignature
+      : undefined;
   const selectedProduct = getProduct(selectedProductId);
   const selectedProductCopy = selectedProduct.translations[language];
   const isBaubleProduct = selectedProduct.id === BAUBLE_PRODUCT_ID;
