@@ -268,10 +268,18 @@ test("starter preview files and dependencies are removed", async () => {
   assert.match(page, /legalSignature && \([\s\S]*?className="legal-document-signature"/);
   assert.match(legalCopy, /agbMeta: "Saafi Gravur · Stand: \[Datum der letzten Aktualisierung\]"/);
   assert.match(legalCopy, /agbSignature: \[[\s\S]*?"\[Webseitenadresse\]"/);
-  const germanLegalCopyStart = legalCopy.indexOf('  de: {', legalCopy.indexOf("export const detailedLegalCopy"));
-  const germanPrivacyStart = legalCopy.indexOf("    datenschutz:", germanLegalCopyStart);
-  const germanAgb = legalCopy.slice(germanLegalCopyStart, germanPrivacyStart);
-  assert.equal((germanAgb.match(/heading: "\d+\./g) ?? []).length, 14);
+  const legalCopyStart = legalCopy.indexOf("export const detailedLegalCopy");
+  for (const language of ["cs", "de", "en", "fr", "it"]) {
+    const languageStart = legalCopy.indexOf(`  ${language}: {`, legalCopyStart);
+    const privacyStart = legalCopy.indexOf("    datenschutz:", languageStart);
+    const agb = legalCopy.slice(languageStart, privacyStart);
+    assert.equal((agb.match(/heading: "\d+\./g) ?? []).length, 14, `${language} AGB section count`);
+    assert.match(agb, /agbMeta:/, `${language} AGB metadata`);
+    assert.match(agb, /agbSignature:/, `${language} AGB signature`);
+  }
+  const germanStart = legalCopy.indexOf("  de: {", legalCopyStart);
+  const germanPrivacyStart = legalCopy.indexOf("    datenschutz:", germanStart);
+  const germanAgb = legalCopy.slice(germanStart, germanPrivacyStart);
   assert.match(germanAgb, /heading: "14\. Schlussbestimmungen"/);
   assert.match(germanAgb, /Die Lieferung erfolgt an die vom Kunden im Bestellprozess angegebene Lieferadresse/);
   assert.match(germanAgb, /Die Bearbeitung personenbezogener Daten erfolgt gemäss den geltenden schweizerischen Datenschutzbestimmungen/);
